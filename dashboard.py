@@ -1,5 +1,5 @@
 """
-WallStreet To-Do Dashboard
+WallStreet Trading Dashboard
 Run with:  streamlit run dashboard.py
 Install:   pip install streamlit plotly pandas
 """
@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -15,28 +16,77 @@ import streamlit as st
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
-ROOT = Path(__file__).parent
-HISTORY_PATH = ROOT / "logs" / "history.json"
+ROOT             = Path(__file__).parent
+HISTORY_PATH     = ROOT / "logs" / "history.json"
 OPPORTUNITIES_PATH = ROOT / "OPPORTUNITIES.md"
 PERFORMANCE_PATH = ROOT / "logs" / "performance.md"
 
-# ── Design Tokens ─────────────────────────────────────────────────────────────
+# ── Sector map (mirrors src/fetchers/marketData.ts) ───────────────────────────
 
-BG       = "#0d1117"
-CARD     = "#161b22"
-BORDER   = "#30363d"
-GREEN    = "#3fb950"
-RED      = "#f85149"
-GOLD     = "#e3b341"
-BLUE     = "#58a6ff"
-WHITE    = "#c9d1d9"
-MUTED    = "#8b949e"
+SECTOR_MAP: dict[str, str] = {
+    # Semiconductors
+    "NVDA": "SMH",  "AMD": "SMH",  "ARM": "SMH",  "SMCI": "SMH",
+    # Cybersecurity
+    "PANW": "HACK", "CRWD": "HACK", "ZS": "HACK", "OKTA": "HACK", "FTNT": "HACK",
+    # Fintech / Crypto
+    "SQ": "ARKF",   "AFRM": "ARKF", "HOOD": "ARKF",
+    "COIN": "BITO",
+    # Consumer Discretionary
+    "TSLA": "XLY",  "LULU": "XLY",  "DECK": "XLY",  "ABNB": "XLY",
+    "UBER": "XLY",  "DASH": "XLY",  "RBLX": "XLY",  "DUOL": "XLY",
+    "ONON": "XLY",  "CELH": "XLY",  "ELF": "XLY",   "TOST": "XLY",
+    "AMZN": "XLY",
+    # Cloud / Data
+    "NET": "SKYY",  "DDOG": "SKYY", "SNOW": "SKYY", "MDB": "SKYY",
+    "ESTC": "SKYY", "CFLT": "SKYY", "IOT": "SKYY",
+    # Tech / Software
+    "AAPL": "XLK",  "MSFT": "XLK",  "ADSK": "XLK",  "WDAY": "XLK",
+    "TEAM": "XLK",  "HUBS": "XLK",  "GDDY": "XLK",  "BILL": "XLK",
+    "MNDY": "XLK",  "SHOP": "XLK",  "TTD": "XLK",   "MELI": "XLK",
+    "APP": "XLK",   "FICO": "XLK",  "TW": "XLK",    "AXON": "XLK",
+    "PLTR": "XLK",  "MSTR": "XLK",  "META": "XLK",  "GOOGL": "XLK",
+}
+
+SECTOR_LABELS: dict[str, str] = {
+    "SMH":  "Semiconductors",
+    "HACK": "Cybersecurity",
+    "ARKF": "Fintech",
+    "BITO": "Crypto",
+    "XLY":  "Consumer Disc.",
+    "SKYY": "Cloud / Data",
+    "XLK":  "Tech / Software",
+    "SPY":  "Other",
+}
+
+# ── Color Palette (crypto / trading green) ────────────────────────────────────
+
+DARK_BG  = "#0a0a0a"
+CARD_BG  = "#111111"
+BORDER   = "#1e3a1e"
+PRIMARY  = "#00ff00"
+DIM_GRN  = "#00cc44"
+RED      = "#ff4444"
+GOLD     = "#ffcc00"
+WHITE    = "#e0e0e0"
+MUTED    = "#555555"
+
+# Sector slice colours (pie chart)
+SECTOR_COLORS: dict[str, str] = {
+    "SMH":  "#00ff00",
+    "XLK":  "#00cc44",
+    "XLY":  "#00aaff",
+    "SKYY": "#0066cc",
+    "HACK": "#cc44ff",
+    "ARKF": "#ff8800",
+    "BITO": "#ffcc00",
+    "SPY":  "#555555",
+}
 
 _PLOTLY_BASE = dict(
-    paper_bgcolor=CARD,
-    plot_bgcolor=CARD,
+    paper_bgcolor=CARD_BG,
+    plot_bgcolor=CARD_BG,
     font=dict(color=WHITE, family="monospace"),
-    margin=dict(l=20, r=20, t=44, b=20),
+    margin=dict(l=16, r=16, t=44, b=16),
 )
 
 # ── Page Config ───────────────────────────────────────────────────────────────
@@ -45,148 +95,176 @@ st.set_page_config(
     page_title="WallStreet Dashboard",
     page_icon="📈",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # ── Global CSS ────────────────────────────────────────────────────────────────
 
 st.markdown(f"""
 <style>
-  /* ── App background ── */
-  .stApp {{ background-color: {BG}; color: {WHITE}; }}
-  .block-container {{ padding-top: 1.4rem; padding-bottom: 1rem; max-width: 100%; }}
-
-  /* ── Hide Streamlit chrome ── */
+  /* App shell */
+  .stApp {{ background-color: {DARK_BG}; color: {WHITE}; }}
+  .block-container {{ padding-top: 1.2rem; padding-bottom: 1rem; max-width: 100%; }}
+  section[data-testid="stSidebar"] {{ background: {CARD_BG}; border-right: 1px solid {BORDER}; }}
   #MainMenu, footer {{ visibility: hidden; }}
 
-  /* ── Metric cards ── */
+  /* Metric cards */
   div[data-testid="metric-container"] {{
-    background: {CARD};
+    background: {CARD_BG};
     border: 1px solid {BORDER};
     border-radius: 8px;
-    padding: 14px 18px;
+    padding: 16px 20px;
   }}
   div[data-testid="metric-container"] label {{
     color: {MUTED} !important;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     font-family: monospace;
   }}
   div[data-testid="stMetricValue"] {{
-    font-size: 1.65rem !important;
+    font-size: 2rem !important;
     font-weight: 700 !important;
     font-family: monospace !important;
-    color: {WHITE} !important;
+    color: {PRIMARY} !important;
   }}
   div[data-testid="stMetricDelta"] > div {{
     font-family: monospace !important;
-    font-size: 0.75rem !important;
-    color: {MUTED} !important;
+    font-size: 0.72rem !important;
   }}
 
-  /* ── Section headings ── */
+  /* Section headings */
   h2, h3 {{
     color: {WHITE} !important;
     font-family: monospace !important;
     border-bottom: 1px solid {BORDER};
     padding-bottom: 6px;
-    margin-top: 1.2rem !important;
+    margin-top: 1.5rem !important;
   }}
 
-  /* ── Info bar ── */
-  .info-bar {{
-    background: {CARD};
-    border: 1px solid {BORDER};
-    border-radius: 8px;
-    padding: 10px 16px;
+  /* Sidebar status pill */
+  .status-pill {{
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
     font-family: monospace;
-    font-size: 0.82rem;
-    color: {MUTED};
-    line-height: 1.8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
   }}
-  .info-bar .val {{ color: {WHITE}; font-weight: 600; }}
+  .status-active  {{ background: rgba(0,255,0,0.12);  color: {PRIMARY}; border: 1px solid {PRIMARY}; }}
+  .status-idle    {{ background: rgba(255,204,0,0.12); color: {GOLD};    border: 1px solid {GOLD}; }}
+  .status-offline {{ background: rgba(255,68,68,0.12); color: {RED};     border: 1px solid {RED}; }}
 
-  /* ── Watchlist table ── */
-  .watchlist-wrap {{
-    background: {CARD};
+  /* Sidebar info rows */
+  .sb-row {{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-family: monospace;
+    font-size: 0.8rem;
+    border-bottom: 1px solid {BORDER};
+  }}
+  .sb-label {{ color: {MUTED}; }}
+  .sb-value {{ color: {WHITE}; font-weight: 600; }}
+
+  /* Action badge */
+  .badge {{
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: monospace;
+    white-space: nowrap;
+  }}
+  .b-green {{ background: rgba(0,255,0,0.12);   color: {PRIMARY}; border: 1px solid {PRIMARY}; }}
+  .b-gold  {{ background: rgba(255,204,0,0.12);  color: {GOLD};    border: 1px solid {GOLD};   }}
+  .b-red   {{ background: rgba(255,68,68,0.12);  color: {RED};     border: 1px solid {RED};    }}
+  .b-muted {{ background: rgba(85,85,85,0.15);   color: {MUTED};   border: 1px solid {MUTED};  }}
+
+  /* Signals table */
+  .sig-table-wrap {{
+    background: {CARD_BG};
     border: 1px solid {BORDER};
     border-radius: 8px;
-    overflow: hidden;
+    overflow-x: auto;
   }}
-  .watchlist-wrap table {{
+  .sig-table-wrap table {{
     width: 100%;
     border-collapse: collapse;
     font-family: monospace;
     font-size: 13px;
   }}
-  .watchlist-wrap thead tr {{
-    background: {BG};
+  .sig-table-wrap thead tr {{
+    background: {DARK_BG};
     border-bottom: 1px solid {BORDER};
   }}
-  .watchlist-wrap thead th {{
+  .sig-table-wrap thead th {{
     padding: 10px 14px;
     text-align: left;
     color: {MUTED};
-    font-weight: 600;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
   }}
-  .watchlist-wrap tbody tr {{
+  .sig-table-wrap tbody tr {{
     border-bottom: 1px solid {BORDER};
-    transition: background 0.15s;
+    transition: background 0.12s;
   }}
-  .watchlist-wrap tbody tr:last-child {{ border-bottom: none; }}
-  .watchlist-wrap tbody tr:hover {{ background: rgba(88,166,255,0.05); }}
-  .watchlist-wrap tbody td {{ padding: 9px 14px; color: {WHITE}; vertical-align: middle; }}
-  .badge {{
-    display: inline-block;
-    padding: 2px 9px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    font-family: monospace;
-    letter-spacing: 0.03em;
-  }}
-  .b-gold  {{ background:rgba(227,179,65,0.15); color:{GOLD};  border:1px solid {GOLD};  }}
-  .b-green {{ background:rgba(63,185,80,0.15);  color:{GREEN}; border:1px solid {GREEN}; }}
-  .b-blue  {{ background:rgba(88,166,255,0.15); color:{BLUE};  border:1px solid {BLUE};  }}
-  .b-red   {{ background:rgba(248,81,73,0.15);  color:{RED};   border:1px solid {RED};   }}
-  .b-muted {{ background:rgba(139,148,158,0.15);color:{MUTED}; border:1px solid {BORDER};}}
+  .sig-table-wrap tbody tr:last-child {{ border-bottom: none; }}
+  .sig-table-wrap tbody tr:hover {{ background: rgba(0,255,0,0.03); }}
+  .sig-table-wrap tbody td {{ padding: 9px 14px; color: {WHITE}; vertical-align: middle; }}
+  .sig-table-wrap tbody td.ticker {{ color: {PRIMARY}; font-weight: 700; }}
+  .sig-table-wrap tbody td.score-pos {{ color: {PRIMARY}; font-weight: 700; }}
+  .sig-table-wrap tbody td.score-neg {{ color: {RED}; font-weight: 700; }}
+  .sig-table-wrap tbody td.muted {{ color: {MUTED}; }}
 
-  /* ── No-data card ── */
+  /* Empty state */
   .empty-card {{
-    background: {CARD};
+    background: {CARD_BG};
     border: 1px solid {BORDER};
     border-radius: 8px;
-    padding: 24px;
+    padding: 32px;
     text-align: center;
     font-family: monospace;
     color: {MUTED};
-    font-size: 0.9rem;
   }}
 
-  /* ── Footer ── */
+  /* Footer */
   .dash-footer {{
     text-align: center;
     color: {MUTED};
     font-family: monospace;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     padding: 28px 0 8px;
     border-top: 1px solid {BORDER};
     margin-top: 2rem;
   }}
+
+  /* Streamlit input elements */
+  .stTextInput input {{
+    background: {CARD_BG} !important;
+    border: 1px solid {BORDER} !important;
+    color: {WHITE} !important;
+    font-family: monospace !important;
+  }}
+  .stTextInput input:focus {{
+    border-color: {PRIMARY} !important;
+    box-shadow: 0 0 0 1px {PRIMARY}44 !important;
+  }}
 </style>
 """, unsafe_allow_html=True)
 
-# ── Data Loaders (cached 5 min) ───────────────────────────────────────────────
+# ── Data Loaders ──────────────────────────────────────────────────────────────
 
 @st.cache_data(ttl=300)
 def load_history() -> pd.DataFrame:
     if not HISTORY_PATH.exists():
         return pd.DataFrame()
-    with open(HISTORY_PATH, "r") as f:
+    with open(HISTORY_PATH) as f:
         data = json.load(f)
     if not data:
         return pd.DataFrame()
@@ -204,7 +282,7 @@ def parse_opportunities() -> dict:
     text = OPPORTUNITIES_PATH.read_text(encoding="utf-8")
     out: dict = {}
 
-    # Scan metadata line
+    # Metadata header
     m = re.search(
         r"\*\*Scan Date:\*\*\s*(\S+)"
         r".*?\*\*Time:\*\*\s*(.+?)\s*\|"
@@ -221,29 +299,25 @@ def parse_opportunities() -> dict:
         out["tickers_scanned"] = int(m.group(5))
 
     # Market context
-    for label, key in [
-        ("VIX", "vix"),
-        ("Sector Health", "sector_health"),
-        ("General Sentiment", "sentiment"),
-    ]:
+    for label, key in [("VIX", "vix"), ("Sector Health", "sector_health"), ("General Sentiment", "sentiment")]:
         cm = re.search(rf"\|\s*{re.escape(label)}\s*\|\s*(.+?)\s*\|", text)
         if cm:
             out[key] = cm.group(1).strip()
 
-    # Scan summary numbers
+    # Summary numbers
     for label, key in [
-        (r"Total scanned",        "total_scanned"),
-        (r"Passed filters",       "passed_filters"),
-        (r"Golden Trades[^:]*",   "golden_trades"),
-        (r"Explosive signals",    "explosive_signals"),
-        (r"High-confidence buys", "high_confidence"),
+        (r"Total scanned",       "total_scanned"),
+        (r"Passed filters",      "passed_filters"),
+        (r"Golden Trades[^:]*",  "golden_trades"),
+        (r"Explosive signals",   "explosive_signals"),
+        (r"High-confidence buys","high_confidence"),
     ]:
         sm = re.search(rf"\*\*{label}:\*\*\s*(\d+)", text)
         if sm:
             out[key] = int(sm.group(1))
 
     # Opportunity table rows
-    rows = []
+    rows: list[dict] = []
     in_table = False
     for line in text.splitlines():
         line = line.strip()
@@ -262,16 +336,16 @@ def parse_opportunities() -> dict:
             continue
         score_raw = re.sub(r"[^\d\-]", "", cells[3])
         rows.append({
-            "ticker":            cells[0],
-            "sector_etf":        cells[1],
-            "action":            re.sub(r"\*+", "", cells[2]).strip(),
-            "score":             int(score_raw) if score_raw else 0,
-            "certainty":         cells[4],
-            "earnings_surprise": cells[5],
-            "rs_1d":             cells[6],
-            "stop_loss":         cells[9],
+            "Ticker":            cells[0],
+            "Action":            re.sub(r"\*+", "", cells[2]).strip(),
+            "Score":             int(score_raw) if score_raw else 0,
+            "Sector ETF":        cells[1],
+            "Certainty":         cells[4],
+            "EPS Surprise":      cells[5],
+            "RS (1d)":           cells[6],
+            "Stop-Loss":         cells[9],
         })
-    out["opportunities"] = rows
+    out["rows"] = rows
     return out
 
 
@@ -281,18 +355,13 @@ def parse_performance() -> dict:
         return {}
     text = PERFORMANCE_PATH.read_text(encoding="utf-8")
     out: dict = {}
-
     m = re.search(r"\*\*Report Date:\*\*\s*(\S+).*?\*\*Data Points:\*\*\s*(\d+)", text)
     if m:
         out["report_date"] = m.group(1)
         out["data_points"] = int(m.group(2))
-
     for label, key in [
-        ("Win Rate",                     "win_rate"),
-        ("Average Return",               "avg_return"),
-        ("Avg Return per Explosive Pick", "explosive_avg"),
-        ("Avg Return per Buy Pick",       "buy_avg"),
-        ("Sell Accuracy.*?",              "sell_accuracy"),
+        ("Win Rate",      "win_rate"),
+        ("Average Return","avg_return"),
     ]:
         pm = re.search(rf"\|\s*{label}\s*\|\s*(.+?)\s*\|", text)
         if pm:
@@ -306,33 +375,40 @@ def _pct_float(raw: str) -> float | None:
     return float(m.group(1)) if m else None
 
 
+def _bot_status(df: pd.DataFrame, opp: dict) -> tuple[str, str]:
+    """Return (label, css_class) based on last scan age."""
+    if df.empty and not opp:
+        return "OFFLINE", "status-offline"
+    last_dt: datetime | None = None
+    if not df.empty:
+        last_dt = df["date"].max().to_pydatetime().replace(tzinfo=timezone.utc)
+    if opp.get("scan_date"):
+        try:
+            parsed = datetime.strptime(opp["scan_date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            last_dt = max(last_dt, parsed) if last_dt else parsed
+        except ValueError:
+            pass
+    if last_dt is None:
+        return "OFFLINE", "status-offline"
+    age_hours = (datetime.now(timezone.utc) - last_dt).total_seconds() / 3600
+    if age_hours < 25:
+        return "ACTIVE", "status-active"
+    if age_hours < 168:
+        return "IDLE", "status-idle"
+    return "OFFLINE", "status-offline"
+
+
 def _action_badge(action: str) -> str:
     a = action.upper()
-    if "GOLDEN" in a:
-        return f"<span class='badge b-gold'>🏆 {action}</span>"
-    if "EXPLOSIVE" in a:
-        return f"<span class='badge b-gold'>🔥 {action}</span>"
+    if "GOLDEN" in a or "EXPLOSIVE" in a:
+        return f"<span class='badge b-gold'>{'🏆' if 'GOLDEN' in a else '🔥'} {action}</span>"
     if "BUY" in a:
         return f"<span class='badge b-green'>▲ {action}</span>"
     if "WATCH" in a:
-        return f"<span class='badge b-blue'>👁 {action}</span>"
+        return f"<span class='badge b-muted'>👁 {action}</span>"
     if "SELL" in a:
         return f"<span class='badge b-red'>▼ {action}</span>"
     return f"<span class='badge b-muted'>{action}</span>"
-
-
-def _score_cell(score: int) -> str:
-    if score >= 80:
-        color = GOLD
-    elif score >= 60:
-        color = GREEN
-    elif score >= 30:
-        color = BLUE
-    elif score > 0:
-        color = MUTED
-    else:
-        color = RED
-    return f"<span style='color:{color};font-weight:700;'>{score}</span>"
 
 # ── Charts ────────────────────────────────────────────────────────────────────
 
@@ -340,197 +416,215 @@ def _score_bar(df: pd.DataFrame) -> go.Figure:
     latest = df[df["date"] == df["date"].max()].copy()
     latest = latest.sort_values("score", ascending=True)
 
-    bar_colors = []
-    for s in latest["score"]:
-        if s >= 80:   bar_colors.append(GOLD)
-        elif s >= 60: bar_colors.append(GREEN)
-        elif s >= 30: bar_colors.append(BLUE)
-        elif s > 0:   bar_colors.append(MUTED)
-        else:         bar_colors.append(RED)
+    colors = [
+        GOLD if s >= 80 else DIM_GRN if s >= 50 else PRIMARY if s > 0 else RED
+        for s in latest["score"]
+    ]
 
     fig = go.Figure(go.Bar(
         x=latest["score"],
         y=latest["ticker"],
         orientation="h",
-        marker=dict(color=bar_colors, line=dict(color=BORDER, width=0.5)),
+        marker=dict(color=colors, line=dict(color=DARK_BG, width=0.5)),
         text=[f"{s:+d}" for s in latest["score"]],
         textposition="outside",
         textfont=dict(color=WHITE, size=10, family="monospace"),
-        hovertemplate="<b>%{y}</b><br>Score: %{x:+d}<br>Action: %{customdata}<extra></extra>",
+        hovertemplate="<b>%{y}</b><br>AI Score: %{x:+d}<br>Action: %{customdata}<extra></extra>",
         customdata=latest["action"],
     ))
 
     x_min = min(int(latest["score"].min()) - 15, -25)
-    x_max = int(latest["score"].max()) + 20
+    x_max = int(latest["score"].max()) + 25
 
     fig.update_layout(
         **_PLOTLY_BASE,
         title=dict(
-            text=f"Signal Scores — {latest['date'].iloc[0].strftime('%Y-%m-%d')}",
+            text=f"AI Score per Ticker — {latest['date'].iloc[0].strftime('%Y-%m-%d')}",
             font=dict(color=WHITE, size=13),
         ),
-        height=max(380, len(latest) * 23),
+        height=max(400, len(latest) * 22),
         xaxis=dict(
-            gridcolor=BORDER, linecolor=BORDER, zerolinecolor=BORDER,
-            range=[x_min, x_max], title=None,
+            gridcolor=BORDER, linecolor=BORDER, zerolinecolor=MUTED,
+            range=[x_min, x_max], title=None, tickfont=dict(family="monospace"),
         ),
         yaxis=dict(
-            gridcolor=BORDER, linecolor=BORDER, zerolinecolor=BORDER,
-            title=None, tickfont=dict(family="monospace", size=11),
+            gridcolor=BORDER, linecolor=BORDER,
+            title=None, tickfont=dict(family="monospace", size=11, color=PRIMARY),
         ),
         showlegend=False,
         bargap=0.28,
     )
-    fig.add_vline(x=0,  line_color=MUTED,  line_width=1, line_dash="dot")
-    fig.add_vline(x=75, line_color=GREEN,  line_width=1, line_dash="dash",
-                  annotation_text="Buy threshold (75)",
-                  annotation_font_color=GREEN,
+    fig.add_vline(x=0,  line_color=MUTED,   line_width=1, line_dash="dot")
+    fig.add_vline(x=75, line_color=DIM_GRN, line_width=1, line_dash="dash",
+                  annotation_text="Buy threshold",
+                  annotation_font_color=DIM_GRN,
                   annotation_position="top right")
     return fig
 
 
-def _accuracy_line(df: pd.DataFrame) -> go.Figure:
-    buy_set = {"BUY", "EXPLOSIVE BUY", "GOLDEN TRADE", "WATCH"}
-    grp = (
-        df.groupby("date")
-        .agg(
-            avg_score=("score", "mean"),
-            total=("score", "count"),
-            bullish=("action", lambda x: sum(a in buy_set for a in x)),
-        )
-        .reset_index()
-        .sort_values("date")
-    )
-    grp["bullish_pct"] = (grp["bullish"] / grp["total"] * 100).round(1)
+def _sector_pie(df: pd.DataFrame) -> go.Figure:
+    if df.empty:
+        return go.Figure()
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=grp["date"], y=grp["avg_score"],
-        name="Avg Score",
-        mode="lines+markers",
-        line=dict(color=BLUE, width=2),
-        marker=dict(size=7, color=BLUE, line=dict(color=BG, width=1.5)),
-        yaxis="y1",
-        hovertemplate="<b>%{x|%Y-%m-%d}</b><br>Avg Score: %{y:.1f}<extra></extra>",
-    ))
-    fig.add_trace(go.Scatter(
-        x=grp["date"], y=grp["bullish_pct"],
-        name="Bullish %",
-        mode="lines+markers",
-        line=dict(color=GREEN, width=2, dash="dot"),
-        marker=dict(size=7, color=GREEN, line=dict(color=BG, width=1.5)),
-        yaxis="y2",
-        hovertemplate="<b>%{x|%Y-%m-%d}</b><br>Bullish signals: %{y:.1f}%<extra></extra>",
-    ))
-
-    fig.update_layout(
-        **_PLOTLY_BASE,
-        title=dict(text="Historical Signal Accuracy", font=dict(color=WHITE, size=13)),
-        height=300,
-        xaxis=dict(gridcolor=BORDER, linecolor=BORDER, title=None),
-        yaxis=dict(
-            gridcolor=BORDER, linecolor=BORDER, zerolinecolor=BORDER,
-            title="Avg Score", title_font=dict(color=BLUE, family="monospace"),
-        ),
-        yaxis2=dict(
-            overlaying="y", side="right",
-            title="Bullish %", title_font=dict(color=GREEN, family="monospace"),
-            ticksuffix="%", range=[0, 100],
-            showgrid=False, gridcolor=BORDER, linecolor=BORDER,
-        ),
-        legend=dict(
-            bgcolor="rgba(0,0,0,0)", bordercolor=BORDER, borderwidth=1,
-            font=dict(color=WHITE, family="monospace"), x=0.01, y=0.99,
-        ),
-        hovermode="x unified",
-    )
-    return fig
-
-
-def _distribution_donut(df: pd.DataFrame) -> go.Figure:
     latest = df[df["date"] == df["date"].max()]
-    counts = latest["action"].value_counts()
+    sector_counts: dict[str, int] = {}
+    for ticker in latest["ticker"]:
+        etf = SECTOR_MAP.get(ticker.upper(), "SPY")
+        sector_counts[etf] = sector_counts.get(etf, 0) + 1
 
-    color_map = {
-        "EXPLOSIVE BUY": GOLD,
-        "GOLDEN TRADE":  "#ff9f00",
-        "BUY":           GREEN,
-        "WATCH":         BLUE,
-        "SELL":          RED,
-        "HOLD":          MUTED,
-    }
-    colors = [color_map.get(a, MUTED) for a in counts.index]
+    labels  = [SECTOR_LABELS.get(e, e) for e in sector_counts]
+    values  = list(sector_counts.values())
+    etf_ids = list(sector_counts.keys())
+    colors  = [SECTOR_COLORS.get(e, MUTED) for e in etf_ids]
 
     fig = go.Figure(go.Pie(
-        labels=counts.index,
-        values=counts.values,
-        hole=0.58,
-        marker=dict(colors=colors, line=dict(color=BG, width=2)),
+        labels=labels,
+        values=values,
+        hole=0.52,
+        marker=dict(colors=colors, line=dict(color=DARK_BG, width=2)),
         textfont=dict(family="monospace", color=WHITE, size=11),
-        hovertemplate="<b>%{label}</b><br>%{value} signals (%{percent})<extra></extra>",
+        hovertemplate="<b>%{label}</b><br>%{value} tickers (%{percent})<extra></extra>",
     ))
     fig.update_layout(
         **_PLOTLY_BASE,
-        title=dict(text="Signal Distribution", font=dict(color=WHITE, size=13)),
-        height=300,
+        title=dict(text="Sector Distribution", font=dict(color=WHITE, size=13)),
+        height=420,
         legend=dict(
             bgcolor="rgba(0,0,0,0)",
             font=dict(color=WHITE, family="monospace", size=11),
-            orientation="v", x=0.8,
+            orientation="v",
+            x=0.78,
         ),
         annotations=[dict(
-            text=f"<b>{len(latest)}</b><br><span style='font-size:10px'>signals</span>",
+            text=f"<b>{len(latest)}</b><br><span style='font-size:10px;color:{MUTED}'>tickers</span>",
             x=0.5, y=0.5,
-            font=dict(size=18, color=WHITE, family="monospace"),
+            font=dict(size=18, color=PRIMARY, family="monospace"),
             showarrow=False,
         )],
     )
     return fig
 
+# ── Signals Table ─────────────────────────────────────────────────────────────
 
-def _gauge(value: float, title: str, suffix: str,
-           rng: tuple[float, float], threshold: float,
-           good_high: bool = True) -> go.Figure:
-    lo, hi = rng
-    bar_color = GREEN if (value >= threshold) == good_high else RED
+def _signals_table(rows: list[dict], query: str) -> None:
+    """Render the filtered OPPORTUNITIES.md signals as an HTML table."""
+    if query:
+        q = query.upper()
+        rows = [r for r in rows if q in r.get("Ticker", "").upper() or q in r.get("Action", "").upper()]
 
-    fig = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
-        value=value,
-        title=dict(text=title, font=dict(color=WHITE, family="monospace", size=13)),
-        number=dict(
-            suffix=suffix, valueformat="+.2f" if suffix == "%" and lo < 0 else ".1f",
-            font=dict(color=WHITE, family="monospace", size=34),
-        ),
-        delta=dict(
-            reference=threshold, relative=False, valueformat=".2f",
-            increasing=dict(color=GREEN if good_high else RED),
-            decreasing=dict(color=RED if good_high else GREEN),
-        ),
-        gauge=dict(
-            axis=dict(
-                range=[lo, hi],
-                tickcolor=MUTED,
-                tickfont=dict(color=MUTED, family="monospace"),
-            ),
-            bar=dict(color=bar_color, thickness=0.22),
-            bgcolor=BG,
-            borderwidth=1,
-            bordercolor=BORDER,
-            steps=[
-                dict(range=[lo, threshold], color="rgba(248,81,73,0.08)" if good_high else "rgba(63,185,80,0.08)"),
-                dict(range=[threshold, hi], color="rgba(63,185,80,0.08)" if good_high else "rgba(248,81,73,0.08)"),
-            ],
-            threshold=dict(line=dict(color=GOLD, width=3), thickness=0.75, value=threshold),
-        ),
-    ))
-    fig.update_layout(
-        paper_bgcolor=CARD,
-        font=dict(color=WHITE),
-        height=240,
-        margin=dict(l=28, r=28, t=52, b=10),
+    if not rows:
+        st.markdown(
+            f"<div class='empty-card'>"
+            f"{'No results match your search.' if query else 'No filtered opportunities in the current scan.'}<br>"
+            f"<span style='font-size:0.8rem;color:{MUTED};'>Run "
+            f"<code>npm run scan -- --mode=full</code> to generate signals.</span>"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+        return
+
+    cols = ["Ticker", "Action", "Score", "Sector ETF", "Certainty", "EPS Surprise", "RS (1d)", "Stop-Loss"]
+
+    header_html = "".join(f"<th>{c}</th>" for c in cols)
+    rows_html = ""
+    for r in rows:
+        score = int(r.get("Score", 0))
+        score_cls = "score-pos" if score > 0 else "score-neg"
+        rows_html += (
+            f"<tr>"
+            f"<td class='ticker'>{r.get('Ticker','')}</td>"
+            f"<td>{_action_badge(r.get('Action',''))}</td>"
+            f"<td class='{score_cls}'>{score:+d}</td>"
+            f"<td class='muted'>{r.get('Sector ETF','—')}</td>"
+            f"<td class='muted'>{r.get('Certainty','—')}</td>"
+            f"<td class='muted'>{r.get('EPS Surprise','—')}</td>"
+            f"<td class='muted'>{r.get('RS (1d)','—')}</td>"
+            f"<td class='muted'>{r.get('Stop-Loss','—')}</td>"
+            f"</tr>"
+        )
+    st.markdown(
+        f"<div class='sig-table-wrap'>"
+        f"<table><thead><tr>{header_html}</tr></thead>"
+        f"<tbody>{rows_html}</tbody></table></div>",
+        unsafe_allow_html=True,
     )
-    return fig
+
+# ── Sidebar ───────────────────────────────────────────────────────────────────
+
+def _render_sidebar(df: pd.DataFrame, opp: dict) -> None:
+    with st.sidebar:
+        st.markdown(
+            f"<div style='font-family:monospace;font-size:1.1rem;"
+            f"font-weight:700;color:{PRIMARY};padding-bottom:12px;"
+            f"border-bottom:1px solid {BORDER};margin-bottom:12px;'>"
+            f"📈 WallStreet Bot</div>",
+            unsafe_allow_html=True,
+        )
+
+        status_label, status_cls = _bot_status(df, opp)
+        st.markdown(
+            f"<div style='margin-bottom:14px;'>"
+            f"<span style='color:{MUTED};font-family:monospace;font-size:0.7rem;"
+            f"text-transform:uppercase;letter-spacing:0.08em;'>Bot Status</span><br>"
+            f"<span class='status-pill {status_cls}'>{status_label}</span>"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+
+        # Info rows
+        last_scan = f"{opp.get('scan_date','—')} {opp.get('scan_time','')}" if opp else "—"
+        session   = opp.get("session", "—")
+        mode      = opp.get("mode", "—")
+        vix_raw   = opp.get("vix", "—")
+        vix_col   = RED if any(w in vix_raw.upper() for w in ("HIGH", "ELEV", "FEAR")) else PRIMARY
+
+        info_rows = [
+            ("Last Scan",  last_scan.strip()),
+            ("Session",    session),
+            ("Mode",       mode),
+        ]
+        html = ""
+        for label, val in info_rows:
+            html += (
+                f"<div class='sb-row'>"
+                f"<span class='sb-label'>{label}</span>"
+                f"<span class='sb-value'>{val}</span>"
+                f"</div>"
+            )
+        html += (
+            f"<div class='sb-row'>"
+            f"<span class='sb-label'>VIX</span>"
+            f"<span style='color:{vix_col};font-weight:600;font-family:monospace;font-size:0.8rem;'>{vix_raw}</span>"
+            f"</div>"
+        )
+        if not df.empty:
+            total_tickers = df["ticker"].nunique()
+            html += (
+                f"<div class='sb-row'>"
+                f"<span class='sb-label'>Unique Tickers</span>"
+                f"<span class='sb-value'>{total_tickers}</span>"
+                f"</div>"
+            )
+        st.markdown(html, unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("⟳  Refresh Data", use_container_width=True):
+            st.cache_data.clear()
+            st.rerun()
+
+        # Sentiment / sector health
+        if opp.get("sector_health") or opp.get("sentiment"):
+            st.markdown(
+                f"<div style='margin-top:16px;padding:10px;background:{DARK_BG};"
+                f"border:1px solid {BORDER};border-radius:6px;"
+                f"font-family:monospace;font-size:0.78rem;'>"
+                f"<div style='color:{MUTED};font-size:0.68rem;text-transform:uppercase;"
+                f"letter-spacing:0.08em;margin-bottom:6px;'>Market Context</div>"
+                f"<div style='color:{WHITE};margin-bottom:4px;'>{opp.get('sector_health','—')}</div>"
+                f"<div style='color:{MUTED};font-size:0.75rem;'>{opp.get('sentiment','—')}</div>"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
 
 # ── Main Layout ───────────────────────────────────────────────────────────────
 
@@ -539,140 +633,96 @@ def main() -> None:
     opp  = parse_opportunities()
     perf = parse_performance()
 
+    _render_sidebar(df, opp)
+
     # ── Header ────────────────────────────────────────────────────────────────
-    hcol, rcol = st.columns([5, 1])
-    with hcol:
-        st.markdown(
-            f"<h1 style='font-family:monospace;font-size:1.55rem;"
-            f"color:{WHITE};margin:0;padding:0;line-height:1.3;'>"
-            f"📈 WallStreet To-Do "
-            f"<span style='color:{MUTED};font-size:0.95rem;font-weight:400;'>"
-            f"/ Performance Dashboard</span></h1>",
-            unsafe_allow_html=True,
-        )
-    with rcol:
-        if st.button("⟳  Refresh", use_container_width=True):
-            st.cache_data.clear()
-            st.rerun()
+    st.markdown(
+        f"<h1 style='font-family:monospace;font-size:1.5rem;color:{PRIMARY};"
+        f"margin:0 0 4px 0;padding:0;line-height:1.3;'>"
+        f"WallStreet Trading Dashboard"
+        f"<span style='color:{MUTED};font-size:0.85rem;font-weight:400;'> / Live</span>"
+        f"</h1>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"<div style='font-family:monospace;font-size:0.78rem;color:{MUTED};"
+        f"margin-bottom:1.2rem;'>AI-powered signal scanner · data from logs/history.json</div>",
+        unsafe_allow_html=True,
+    )
 
-    # Info bar
-    if opp:
-        vix_raw = opp.get("vix", "—")
-        vix_color = RED if "HIGH" in vix_raw.upper() or "ELEVATED" in vix_raw.upper() else GREEN
-        st.markdown(
-            f"<div class='info-bar'>"
-            f"🕐 Last scan: <span class='val'>{opp.get('scan_date','—')} "
-            f"{opp.get('scan_time','—')}</span>"
-            f"&nbsp;·&nbsp; Session: <span class='val'>{opp.get('session','—')}</span>"
-            f"&nbsp;·&nbsp; Mode: <span class='val'>{opp.get('mode','—')}</span>"
-            f"&nbsp;·&nbsp; VIX: <span style='color:{vix_color};font-weight:600;'>{vix_raw}</span>"
-            f"&nbsp;·&nbsp; Sector: <span class='val'>{opp.get('sector_health','—')}</span>"
-            f"&nbsp;·&nbsp; Sentiment: <span class='val'>{opp.get('sentiment','—')}</span>"
-            f"</div>",
-            unsafe_allow_html=True,
+    # ── Metrics Row ───────────────────────────────────────────────────────────
+    perf_pts     = perf.get("data_points", 0)
+    win_rate_f   = _pct_float(perf.get("win_rate", "0")) or 0.0
+    avg_ret_f    = _pct_float(perf.get("avg_return", "0"))
+    avg_ret_sign = "+" if (avg_ret_f or 0) > 0 else ""
+    avg_ret_str  = f"{avg_ret_sign}{avg_ret_f:.2f}%" if avg_ret_f is not None else "N/A"
+
+    # Total Opportunities = cumulative non-SELL signals in history
+    opp_actions = {"BUY", "EXPLOSIVE BUY", "GOLDEN TRADE", "WATCH"}
+    total_opps  = int((df["action"].isin(opp_actions)).sum()) if not df.empty else 0
+    latest_opps = opp.get("passed_filters", 0)
+
+    m1, m2, m3 = st.columns(3)
+    with m1:
+        st.metric(
+            label="Win Rate %",
+            value=f"{win_rate_f:.1f}%",
+            delta=f"{perf_pts} backtested trades" if perf_pts else "Run backtest to populate",
+        )
+    with m2:
+        st.metric(
+            label="Average Profit",
+            value=avg_ret_str,
+            delta="avg return per signal" if avg_ret_f is not None else None,
+        )
+    with m3:
+        st.metric(
+            label="Total Opportunities Found",
+            value=f"{total_opps:,}",
+            delta=f"{latest_opps} in latest scan",
         )
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── KPI Metrics ───────────────────────────────────────────────────────────
-    win_rate_raw  = perf.get("win_rate", "0.0%")
-    avg_ret_raw   = perf.get("avg_return", "N/A")
-    win_rate_f    = _pct_float(win_rate_raw) or 0.0
-    avg_ret_f     = _pct_float(avg_ret_raw)
+    # ── Active Signals Table ──────────────────────────────────────────────────
+    st.markdown("### 📡 Active Signals")
 
-    total_signals = len(df) if not df.empty else 0
-    latest_date   = df["date"].max().strftime("%Y-%m-%d") if not df.empty else "—"
-    explosive_n   = opp.get("explosive_signals", 0)
-    golden_n      = opp.get("golden_trades", 0)
-    data_pts      = perf.get("data_points", 0)
+    rows = opp.get("rows", [])
 
-    k1, k2, k3, k4, k5 = st.columns(5)
-    with k1:
-        st.metric("Win Rate",          f"{win_rate_f:.1f}%",   "backtest accuracy")
-    with k2:
-        prefix = "+" if (avg_ret_f or 0) > 0 else ""
-        val    = f"{prefix}{avg_ret_f:.2f}%" if avg_ret_f is not None else "N/A"
-        st.metric("Avg Backtest Return", val,                   f"{data_pts} data pts")
-    with k3:
-        st.metric("Total Signals",     f"{total_signals:,}",   "all scans")
-    with k4:
-        st.metric("Explosive / Golden", f"{explosive_n} / {golden_n}", "latest scan")
-    with k5:
-        st.metric("Last Scan Date",    latest_date,            opp.get("session", ""))
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # ── Gauges ────────────────────────────────────────────────────────────────
-    g1, g2 = st.columns(2)
-    with g1:
-        st.plotly_chart(
-            _gauge(win_rate_f, "Win Rate %", "%", (0.0, 100.0), 50.0, good_high=True),
-            use_container_width=True,
-        )
-    with g2:
-        pl = avg_ret_f or 0.0
-        span = max(abs(pl) * 2.5, 20.0)
-        st.plotly_chart(
-            _gauge(pl, "Avg Return %", "%", (-span, span), 0.0, good_high=True),
-            use_container_width=True,
-        )
-
-    # ── Active Watchlist ──────────────────────────────────────────────────────
-    st.markdown("### 🔥 Active Watchlist")
-
-    watchlist_rows = opp.get("opportunities", [])
-
-    # Fall back to top-scored WATCH/BUY entries from history when no opp table
-    if not watchlist_rows and not df.empty:
-        buy_actions = {"EXPLOSIVE BUY", "GOLDEN TRADE", "BUY", "WATCH"}
+    # Build a fallback from history.json when OPPORTUNITIES.md has no table
+    if not rows and not df.empty:
         ld = df["date"].max()
-        fallback = (
-            df[(df["date"] == ld) & (df["action"].isin(buy_actions))]
-            .sort_values("score", ascending=False)
-            .head(10)
-        )
-        for _, r in fallback.iterrows():
-            watchlist_rows.append({
-                "ticker":            r["ticker"],
-                "action":            r["action"],
-                "score":             int(r["score"]),
-                "certainty":         "—",
-                "earnings_surprise": "—",
-                "rs_1d":             "—",
-                "stop_loss":         f"${r['price']:.2f} (entry)",
+        for _, r in df[df["date"] == ld].sort_values("score", ascending=False).iterrows():
+            rows.append({
+                "Ticker":       r["ticker"],
+                "Action":       r["action"],
+                "Score":        int(r["score"]),
+                "Sector ETF":   SECTOR_MAP.get(r["ticker"].upper(), "SPY"),
+                "Certainty":    "—",
+                "EPS Surprise": "—",
+                "RS (1d)":      "—",
+                "Stop-Loss":    f"${r['price']:.2f} (entry)",
             })
 
-    if watchlist_rows:
-        header_cols = ["Ticker", "Action", "Score", "Certainty", "Earnings Surprise", "RS (1d)", "Stop-Loss"]
-        rows_html = ""
-        for row in watchlist_rows:
-            rows_html += (
-                f"<tr>"
-                f"<td><b>{row['ticker']}</b></td>"
-                f"<td>{_action_badge(row['action'])}</td>"
-                f"<td>{_score_cell(int(row['score']))}</td>"
-                f"<td style='color:{MUTED}'>{row.get('certainty','—')}</td>"
-                f"<td style='color:{MUTED}'>{row.get('earnings_surprise','—')}</td>"
-                f"<td style='color:{MUTED}'>{row.get('rs_1d','—')}</td>"
-                f"<td style='color:{MUTED}'>{row.get('stop_loss','—')}</td>"
-                f"</tr>"
-            )
-        headers_html = "".join(f"<th>{h}</th>" for h in header_cols)
+    search_col, count_col = st.columns([3, 1])
+    with search_col:
+        query = st.text_input(
+            label="search_signals",
+            placeholder="🔍  Filter by ticker or action  (e.g. NVDA, EXPLOSIVE)",
+            label_visibility="collapsed",
+        )
+    with count_col:
+        matched = len([r for r in rows if not query or
+                       query.upper() in r.get("Ticker","").upper() or
+                       query.upper() in r.get("Action","").upper()])
         st.markdown(
-            f"<div class='watchlist-wrap'>"
-            f"<table><thead><tr>{headers_html}</tr></thead>"
-            f"<tbody>{rows_html}</tbody></table></div>",
+            f"<div style='text-align:right;font-family:monospace;"
+            f"font-size:0.8rem;color:{MUTED};padding-top:10px;'>"
+            f"{matched} row{'s' if matched != 1 else ''}</div>",
             unsafe_allow_html=True,
         )
-    else:
-        st.markdown(
-            f"<div class='empty-card'>"
-            f"No active explosive or golden opportunities in the current scan.<br>"
-            f"<span style='color:{MUTED};font-size:0.8rem;'>"
-            f"Run <code>npm run scan -- --mode=full</code> to refresh signals.</span>"
-            f"</div>",
-            unsafe_allow_html=True,
-        )
+
+    _signals_table(rows, query)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -680,26 +730,22 @@ def main() -> None:
     st.markdown("### 📊 Charts")
 
     if not df.empty:
-        c1, c2 = st.columns([3, 2])
-        with c1:
-            st.plotly_chart(_score_bar(df),          use_container_width=True)
-        with c2:
-            st.plotly_chart(_distribution_donut(df), use_container_width=True)
-        st.plotly_chart(_accuracy_line(df),          use_container_width=True)
+        ch1, ch2 = st.columns([3, 2])
+        with ch1:
+            st.plotly_chart(_score_bar(df),   use_container_width=True)
+        with ch2:
+            st.plotly_chart(_sector_pie(df),  use_container_width=True)
     else:
         st.markdown(
-            f"<div class='empty-card'>"
-            f"No history data found.<br>"
-            f"<span style='color:{MUTED};font-size:0.8rem;'>Run <code>npm run scan</code> first.</span>"
-            f"</div>",
+            f"<div class='empty-card'>No history data — run "
+            f"<code>npm run scan</code> first.</div>",
             unsafe_allow_html=True,
         )
 
     # ── Footer ────────────────────────────────────────────────────────────────
     st.markdown(
         f"<div class='dash-footer'>"
-        f"WallStreet To-Do Dashboard &nbsp;·&nbsp; "
-        f"Data auto-refreshes every 5 min &nbsp;·&nbsp; "
+        f"WallStreet To-Do Dashboard &nbsp;·&nbsp; cache TTL 5 min &nbsp;·&nbsp;"
         f"<code>streamlit run dashboard.py</code>"
         f"</div>",
         unsafe_allow_html=True,

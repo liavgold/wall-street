@@ -29,7 +29,9 @@ interface WeekResult {
 
 // ── Paths ────────────────────────────────────────────────────────────────────
 
-const HISTORY_PATH = path.resolve(process.cwd(), "logs", "history.json");
+const HISTORY_PATH     = path.resolve(process.cwd(), "logs", "history.json");
+const PERFORMANCE_PATH = path.resolve(process.cwd(), "logs", "performance.md");
+const STREAMLIT_URL    = process.env.STREAMLIT_URL ?? "";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -48,6 +50,36 @@ function dateLabel(d: Date): string {
 
 function sign(n: number): string {
   return (n >= 0 ? "+" : "") + n.toFixed(2) + "%";
+}
+
+// ── Performance.md Reader ─────────────────────────────────────────────────────
+
+interface PerfSummary {
+  dataPoints: number;
+  winRate: string;
+  avgReturn: string;
+  reportDate: string;
+}
+
+function parsePerformanceMd(): PerfSummary | null {
+  if (!fs.existsSync(PERFORMANCE_PATH)) return null;
+  const text = fs.readFileSync(PERFORMANCE_PATH, "utf-8");
+
+  const headerMatch = text.match(/\*\*Report Date:\*\*\s*(\S+).*?\*\*Data Points:\*\*\s*(\d+)/);
+  if (!headerMatch) return null;
+
+  const dataPoints = parseInt(headerMatch[2], 10);
+  if (dataPoints === 0) return null; // nothing meaningful yet
+
+  const winRateMatch  = text.match(/\|\s*Win Rate\s*\|\s*(.+?)\s*\|/);
+  const avgRetMatch   = text.match(/\|\s*Average Return\s*\|\s*(.+?)\s*\|/);
+
+  return {
+    dataPoints,
+    reportDate: headerMatch[1],
+    winRate:    winRateMatch  ? winRateMatch[1].trim()  : "N/A",
+    avgReturn:  avgRetMatch   ? avgRetMatch[1].trim()   : "N/A",
+  };
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
@@ -166,6 +198,25 @@ async function main() {
       const groupAvg = group.reduce((sum, r) => sum + r.pctChange, 0) / group.length;
       lines.push(`  • ${action}: ${group.length} signal${group.length > 1 ? "s" : ""}, avg ${sign(groupAvg)}`);
     }
+  }
+
+  // ── Backtest context (from logs/performance.md) ───────────────────────────
+
+  const perf = parsePerformanceMd();
+  if (perf) {
+    lines.push(
+      ``,
+      `*Backtest Accuracy (${perf.dataPoints} verified trades · ${perf.reportDate}):*`,
+      `  Win rate: ${perf.winRate} | Avg return: ${perf.avgReturn}`,
+    );
+  }
+
+  // ── Dashboard link ────────────────────────────────────────────────────────
+  // A text link is included here so the URL is visible inside the message body.
+  // telegram.ts also appends an inline keyboard button automatically.
+
+  if (STREAMLIT_URL) {
+    lines.push(``, `📊 [View Full Dashboard & Performance](${STREAMLIT_URL})`);
   }
 
   const message = lines.join("\n");
