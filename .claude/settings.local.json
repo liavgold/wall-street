@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm init -y)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:www.alphavantage.co)",
+      "WebFetch(domain:finnhub.io)",
+      "WebSearch",
+      "Bash(npx tsc:*)",
+      "Bash(node -e:*)",
+      "Bash(ls:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(echo:*)",
+      "Bash(npm run scan:*)",
+      "Bash(npm run backtest:*)"
+    ]
+  }
+}
