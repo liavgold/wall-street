@@ -13,7 +13,12 @@
       "Bash(npx ts-node:*)",
       "Bash(echo:*)",
       "Bash(npm run scan:*)",
-      "Bash(npm run backtest:*)"
+      "Bash(npm run backtest:*)",
+      "Bash(python:*)",
+      "Bash(where:*)",
+      "Bash(\"C:/Users/liav2/AppData/Local/Microsoft/WindowsApps/python.exe\" -c \":*)",
+      "Bash(py -3:*)",
+      "Bash(py:*)"
     ]
   }
 }

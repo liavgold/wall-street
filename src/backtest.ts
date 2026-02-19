@@ -135,6 +135,14 @@ async function main() {
   printSummary(results);
 
   logger.info("Report saved to logs/performance.md");
+
+  // Exit with code 2 if accuracy is below 20% threshold
+  const wins = results.filter((r) => r.win);
+  const winRate = results.length > 0 ? (wins.length / results.length) * 100 : 0;
+  if (results.length > 0 && winRate < 20) {
+    logger.error(`LOW ACCURACY: Win rate ${winRate.toFixed(1)}% is below the 20% threshold. Halting.`);
+    process.exit(2);
+  }
 }
 
 // ── Report Writer ───────────────────────────────────────────────────────────
