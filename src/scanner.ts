@@ -18,7 +18,7 @@ import {
 } from "./fetchers/socialData";
 import { getAISentiment, analyzeMarket, TodoAction, MarketContext } from "./analyzers/engine";
 import logger from "./utils/logger";
-import { sendSignal } from "./utils/telegram";
+import { sendSignal, sendAlert } from "./utils/telegram";
 
 // ── CLI Arguments ────────────────────────────────────────────────────────────
 
@@ -166,45 +166,6 @@ async function analyzeTickerWithRetry(symbol: string, shared: SharedData, retry:
   }
 
   return null;
-}
-
-// ── Telegram Helpers ────────────────────────────────────────────────────────
-
-function escapeMd(text: string): string {
-  return text.replace(/[_*`\[\]]/g, "\\$&");
-}
-
-function formatTelegramAlert(r: TodoAction): string {
-  const ci = r.breakdown.certaintyIndex;
-  const isExplosive = ci.label === "EXPLOSIVE";
-  const isHighConviction = ci.highConviction;
-
-  const icon = isExplosive ? "🔥" : "🚀";
-  const label = isExplosive ? "EXPLOSIVE BUY" : "HIGH CONVICTION";
-
-  const price = r.breakdown.details.atrData?.currentPrice
-    ?? r.breakdown.details.weeklyTrend?.currentPrice
-    ?? 0;
-
-  const rs = r.breakdown.details.relativeStrengthData;
-  const rsStr = rs
-    ? `${rs.tickerChange > 0 ? "+" : ""}${rs.tickerChange}% vs SPY`
-    : "N/A";
-
-  const stopLoss = r.stopLoss !== null ? `$${r.stopLoss}` : "—";
-
-  const lines = [
-    `${icon} *${label}: ${r.ticker}*`,
-    ``,
-    `💰 Price: $${price.toFixed(2)}`,
-    `📊 Score: ${r.score} | Certainty: ${ci.total}/100`,
-    `📈 RS: ${rsStr}`,
-    `🛑 Stop-Loss: ${stopLoss}`,
-    ``,
-    `💡 ${escapeMd(r.reasoning)}`,
-  ];
-
-  return lines.join("\n");
 }
 
 // ── OPPORTUNITIES.md writer ─────────────────────────────────────────────────
@@ -431,15 +392,15 @@ async function main() {
       if (result.action === "GOLDEN TRADE") {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — GOLDEN TRADE (99) Certainty ${ci.total}/100`);
         logger.info(`Sending Telegram for: ${symbol} (GOLDEN TRADE)`);
-        await sendSignal(formatTelegramAlert(result));
+        await sendAlert(result);
       } else if (result.action === "EXPLOSIVE BUY") {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — EXPLOSIVE BUY (95) Certainty ${ci.total}/100 🔥`);
         logger.info(`Sending Telegram for: ${symbol} (EXPLOSIVE BUY)`);
-        await sendSignal(formatTelegramAlert(result));
+        await sendAlert(result);
       } else if (ci.highConviction) {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — ${result.action} (${result.score}) Certainty ${ci.total}/100 🚀`);
         logger.info(`Sending Telegram for: ${symbol} (HIGH CONVICTION)`);
-        await sendSignal(formatTelegramAlert(result));
+        await sendAlert(result);
       } else if (ci.label === "POTENTIAL") {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — ${result.action} (${result.score}) Certainty ${ci.total}/100 ⚠️`);
       } else if (result.score > 75) {

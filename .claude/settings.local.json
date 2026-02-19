@@ -18,7 +18,8 @@
       "Bash(where:*)",
       "Bash(\"C:/Users/liav2/AppData/Local/Microsoft/WindowsApps/python.exe\" -c \":*)",
       "Bash(py -3:*)",
-      "Bash(py:*)"
+      "Bash(py:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }

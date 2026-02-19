@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pandas as pd
 import plotly.graph_objects as go
+import requests
 import streamlit as st
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
@@ -20,6 +21,8 @@ ROOT             = Path(__file__).parent
 HISTORY_PATH     = ROOT / "logs" / "history.json"
 OPPORTUNITIES_PATH = ROOT / "OPPORTUNITIES.md"
 PERFORMANCE_PATH = ROOT / "logs" / "performance.md"
+SCANNER_LOG_PATH = ROOT / "logs" / "scanner.log"
+COMBINED_LOG_PATH = ROOT / "logs" / "combined.log"
 
 # ── Sector map (mirrors src/fetchers/marketData.ts) ───────────────────────────
 
@@ -549,6 +552,110 @@ def _signals_table(rows: list[dict], query: str) -> None:
         unsafe_allow_html=True,
     )
 
+# ── Live Logs ─────────────────────────────────────────────────────────────────
+
+def _active_log_path() -> Path | None:
+    """Return the first log file that exists: scanner.log → combined.log."""
+    for p in (SCANNER_LOG_PATH, COMBINED_LOG_PATH):
+        if p.exists():
+            return p
+    return None
+
+
+def _colorize_log_line(line: str) -> str:
+    """Wrap a log line in a colored <span> based on its level tag."""
+    line = line.rstrip()
+    if "[ERROR]" in line:
+        color = RED
+    elif "[WARN]" in line:
+        color = GOLD
+    elif "[INFO]" in line:
+        color = PRIMARY
+    else:
+        color = MUTED
+    escaped = line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return f"<span style='color:{color}'>{escaped}</span>"
+
+
+@st.fragment(run_every=10)
+def _render_live_logs() -> None:
+    st.markdown("### 🖥 Live Logs")
+    path = _active_log_path()
+
+    if path is None:
+        st.markdown(
+            f"<div class='empty-card'>"
+            f"No log file found — logs/scanner.log will appear here when the scanner runs."
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+        return
+
+    with open(path, encoding="utf-8", errors="replace") as f:
+        lines = f.readlines()[-20:]
+
+    mtime = datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc)
+    colored = "\n".join(_colorize_log_line(ln) for ln in lines)
+
+    st.markdown(
+        f"<div style='background:{CARD_BG};border:1px solid {BORDER};border-radius:8px;"
+        f"padding:14px 16px;font-family:monospace;font-size:0.72rem;line-height:1.65;"
+        f"overflow-x:auto;white-space:pre;'>"
+        f"{colored}"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"<div style='font-family:monospace;font-size:0.68rem;color:{MUTED};margin-top:6px;'>"
+        f"📄 {path.name} &nbsp;·&nbsp; "
+        f"last modified {mtime.strftime('%Y-%m-%d %H:%M:%S UTC')} &nbsp;·&nbsp; "
+        f"auto-refreshes every 10 s"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+
+# ── GitHub Actions Trigger ────────────────────────────────────────────────────
+
+WORKFLOW_FILE = "trading_bot.yml"
+
+
+def _trigger_workflow() -> tuple[bool, str]:
+    """
+    POST to the GitHub Actions workflow_dispatch API.
+    Returns (success, message).
+    Reads credentials from st.secrets['GH_TOKEN'] and st.secrets['GH_REPO'].
+    """
+    try:
+        token = st.secrets["GH_TOKEN"]
+        repo  = st.secrets["GH_REPO"]  # "owner/repo"
+    except KeyError:
+        return False, (
+            "GitHub secrets not configured. "
+            "Add GH_TOKEN and GH_REPO to .streamlit/secrets.toml."
+        )
+
+    url = f"https://api.github.com/repos/{repo}/actions/workflows/{WORKFLOW_FILE}/dispatches"
+    resp = requests.post(
+        url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        },
+        json={"ref": "main"},
+        timeout=10,
+    )
+
+    if resp.status_code == 204:
+        return True, "Scan initiated! Check Telegram in 2-3 minutes."
+    if resp.status_code == 401:
+        return False, "Authentication failed — check your GH_TOKEN."
+    if resp.status_code == 404:
+        return False, f"Workflow not found — verify GH_REPO '{repo}' and workflow '{WORKFLOW_FILE}'."
+    return False, f"GitHub API error {resp.status_code}: {resp.text[:200]}"
+
+
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 
 def _render_sidebar(df: pd.DataFrame, opp: dict) -> None:
@@ -611,6 +718,15 @@ def _render_sidebar(df: pd.DataFrame, opp: dict) -> None:
         if st.button("⟳  Refresh Data", use_container_width=True):
             st.cache_data.clear()
             st.rerun()
+
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+        if st.button("🚀 Start Live Market Scan", use_container_width=True, type="primary"):
+            with st.spinner("Dispatching workflow…"):
+                ok, msg = _trigger_workflow()
+            if ok:
+                st.success(msg)
+            else:
+                st.error(msg)
 
         # Sentiment / sector health
         if opp.get("sector_health") or opp.get("sentiment"):
@@ -741,6 +857,13 @@ def main() -> None:
             f"<code>npm run scan</code> first.</div>",
             unsafe_allow_html=True,
         )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # ── Live Logs ─────────────────────────────────────────────────────────────
+    _render_live_logs()
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Footer ────────────────────────────────────────────────────────────────
     st.markdown(
