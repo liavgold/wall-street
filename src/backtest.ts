@@ -52,8 +52,8 @@ async function main() {
 
   // Read history
   if (!fs.existsSync(HISTORY_PATH)) {
-    logger.error("logs/history.json not found. Run 'npm run scan' first.");
-    process.exit(1);
+    logger.warn("logs/history.json not found. Skipping backtest — run 'npm run scan' first.");
+    process.exit(0);
   }
 
   let history: HistoryEntry[];
