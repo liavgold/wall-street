@@ -13,12 +13,16 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 13 * * 1'
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
       ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
 
     steps:
       - name: Checkout repository

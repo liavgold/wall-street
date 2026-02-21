@@ -191,7 +191,10 @@ export async function fetchRecommendationTrends(
   symbol: string
 ): Promise<RecommendationTrend[]> {
   const token = process.env.FINNHUB_API_KEY;
-  if (!token) throw new Error("FINNHUB_API_KEY is not set");
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping recommendation trends");
+    return [];
+  }
 
   try {
     const { data } = await axios.get(
@@ -223,7 +226,10 @@ export async function fetchInsiderSentiment(
   to: string
 ): Promise<InsiderSentiment[]> {
   const token = process.env.FINNHUB_API_KEY;
-  if (!token) throw new Error("FINNHUB_API_KEY is not set");
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping insider sentiment");
+    return [];
+  }
 
   try {
     const { data } = await axios.get(
@@ -253,7 +259,10 @@ export async function fetchCompanyNews(
   to: string
 ): Promise<CompanyNews[]> {
   const token = process.env.FINNHUB_API_KEY;
-  if (!token) throw new Error("FINNHUB_API_KEY is not set");
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping company news");
+    return [];
+  }
 
   try {
     const { data } = await axios.get(
@@ -282,7 +291,10 @@ export async function fetchEarningsCalendar(
   to: string
 ): Promise<EarningsEvent[]> {
   const token = process.env.FINNHUB_API_KEY;
-  if (!token) throw new Error("FINNHUB_API_KEY is not set");
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping earnings calendar");
+    return [];
+  }
 
   try {
     const { data } = await axios.get(
@@ -314,7 +326,10 @@ export async function fetchSocialSentiment(
   to: string
 ): Promise<SocialSentimentData | null> {
   const token = process.env.FINNHUB_API_KEY;
-  if (!token) throw new Error("FINNHUB_API_KEY is not set");
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping social sentiment");
+    return null;
+  }
 
   try {
     const { data } = await axios.get(
@@ -378,7 +393,10 @@ export async function fetchInsiderTransactions(
   symbol: string
 ): Promise<InsiderTransaction[]> {
   const token = process.env.FINNHUB_API_KEY;
-  if (!token) throw new Error("FINNHUB_API_KEY is not set");
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping insider transactions");
+    return [];
+  }
 
   try {
     const { data } = await axios.get(
@@ -453,7 +471,10 @@ export async function fetchEarningsSurprise(
   symbol: string
 ): Promise<EarningsSurprise | null> {
   const token = process.env.FINNHUB_API_KEY;
-  if (!token) throw new Error("FINNHUB_API_KEY is not set");
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping earnings surprise");
+    return null;
+  }
 
   try {
     const { data } = await axios.get(
