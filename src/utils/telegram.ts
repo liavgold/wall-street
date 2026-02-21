@@ -29,7 +29,7 @@ function escapeMd(text: string): string {
 /** Returns a 5-dot confidence meter based on a 0–100 certainty score. */
 function confidenceMeter(certainty: number): string {
   const filled = Math.round((Math.max(0, Math.min(100, certainty)) / 100) * 5);
-  return "🟢".repeat(filled) + "⚪".repeat(5 - filled);
+  return "🟦".repeat(filled) + "⬜".repeat(5 - filled);
 }
 
 function tradingViewUrl(ticker: string): string {
@@ -71,7 +71,7 @@ function formatStandardAlert(r: TodoAction): string {
   const footer   = dashboardFooter();
 
   const lines = [
-    `🚀 *${actionLabel(r)}: ${r.ticker}*`,
+    `⭐ *Strong Setup: ${r.ticker}*`,
     ``,
     `💰 Price: $${price.toFixed(2)}`,
     `📊 Score: ${r.score}  |  Certainty: ${ci.total}/100`,
@@ -80,6 +80,9 @@ function formatStandardAlert(r: TodoAction): string {
     `📈 RS (1d): ${rsStr}`,
     `🛑 Stop-Loss: ${stopLoss}`,
     `📦 Volume: ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
+    ``,
+    `❓ *Why this?*`,
+    `_${escapeMd(r.breakdown.details.sentimentReasoning)}_`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),
@@ -121,7 +124,7 @@ function formatGoldenAlert(r: TodoAction): string {
     `📦 *Volume:* ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
     es ? `💥 *Earnings Beat:* ${es.surprisePercent > 0 ? "+" : ""}${es.surprisePercent}%` : null,
     ``,
-    `🧠 *AI Reasoning:*`,
+    `❓ *Why this?*`,
     `_${escapeMd(r.breakdown.details.sentimentReasoning)}_`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
