@@ -19,7 +19,8 @@
       "Bash(\"C:/Users/liav2/AppData/Local/Microsoft/WindowsApps/python.exe\" -c \":*)",
       "Bash(py -3:*)",
       "Bash(py:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git add:*)"
     ]
   }
 }

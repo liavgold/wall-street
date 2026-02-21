@@ -617,7 +617,7 @@ def _render_live_logs() -> None:
 
 # ── GitHub Actions Trigger ────────────────────────────────────────────────────
 
-WORKFLOW_FILE = "trading_bot.yml"
+WORKFLOW_FILE = "main_scanner.yml"
 
 
 def _trigger_workflow() -> tuple[bool, str]:
