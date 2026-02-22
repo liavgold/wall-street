@@ -2,24 +2,88 @@ name: Weekly Market Scanner
 
 on:
   schedule:
-    - cron: '45 13 * * 1'
-    - cron: '0 21 * * 5'
+    - cron: '30 20 * * 1-5'  # scan-fast  — 4:30 PM ET weekdays (post-close)
+    - cron: '30 13 * * 1,4'  # scan-full  — 9:30 AM ET Mon + Thu (market open)
+    - cron: '30 2 * * 2-6'   # scan-monitor — 10:30 PM ET Mon–Fri (overnight refresh)
+    - cron: '0 21 * * 5'     # weekly-report — 5:00 PM ET Friday
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Which job to run'
+        required: true
+        default: 'fast'
+        type: choice
+        options:
+          - fast
+          - full
+          - monitor
+          - weekly-report
 
+# ── Fast Scan (post-close daily) ─────────────────────────────────────────────
 jobs:
-  scan:
+  scan-fast:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule == '30 20 * * 1-5') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'fast')
     permissions:
       contents: write
 
     env:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-      ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-      FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+      ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+      TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID:       ${{ secrets.TELEGRAM_CHAT_ID }}
+      POLYGON_API_KEY:        ${{ secrets.POLYGON_API_KEY }}
+      ALPHA_VANTAGE_API_KEY:  ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FINNHUB_API_KEY:        ${{ secrets.FINNHUB_API_KEY }}
+      STREAMLIT_URL:          ${{ secrets.STREAMLIT_URL }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: mkdir -p logs
+      - run: npm run scan -- --mode=fast
+
+      - name: Commit updated results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add OPPORTUNITIES.md logs/ 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: fast scan results $(date -u +'%Y-%m-%d %H:%M')"
+            git pull --rebase origin main
+            git push
+          fi
+
+# ── Full Scan (bi-weekly deep scan) ──────────────────────────────────────────
+  scan-full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule == '30 13 * * 1,4') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'full')
+    permissions:
+      contents: write
+
+    env:
+      ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+      TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID:       ${{ secrets.TELEGRAM_CHAT_ID }}
+      POLYGON_API_KEY:        ${{ secrets.POLYGON_API_KEY }}
+      ALPHA_VANTAGE_API_KEY:  ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FINNHUB_API_KEY:        ${{ secrets.FINNHUB_API_KEY }}
+      STREAMLIT_URL:          ${{ secrets.STREAMLIT_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -43,18 +107,68 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: weekly scan results $(date -u +'%Y-%m-%d')"
+            git commit -m "chore: full scan results $(date -u +'%Y-%m-%d')"
             git pull --rebase origin main
             git push
           fi
 
+# ── Monitor Scan (overnight status refresh) ───────────────────────────────────
+  scan-monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule == '30 2 * * 2-6') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'monitor')
+    permissions:
+      contents: write
+
+    env:
+      ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+      TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID:       ${{ secrets.TELEGRAM_CHAT_ID }}
+      POLYGON_API_KEY:        ${{ secrets.POLYGON_API_KEY }}
+      ALPHA_VANTAGE_API_KEY:  ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FINNHUB_API_KEY:        ${{ secrets.FINNHUB_API_KEY }}
+      STREAMLIT_URL:          ${{ secrets.STREAMLIT_URL }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: mkdir -p logs
+      - run: npm run scan -- --mode=monitor
+
+      - name: Commit updated results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add OPPORTUNITIES.md logs/ 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: monitor scan results $(date -u +'%Y-%m-%d %H:%M')"
+            git pull --rebase origin main
+            git push
+          fi
+
+# ── Weekly Report (Friday summary) ───────────────────────────────────────────
   weekly-report:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule == '0 21 * * 5') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'weekly-report')
 
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
 
     steps:
       - uses: actions/checkout@v4

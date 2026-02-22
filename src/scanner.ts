@@ -26,15 +26,34 @@ const argv = yargs(hideBin(process.argv))
   .option("mode", {
     alias: "m",
     type: "string",
-    choices: ["fast", "full"] as const,
+    choices: ["fast", "full", "monitor"] as const,
     default: "full",
-    describe: "Scan mode: fast (top 10 priority) or full (all 50)",
+    describe: "Scan mode: fast (top 10), full (all 50), or monitor (tickers in OPPORTUNITIES.md)",
   })
   .strict()
   .parseSync();
 
-type ScanMode = "fast" | "full";
+type ScanMode = "fast" | "full" | "monitor";
 const scanMode: ScanMode = argv.mode as ScanMode;
+
+// ── OPPORTUNITIES.md path (shared by readMonitorTickers + writeOpportunities) ──
+
+const OPP_PATH = path.resolve(process.cwd(), "OPPORTUNITIES.md");
+
+/** Parse tickers currently listed in the OPPORTUNITIES.md table. */
+function readMonitorTickers(): string[] {
+  if (!fs.existsSync(OPP_PATH)) {
+    logger.warn("OPPORTUNITIES.md not found — monitor mode has no tickers to scan");
+    return [];
+  }
+  const content = fs.readFileSync(OPP_PATH, "utf-8");
+  const tickers: string[] = [];
+  for (const line of content.split("\n")) {
+    const match = line.match(/^\|\s*([A-Z]{1,5})\s*\|/);
+    if (match) tickers.push(match[1]);
+  }
+  return [...new Set(tickers)];
+}
 
 // ── Ticker Universe ─────────────────────────────────────────────────────────
 
@@ -50,7 +69,15 @@ const TICKERS_FAST = [
   "NVDA", "TSLA", "PLTR", "AMD", "MSFT", "AAPL", "AMZN", "META", "GOOGL", "MSTR",
 ];
 
-const TICKERS = scanMode === "fast" ? TICKERS_FAST : TICKERS_FULL;
+const TICKERS =
+  scanMode === "fast"    ? TICKERS_FAST :
+  scanMode === "monitor" ? readMonitorTickers() :
+  TICKERS_FULL;
+
+const modeTag =
+  scanMode === "fast"    ? "⚡ *FAST SCAN*" :
+  scanMode === "monitor" ? "👁 *MONITORING*" :
+  "🔍 *FULL SCAN*";
 
 // ── Session Timing ──────────────────────────────────────────────────────────
 
@@ -169,8 +196,6 @@ async function analyzeTickerWithRetry(symbol: string, shared: SharedData, retry:
 }
 
 // ── OPPORTUNITIES.md writer ─────────────────────────────────────────────────
-
-const OPP_PATH = path.resolve(process.cwd(), "OPPORTUNITIES.md");
 
 const OPP_TABLE_HEADER = [
   "| Ticker | Sector ETF | Action | Score | Certainty | Earnings Surprise | RS (1d) | Explosion Factor | Reasoning | Stop-Loss |",
@@ -347,8 +372,15 @@ async function main() {
   const isFastMode = scanMode === "fast";
 
   logger.info(`WallStreet Scanner — Mode: ${scanMode.toUpperCase()} | Session: ${session} (${scanTime} ET) | Tickers: ${TICKERS.length}`);
-  if (isFastMode) {
+  if (scanMode === "fast") {
     logger.info(`Fast mode: scanning top 10 priority tickers with auto-retry on failure`);
+  } else if (scanMode === "monitor") {
+    logger.info(`Monitor mode: updating status for ${TICKERS.length} tickers from OPPORTUNITIES.md`);
+    if (TICKERS.length === 0) {
+      logger.info("No tickers to monitor. Exiting.");
+      await sendSignal(`👁 *MONITORING* — No opportunities currently tracked in OPPORTUNITIES.md.`);
+      return;
+    }
   }
 
   // Fetch shared data once (quietly)
@@ -392,15 +424,15 @@ async function main() {
       if (result.action === "GOLDEN TRADE") {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — GOLDEN TRADE (99) Certainty ${ci.total}/100`);
         logger.info(`Sending Telegram for: ${symbol} (GOLDEN TRADE)`);
-        await sendAlert(result);
+        await sendAlert(result, modeTag);
       } else if (result.action === "EXPLOSIVE BUY") {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — EXPLOSIVE BUY (95) Certainty ${ci.total}/100 🔥`);
         logger.info(`Sending Telegram for: ${symbol} (EXPLOSIVE BUY)`);
-        await sendAlert(result);
+        await sendAlert(result, modeTag);
       } else if (ci.highConviction) {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — ${result.action} (${result.score}) Certainty ${ci.total}/100 🚀`);
         logger.info(`Sending Telegram for: ${symbol} (HIGH CONVICTION)`);
-        await sendAlert(result);
+        await sendAlert(result, modeTag);
       } else if (ci.label === "POTENTIAL") {
         logger.info(`${completed}/${TICKERS.length} ${symbol} — ${result.action} (${result.score}) Certainty ${ci.total}/100 ⚠️`);
       } else if (result.score > 75) {
@@ -455,10 +487,14 @@ async function main() {
   logger.info(`${"═".repeat(65)}`);
   logger.info(`Results saved to OPPORTUNITIES.md`);
 
-  // Send daily summary via Telegram (full mode only)
-  if (scanMode === "full") {
-    await sendSignal(`✅ *Scan Complete* — ${session} (${scanTime} ET)\n\n📋 Scanned: ${allResults.length} tickers\n🎯 Opportunities Found: ${opportunities.length}\n💥 Explosive: ${opportunities.filter((r) => r.breakdown.certaintyIndex.label === "EXPLOSIVE").length}\n🏆 Golden Trades: ${opportunities.filter((r) => r.action === "GOLDEN TRADE").length}`);
-  }
+  // Send summary via Telegram (all modes)
+  await sendSignal(
+    `${modeTag} ✅ *Scan Complete* — ${session} (${scanTime} ET)\n\n` +
+    `📋 Scanned: ${allResults.length} tickers\n` +
+    `🎯 Opportunities Found: ${opportunities.length}\n` +
+    `💥 Explosive: ${opportunities.filter((r) => r.breakdown.certaintyIndex.label === "EXPLOSIVE").length}\n` +
+    `🏆 Golden Trades: ${opportunities.filter((r) => r.action === "GOLDEN TRADE").length}`,
+  );
 }
 
 // ── Run ─────────────────────────────────────────────────────────────────────

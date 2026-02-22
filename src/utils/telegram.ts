@@ -190,10 +190,15 @@ export async function sendSignal(message: string): Promise<void> {
  * Format and send a tiered trade alert.
  *   Score 90+ → Golden/Explosive format with bold headers and AI reasoning.
  *   Score 70–89 → Standard format with key stats.
+ *
+ * @param modeTag  Optional scan-mode prefix (e.g. "⚡ *FAST SCAN*") prepended to the message.
  */
-export async function sendAlert(result: TodoAction): Promise<void> {
-  const message = result.score >= 90
+export async function sendAlert(result: TodoAction, modeTag?: string): Promise<void> {
+  let message = result.score >= 90
     ? formatGoldenAlert(result)
     : formatStandardAlert(result);
+  if (modeTag) {
+    message = `${modeTag}\n\n${message}`;
+  }
   await send(message);
 }
