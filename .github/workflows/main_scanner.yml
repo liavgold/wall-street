@@ -12,6 +12,7 @@ jobs:
   scan:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 13 * * 1'
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       contents: write
     
@@ -64,6 +65,7 @@ jobs:
   weekly-report:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 21 * * 5'
     runs-on: ubuntu-latest
+    environment: production
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
