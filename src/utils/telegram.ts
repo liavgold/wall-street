@@ -86,11 +86,9 @@ function formatStandardAlert(r: TodoAction): string {
     `📰 *AI Insight*`,
     `_${summary}_`,
     ``,
-    `📏 *Risk Management*`,
     ...(pos && pos.shares > 0
-      ? [`• Recommended Buy: ${pos.shares} shares (~$${pos.totalValue.toFixed(0)})`]
-      : []),
-    `• Stop Loss: ${stopLoss}`,
+      ? [`📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | Stop Loss: ${stopLoss}`]
+      : [`📏 *Trade Setup:* Stop Loss: ${stopLoss}`]),
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),
@@ -136,9 +134,9 @@ function formatGoldenAlert(r: TodoAction): string {
     `📰 *AI Insight*`,
     `_${summary}_`,
     ``,
-    `📏 *Risk Management*`,
-    pos && pos.shares > 0 ? `• Recommended Buy: ${pos.shares} shares (~$${pos.totalValue.toFixed(0)})` : null,
-    `• Stop Loss: ${stopLoss}`,
+    pos && pos.shares > 0
+      ? `📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | Stop Loss: ${stopLoss}`
+      : `📏 *Trade Setup:* Stop Loss: ${stopLoss}`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),

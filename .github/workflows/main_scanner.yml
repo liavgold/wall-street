@@ -1,11 +1,11 @@
-name: Weekly Market Scanner
+name: Market Scanner
 
 on:
   schedule:
-    - cron: '30 20 * * 1-5'  # scan-fast  — 4:30 PM ET weekdays (post-close)
-    - cron: '30 13 * * 1,4'  # scan-full  — 9:30 AM ET Mon + Thu (market open)
-    - cron: '30 2 * * 2-6'   # scan-monitor — 10:30 PM ET Mon–Fri (overnight refresh)
-    - cron: '0 21 * * 5'     # weekly-report — 5:00 PM ET Friday
+    - cron: '0 11 * * 1-5'   # scan-fast    — 16:30 IST Mon–Fri  (daily open)
+    - cron: '30 15 * * 1,5'  # scan-full    — 21:00 IST Mon & Fri (weekly deep dive)
+    - cron: '0 17 * * 1-5'   # scan-monitor — 22:30 IST Mon–Fri  (daily close)
+    - cron: '30 15 * * 5'    # weekly-report — 21:00 IST Friday
   workflow_dispatch:
     inputs:
       mode:
@@ -19,25 +19,25 @@ on:
           - monitor
           - weekly-report
 
-# ── Fast Scan (post-close daily) ─────────────────────────────────────────────
+# ── Daily Open — Fast Scan (16:30 IST / 11:00 UTC) ───────────────────────────
 jobs:
   scan-fast:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     if: >
-      (github.event_name == 'schedule' && github.event.schedule == '30 20 * * 1-5') ||
+      (github.event_name == 'schedule' && github.event.schedule == '0 11 * * 1-5') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'fast')
     permissions:
       contents: write
 
     env:
-      ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
-      TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID:       ${{ secrets.TELEGRAM_CHAT_ID }}
-      POLYGON_API_KEY:        ${{ secrets.POLYGON_API_KEY }}
-      ALPHA_VANTAGE_API_KEY:  ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-      FINNHUB_API_KEY:        ${{ secrets.FINNHUB_API_KEY }}
-      STREAMLIT_URL:          ${{ secrets.STREAMLIT_URL }}
+      ANTHROPIC_API_KEY:     ${{ secrets.ANTHROPIC_API_KEY }}
+      TELEGRAM_BOT_TOKEN:    ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID:      ${{ secrets.TELEGRAM_CHAT_ID }}
+      POLYGON_API_KEY:       ${{ secrets.POLYGON_API_KEY }}
+      ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FINNHUB_API_KEY:       ${{ secrets.FINNHUB_API_KEY }}
+      STREAMLIT_URL:         ${{ secrets.STREAMLIT_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -61,29 +61,29 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: fast scan results $(date -u +'%Y-%m-%d %H:%M')"
+            git commit -m "chore: fast scan $(date -u +'%Y-%m-%d %H:%M')"
             git pull --rebase origin main
             git push
           fi
 
-# ── Full Scan (bi-weekly deep scan) ──────────────────────────────────────────
+# ── Weekly Deep Dive — Full Scan (21:00 IST Mon & Fri / 15:30 UTC) ───────────
   scan-full:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     if: >
-      (github.event_name == 'schedule' && github.event.schedule == '30 13 * * 1,4') ||
+      (github.event_name == 'schedule' && github.event.schedule == '30 15 * * 1,5') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'full')
     permissions:
       contents: write
 
     env:
-      ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
-      TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID:       ${{ secrets.TELEGRAM_CHAT_ID }}
-      POLYGON_API_KEY:        ${{ secrets.POLYGON_API_KEY }}
-      ALPHA_VANTAGE_API_KEY:  ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-      FINNHUB_API_KEY:        ${{ secrets.FINNHUB_API_KEY }}
-      STREAMLIT_URL:          ${{ secrets.STREAMLIT_URL }}
+      ANTHROPIC_API_KEY:     ${{ secrets.ANTHROPIC_API_KEY }}
+      TELEGRAM_BOT_TOKEN:    ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID:      ${{ secrets.TELEGRAM_CHAT_ID }}
+      POLYGON_API_KEY:       ${{ secrets.POLYGON_API_KEY }}
+      ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FINNHUB_API_KEY:       ${{ secrets.FINNHUB_API_KEY }}
+      STREAMLIT_URL:         ${{ secrets.STREAMLIT_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -107,29 +107,29 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: full scan results $(date -u +'%Y-%m-%d')"
+            git commit -m "chore: full scan $(date -u +'%Y-%m-%d')"
             git pull --rebase origin main
             git push
           fi
 
-# ── Monitor Scan (overnight status refresh) ───────────────────────────────────
+# ── Daily Close — Monitor Scan (22:30 IST / 17:00 UTC) ───────────────────────
   scan-monitor:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     if: >
-      (github.event_name == 'schedule' && github.event.schedule == '30 2 * * 2-6') ||
+      (github.event_name == 'schedule' && github.event.schedule == '0 17 * * 1-5') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'monitor')
     permissions:
       contents: write
 
     env:
-      ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
-      TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID:       ${{ secrets.TELEGRAM_CHAT_ID }}
-      POLYGON_API_KEY:        ${{ secrets.POLYGON_API_KEY }}
-      ALPHA_VANTAGE_API_KEY:  ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-      FINNHUB_API_KEY:        ${{ secrets.FINNHUB_API_KEY }}
-      STREAMLIT_URL:          ${{ secrets.STREAMLIT_URL }}
+      ANTHROPIC_API_KEY:     ${{ secrets.ANTHROPIC_API_KEY }}
+      TELEGRAM_BOT_TOKEN:    ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID:      ${{ secrets.TELEGRAM_CHAT_ID }}
+      POLYGON_API_KEY:       ${{ secrets.POLYGON_API_KEY }}
+      ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FINNHUB_API_KEY:       ${{ secrets.FINNHUB_API_KEY }}
+      STREAMLIT_URL:         ${{ secrets.STREAMLIT_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -153,17 +153,17 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: monitor scan results $(date -u +'%Y-%m-%d %H:%M')"
+            git commit -m "chore: monitor scan $(date -u +'%Y-%m-%d %H:%M')"
             git pull --rebase origin main
             git push
           fi
 
-# ── Weekly Report (Friday summary) ───────────────────────────────────────────
+# ── Weekly Report (Friday 21:00 IST / 15:30 UTC) ─────────────────────────────
   weekly-report:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     if: >
-      (github.event_name == 'schedule' && github.event.schedule == '0 21 * * 5') ||
+      (github.event_name == 'schedule' && github.event.schedule == '30 15 * * 5') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'weekly-report')
 
     env:
