@@ -2,24 +2,19 @@ name: Weekly Market Scanner
 
 on:
   schedule:
-    # Every Monday at 13:45 UTC (15:45 Israel Standard Time / UTC+2)
+    # Every Monday at 15:45 Israel Time
     - cron: '45 13 * * 1'
-    # Every Friday at 21:00 UTC (23:00 Israel Standard Time / UTC+2)
+    # Every Friday at 23:00 Israel Time
     - cron: '0 21 * * 5'
   workflow_dispatch:
 
 jobs:
   scan:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 13 * * 1'
-    scan:
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 13 * * 1'
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
-    permissions:
-      contents: write
-
+    
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -54,22 +49,11 @@ jobs:
         continue-on-error: true
         run: npm run backtest
 
-      - name: Send low accuracy Telegram alert
-        if: steps.backtest.outcome == 'failure'
-        run: |
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -H "Content-Type: application/json" \
-            -d "{\"chat_id\": \"${TELEGRAM_CHAT_ID}\", \"text\": \"⚠️ Accuracy Alert: System precision dropped below 20%. Please review strategy before new trades.\"}"
-          exit 1
-
       - name: Commit updated results
-        if: steps.backtest.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
           git add OPPORTUNITIES.md logs/ 2>/dev/null || true
-
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
@@ -79,28 +63,18 @@ jobs:
 
   weekly-report:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 21 * * 5'
-    scan:
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 13 * * 1'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
-
       - name: Install dependencies
         run: npm ci
-
       - name: Send weekly performance report
         run: npm run weekly-report
