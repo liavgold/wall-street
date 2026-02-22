@@ -1,6 +1,7 @@
 import { Telegram } from "telegraf";
 import logger from "./logger";
 import { TodoAction } from "../analyzers/engine";
+import { calculatePositionSize } from "./finance";
 
 const BOT_TOKEN     = process.env.TELEGRAM_BOT_TOKEN ?? "";
 const CHAT_ID       = process.env.TELEGRAM_CHAT_ID   ?? "";
@@ -58,7 +59,7 @@ function actionLabel(r: TodoAction): string {
 
 /**
  * Standard alert for score 70–89.
- * Clean single-section layout with the key stats.
+ * Clean layout with AI Insight and Risk Management sections.
  */
 function formatStandardAlert(r: TodoAction): string {
   const ci       = r.breakdown.certaintyIndex;
@@ -69,20 +70,27 @@ function formatStandardAlert(r: TodoAction): string {
   const vol      = r.breakdown.details.volumeRatio;
   const volLabel = r.breakdown.details.volumeStatus;
   const footer   = dashboardFooter();
+  const pos      = price > 0 ? calculatePositionSize(price) : null;
+  const summary  = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
 
   const lines = [
     `⭐ *Strong Setup: ${r.ticker}*`,
     ``,
-    `💰 Price: $${price.toFixed(2)}`,
-    `📊 Score: ${r.score}  |  Certainty: ${ci.total}/100`,
-    `⚡ Confidence: ${confidenceMeter(ci.total)}`,
+    `💰 *Price:* $${price.toFixed(2)}`,
+    `📊 *Score:* ${r.score}  |  *Certainty:* ${ci.total}/100`,
+    `⚡ *Confidence:* ${confidenceMeter(ci.total)}`,
     ``,
-    `📈 RS (1d): ${rsStr}`,
-    `🛑 Stop-Loss: ${stopLoss}`,
-    `📦 Volume: ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
+    `📈 *RS (1d):* ${rsStr}`,
+    `📦 *Volume:* ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
     ``,
-    `❓ *Why this?*`,
-    `_${escapeMd(r.breakdown.details.sentimentReasoning)}_`,
+    `📰 *AI Insight*`,
+    `_${summary}_`,
+    ``,
+    `📏 *Risk Management*`,
+    ...(pos && pos.shares > 0
+      ? [`• Recommended Buy: ${pos.shares} shares (~$${pos.totalValue.toFixed(0)})`]
+      : []),
+    `• Stop Loss: ${stopLoss}`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),
@@ -93,7 +101,7 @@ function formatStandardAlert(r: TodoAction): string {
 
 /**
  * Premium alert for score 90+ (EXPLOSIVE BUY / GOLDEN TRADE).
- * Bold headers, AI reasoning summary, and full signal breakdown.
+ * Bold headers, AI Insight, and Risk Management sections.
  */
 function formatGoldenAlert(r: TodoAction): string {
   const ci       = r.breakdown.certaintyIndex;
@@ -106,6 +114,8 @@ function formatGoldenAlert(r: TodoAction): string {
   const volLabel = r.breakdown.details.volumeStatus;
   const es       = r.breakdown.details.earningsSurprise;
   const footer   = dashboardFooter();
+  const pos      = price > 0 ? calculatePositionSize(price) : null;
+  const summary  = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
 
   const header = isGolden
     ? `🏆🏆🏆 *GOLDEN TRADE: ${r.ticker}* 🏆🏆🏆`
@@ -120,12 +130,15 @@ function formatGoldenAlert(r: TodoAction): string {
     `⚡ *Confidence:* ${confidenceMeter(ci.total)}`,
     ``,
     `📈 *RS (1d):* ${rsStr}`,
-    `🛑 *Stop-Loss:* ${stopLoss}`,
     `📦 *Volume:* ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
     es ? `💥 *Earnings Beat:* ${es.surprisePercent > 0 ? "+" : ""}${es.surprisePercent}%` : null,
     ``,
-    `❓ *Why this?*`,
-    `_${escapeMd(r.breakdown.details.sentimentReasoning)}_`,
+    `📰 *AI Insight*`,
+    `_${summary}_`,
+    ``,
+    `📏 *Risk Management*`,
+    pos && pos.shares > 0 ? `• Recommended Buy: ${pos.shares} shares (~$${pos.totalValue.toFixed(0)})` : null,
+    `• Stop Loss: ${stopLoss}`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),

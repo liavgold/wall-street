@@ -113,7 +113,7 @@ async function main() {
   let sentiment;
   if (argv.skipAi) {
     logger.info("AI sentiment SKIPPED (--no-ai flag). Defaulting to Neutral.");
-    sentiment = { sentiment: "Neutral" as const, score: 15, reasoning: "Skipped (--no-ai)", headlinesAnalyzed: 0 };
+    sentiment = { sentiment: "Neutral" as const, score: 15, reasoning: "Skipped (--no-ai)", headlinesAnalyzed: 0, catalystScore: 0, catalystSummary: "AI analysis skipped." };
   } else {
     logger.info("Sending headlines to Claude for sentiment analysis...");
     sentiment = await getAISentiment(symbol, news);

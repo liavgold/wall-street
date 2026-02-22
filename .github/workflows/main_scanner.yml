@@ -62,4 +62,5 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
+      - run: mkdir -p logs
       - run: npm run weekly-report

@@ -22,6 +22,8 @@ import {
 const SentimentResponseSchema = z.object({
   sentiment: z.enum(["Bullish", "Neutral", "Bearish"]),
   reasoning: z.string(),
+  catalystScore: z.number().int().min(-20).max(20),
+  catalystSummary: z.string(),
 });
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -101,6 +103,8 @@ export interface ScoreBreakdown {
     insiderNetBuying: boolean;
     sentimentLabel: "Bullish" | "Neutral" | "Bearish";
     sentimentReasoning: string;
+    catalystScore: number;
+    catalystSummary: string;
     volumeStatus: "High" | "Normal" | "Low" | "N/A";
     volumeRatio: number;
     earningsSoon: boolean;
@@ -204,6 +208,10 @@ export interface AISentimentResult {
   score: number;
   reasoning: string;
   headlinesAnalyzed: number;
+  /** -20 to +20: positive = bullish catalyst, negative = bearish. */
+  catalystScore: number;
+  /** One-sentence summary of the key news catalyst. */
+  catalystSummary: string;
 }
 
 const SENTIMENT_SCORES = { Bullish: 30, Neutral: 15, Bearish: 0 } as const;
@@ -218,6 +226,8 @@ export async function getAISentiment(
       score: SENTIMENT_SCORES.Neutral,
       reasoning: "No recent news headlines available; defaulting to Neutral.",
       headlinesAnalyzed: 0,
+      catalystScore: 0,
+      catalystSummary: "No recent news available.",
     };
   }
 
@@ -236,8 +246,11 @@ export async function getAISentiment(
       max_tokens: 512,
       system:
         "You are a senior Wall Street sentiment analyst. " +
-        "Rate the overall sentiment as: Bullish, Neutral, or Bearish based on these headlines. " +
-        "Focus on earnings, contracts, and regulations. " +
+        "Analyze news headlines and return a JSON object with: " +
+        "sentiment (Bullish/Neutral/Bearish), reasoning (1 sentence), " +
+        "catalystScore (integer -20 to +20: +15..+20 = major positive catalyst like earnings beat or major contract; " +
+        "-15..-20 = major negative like fraud, CEO resignation, or major lawsuit; 0 = neutral/mixed), " +
+        "catalystSummary (1 sentence describing the single most important catalyst). " +
         "Respond ONLY with a JSON object — no markdown, no code fences.",
       messages: [
         {
@@ -246,7 +259,8 @@ export async function getAISentiment(
             `Analyze the sentiment of these recent headlines for ${symbol}:\n\n` +
             `${headlineBlock}\n\n` +
             `Respond with this exact JSON format:\n` +
-            `{"sentiment": "Bullish" | "Neutral" | "Bearish", "reasoning": "<one sentence explaining your rating>"}`,
+            `{"sentiment": "Bullish" | "Neutral" | "Bearish", "reasoning": "<one sentence>", ` +
+            `"catalystScore": <integer -20 to +20>, "catalystSummary": "<one sentence catalyst summary>"}`,
         },
       ],
     });
@@ -258,6 +272,8 @@ export async function getAISentiment(
         score: SENTIMENT_SCORES.Neutral,
         reasoning: "Failed to get sentiment response from Claude; defaulting to Neutral.",
         headlinesAnalyzed: news.length,
+        catalystScore: 0,
+        catalystSummary: "AI analysis unavailable.",
       };
     }
 
@@ -275,6 +291,8 @@ export async function getAISentiment(
       score: SENTIMENT_SCORES[parsed.sentiment],
       reasoning: parsed.reasoning,
       headlinesAnalyzed: news.length,
+      catalystScore: parsed.catalystScore,
+      catalystSummary: parsed.catalystSummary,
     };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -291,6 +309,8 @@ export async function getAISentiment(
       score: SENTIMENT_SCORES.Neutral,
       reasoning: `AI sentiment unavailable (${msg}); defaulting to Neutral.`,
       headlinesAnalyzed: news.length,
+      catalystScore: 0,
+      catalystSummary: "AI analysis unavailable.",
     };
   }
 }
@@ -607,7 +627,15 @@ export async function calculateConfidenceScore(
   const rs3mPct = rs3m?.tickerChange3M ?? 0;
   const goldenTrade = explosiveBuy && rs3mPct > 15 && institutionalIncrease;
 
+  // Catalyst Score (-20 to +20): major positive or negative news event
+  if (sentimentResult.catalystScore >= 15) {
+    warnings.push(`🚀 MAJOR POSITIVE CATALYST (+${sentimentResult.catalystScore}): ${sentimentResult.catalystSummary}`);
+  } else if (sentimentResult.catalystScore <= -10) {
+    warnings.push(`⚠️ NEGATIVE CATALYST (${sentimentResult.catalystScore}): ${sentimentResult.catalystSummary}`);
+  }
+
   let rawTotal = technical.score + institutional.score + sentimentResult.score
+    + sentimentResult.catalystScore
     + volumeScore + relativeStrengthScore + threeMonthRSScore + socialSpikeScore
     + whaleScore + consensusMomentumScore + smartMoneyScore + explosionScore;
 
@@ -689,6 +717,8 @@ export async function calculateConfidenceScore(
       insiderNetBuying: institutional.insiderNetBuying,
       sentimentLabel: sentimentResult.sentiment,
       sentimentReasoning: sentimentResult.reasoning,
+      catalystScore: sentimentResult.catalystScore,
+      catalystSummary: sentimentResult.catalystSummary,
       volumeStatus: vol ? vol.status : "N/A",
       volumeRatio: vol ? parseFloat(vol.ratio.toFixed(2)) : 0,
       earningsSoon: earningsCheck.soon,
@@ -848,6 +878,24 @@ export async function analyzeMarket(
     snapshot.prices.length > 0
       ? snapshot.prices[snapshot.prices.length - 1].close
       : 0;
+
+  // Major negative catalyst: regardless of other signals, cap score and force SELL
+  if (breakdown.details.catalystScore <= -15) {
+    const penalizedTotal = Math.min(breakdown.total, 35);
+    const warning = `⚠️ MAJOR NEGATIVE CATALYST: ${breakdown.details.catalystSummary}`;
+    return {
+      ticker: snapshot.symbol,
+      action: "SELL",
+      score: penalizedTotal,
+      breakdown: { ...breakdown, total: penalizedTotal },
+      reasoning: `${warning} (pre-catalyst score: ${breakdown.total})`,
+      stopLoss: null,
+      volumeStatus: breakdown.details.volumeStatus,
+      riskLevel: "EXTREME",
+      warnings: [...breakdown.warnings, warning],
+      marketContext: breakdown.marketContext,
+    };
+  }
 
   // GOLDEN TRADE: Explosive + RS > 15% (3M) + Institutional accumulation — top 1%
   if (breakdown.goldenTrade) {

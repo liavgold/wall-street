@@ -88,8 +88,8 @@ async function main() {
   logger.info("WallStreet Weekly Report");
 
   if (!fs.existsSync(HISTORY_PATH)) {
-    logger.error("logs/history.json not found. Run 'npm run scan' first.");
-    process.exit(1);
+    logger.info("No history data available yet.");
+    process.exit(0);
   }
 
   let history: HistoryEntry[];
