@@ -618,24 +618,24 @@ def _render_live_logs() -> None:
 # ── GitHub Actions Trigger ────────────────────────────────────────────────────
 
 WORKFLOW_FILE = "main_scanner.yml"
+REPO          = "liavgold/wall-street"
 
 
 def _trigger_workflow() -> tuple[bool, str]:
     """
     POST to the GitHub Actions workflow_dispatch API.
     Returns (success, message).
-    Reads credentials from st.secrets['GH_TOKEN'] and st.secrets['GH_REPO'].
+    Reads credentials from st.secrets['GH_TOKEN'].
     """
     try:
         token = st.secrets["GH_TOKEN"]
-        repo  = st.secrets["GH_REPO"]  # "owner/repo"
     except KeyError:
         return False, (
             "GitHub secrets not configured. "
-            "Add GH_TOKEN and GH_REPO to .streamlit/secrets.toml."
+            "Add GH_TOKEN to .streamlit/secrets.toml."
         )
 
-    url = f"https://api.github.com/repos/{repo}/actions/workflows/{WORKFLOW_FILE}/dispatches"
+    url = f"https://api.github.com/repos/{REPO}/actions/workflows/{WORKFLOW_FILE}/dispatches"
     resp = requests.post(
         url,
         headers={
@@ -652,7 +652,7 @@ def _trigger_workflow() -> tuple[bool, str]:
     if resp.status_code == 401:
         return False, "Authentication failed — check your GH_TOKEN."
     if resp.status_code == 404:
-        return False, f"Workflow not found — verify GH_REPO '{repo}' and workflow '{WORKFLOW_FILE}'."
+        return False, f"Workflow not found — verify repo '{REPO}' and workflow '{WORKFLOW_FILE}'."
     return False, f"GitHub API error {resp.status_code}: {resp.text[:200]}"
 
 
