@@ -1,0 +1,701 @@
+[2026-02-18 00:15:35] [INFO] WallStreet Scanner — Mode: FULL | Session: Post-market (05:15:35 PM ET) | Tickers: 50
+[2026-02-18 00:15:40] [INFO] VIX: 20.29 [ELEVATED] (dropping) | SPY: 251 days
+[2026-02-18 00:15:40] [INFO] Fetching 7 sector ETFs...
+[2026-02-18 00:15:41] [INFO] Sector ETFs: SMH: -0.05%  XLY: -0.12%  XLK: -0.06%  HACK: -1.76%  SKYY: -1.92%  BITO: -1.47%  ARKF: +0.85%
+[2026-02-18 00:15:41] [WARN] Alpha Vantage RSI failed for NVDA: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:15:41] [INFO] NVDA RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:15:41] [WARN] Alpha Vantage failed for NVDA: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:15:41] [INFO] NVDA prices: falling back to Yahoo Finance
+[2026-02-18 00:15:41] [INFO] NVDA RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:15:41] [INFO] NVDA prices: Yahoo Finance — 251 days
+[2026-02-18 00:15:42] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:15:42] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:15:42] [ERROR] 1/50 NVDA — FAILED
+[2026-02-18 00:15:44] [WARN] Alpha Vantage failed for TSLA: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:15:44] [INFO] TSLA prices: falling back to Yahoo Finance
+[2026-02-18 00:15:44] [WARN] Alpha Vantage RSI failed for TSLA: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:15:44] [INFO] TSLA RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:15:45] [INFO] TSLA prices: Yahoo Finance — 251 days
+[2026-02-18 00:15:45] [INFO] TSLA RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:15:45] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:15:45] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:15:45] [ERROR] 2/50 TSLA — FAILED
+[2026-02-18 00:15:48] [WARN] Alpha Vantage failed for AMD: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:15:48] [INFO] AMD prices: falling back to Yahoo Finance
+[2026-02-18 00:15:48] [WARN] Alpha Vantage RSI failed for AMD: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:15:48] [INFO] AMD RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:15:48] [INFO] AMD RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:15:48] [INFO] AMD prices: Yahoo Finance — 251 days
+[2026-02-18 00:15:48] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:15:49] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:15:49] [ERROR] 3/50 AMD — FAILED
+[2026-02-18 00:15:51] [WARN] Alpha Vantage failed for PLTR: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:15:51] [INFO] PLTR prices: falling back to Yahoo Finance
+[2026-02-18 00:15:51] [WARN] Alpha Vantage RSI failed for PLTR: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:15:51] [INFO] PLTR RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:15:51] [INFO] PLTR prices: Yahoo Finance — 251 days
+[2026-02-18 00:15:51] [INFO] PLTR RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:15:51] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:15:52] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:15:52] [ERROR] 4/50 PLTR — FAILED
+[2026-02-18 00:15:54] [WARN] Alpha Vantage RSI failed for MSTR: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:15:54] [INFO] MSTR RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:15:54] [WARN] Alpha Vantage failed for MSTR: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:15:54] [INFO] MSTR prices: falling back to Yahoo Finance
+[2026-02-18 00:15:54] [INFO] MSTR RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:15:54] [INFO] MSTR prices: Yahoo Finance — 251 days
+[2026-02-18 00:15:55] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:15:55] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:15:55] [ERROR] 5/50 MSTR — FAILED
+[2026-02-18 00:15:57] [WARN] Alpha Vantage failed for SMCI: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:15:57] [INFO] SMCI prices: falling back to Yahoo Finance
+[2026-02-18 00:15:57] [WARN] Alpha Vantage RSI failed for SMCI: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:15:57] [INFO] SMCI RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:15:57] [INFO] SMCI prices: Yahoo Finance — 251 days
+[2026-02-18 00:15:57] [INFO] SMCI RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:15:58] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:15:58] [ERROR] SMCI analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:15:58] [ERROR] 6/50 SMCI — FAILED
+[2026-02-18 00:16:00] [WARN] Alpha Vantage failed for PANW: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:00] [INFO] PANW prices: falling back to Yahoo Finance
+[2026-02-18 00:16:00] [WARN] Alpha Vantage RSI failed for PANW: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:00] [INFO] PANW RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:00] [INFO] PANW RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:00] [INFO] PANW prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:01] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:01] [ERROR] PANW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:01] [ERROR] 7/50 PANW — FAILED
+[2026-02-18 00:16:03] [WARN] Alpha Vantage RSI failed for ELF: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:03] [INFO] ELF RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:03] [WARN] Alpha Vantage failed for ELF: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:03] [INFO] ELF prices: falling back to Yahoo Finance
+[2026-02-18 00:16:03] [INFO] ELF RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:03] [INFO] ELF prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:04] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:04] [ERROR] ELF analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:04] [ERROR] 8/50 ELF — FAILED
+[2026-02-18 00:16:06] [WARN] Alpha Vantage RSI failed for CRWD: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:06] [INFO] CRWD RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:06] [WARN] Alpha Vantage failed for CRWD: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:06] [INFO] CRWD prices: falling back to Yahoo Finance
+[2026-02-18 00:16:06] [INFO] CRWD RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:06] [INFO] CRWD prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:07] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:07] [ERROR] CRWD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:07] [ERROR] 9/50 CRWD — FAILED
+[2026-02-18 00:16:09] [WARN] Alpha Vantage RSI failed for SNOW: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:09] [INFO] SNOW RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:09] [WARN] Alpha Vantage failed for SNOW: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:09] [INFO] SNOW prices: falling back to Yahoo Finance
+[2026-02-18 00:16:09] [INFO] SNOW prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:09] [INFO] SNOW RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:10] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:10] [ERROR] SNOW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:10] [ERROR] 10/50 SNOW — FAILED
+[2026-02-18 00:16:12] [WARN] Alpha Vantage failed for NET: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:12] [INFO] NET prices: falling back to Yahoo Finance
+[2026-02-18 00:16:12] [WARN] Alpha Vantage RSI failed for NET: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:12] [INFO] NET RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:12] [INFO] NET prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:12] [INFO] NET RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:13] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:13] [ERROR] NET analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:13] [ERROR] 11/50 NET — FAILED
+[2026-02-18 00:16:15] [WARN] Alpha Vantage failed for DDOG: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:15] [INFO] DDOG prices: falling back to Yahoo Finance
+[2026-02-18 00:16:15] [WARN] Alpha Vantage RSI failed for DDOG: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:15] [INFO] DDOG RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:15] [INFO] DDOG prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:15] [INFO] DDOG RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:16] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:16] [ERROR] DDOG analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:16] [ERROR] 12/50 DDOG — FAILED
+[2026-02-18 00:16:18] [WARN] Alpha Vantage RSI failed for COIN: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:18] [INFO] COIN RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:18] [WARN] Alpha Vantage failed for COIN: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:18] [INFO] COIN prices: falling back to Yahoo Finance
+[2026-02-18 00:16:18] [INFO] COIN RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:18] [INFO] COIN prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:19] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:19] [ERROR] COIN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:19] [ERROR] 13/50 COIN — FAILED
+[2026-02-18 00:16:21] [WARN] Alpha Vantage RSI failed for MELI: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:21] [INFO] MELI RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:21] [WARN] Alpha Vantage failed for MELI: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:21] [INFO] MELI prices: falling back to Yahoo Finance
+[2026-02-18 00:16:22] [INFO] MELI RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:22] [INFO] MELI prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:22] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:22] [ERROR] MELI analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:22] [ERROR] 14/50 MELI — FAILED
+[2026-02-18 00:16:24] [WARN] Alpha Vantage RSI failed for TTD: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:24] [INFO] TTD RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:24] [WARN] Alpha Vantage failed for TTD: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:24] [INFO] TTD prices: falling back to Yahoo Finance
+[2026-02-18 00:16:24] [INFO] TTD RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:24] [INFO] TTD prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:25] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:25] [ERROR] TTD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:25] [ERROR] 15/50 TTD — FAILED
+[2026-02-18 00:16:27] [WARN] Alpha Vantage RSI failed for SHOP: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:27] [INFO] SHOP RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:27] [WARN] Alpha Vantage failed for SHOP: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:27] [INFO] SHOP prices: falling back to Yahoo Finance
+[2026-02-18 00:16:28] [INFO] SHOP RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:28] [INFO] SHOP prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:28] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:28] [ERROR] SHOP analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:28] [ERROR] 16/50 SHOP — FAILED
+[2026-02-18 00:16:30] [WARN] Alpha Vantage failed for SQ: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:30] [INFO] SQ prices: falling back to Yahoo Finance
+[2026-02-18 00:16:30] [WARN] Alpha Vantage RSI failed for SQ: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:30] [INFO] SQ RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:30] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-02-18 00:16:30] [ERROR] 17/50 SQ — FAILED
+[2026-02-18 00:16:33] [WARN] Alpha Vantage failed for AFRM: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:33] [INFO] AFRM prices: falling back to Yahoo Finance
+[2026-02-18 00:16:33] [WARN] Alpha Vantage RSI failed for AFRM: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:33] [INFO] AFRM RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:33] [INFO] AFRM RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:33] [INFO] AFRM prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:33] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:34] [ERROR] AFRM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:34] [ERROR] 18/50 AFRM — FAILED
+[2026-02-18 00:16:36] [WARN] Alpha Vantage RSI failed for HOOD: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:36] [INFO] HOOD RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:36] [WARN] Alpha Vantage failed for HOOD: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:36] [INFO] HOOD prices: falling back to Yahoo Finance
+[2026-02-18 00:16:36] [INFO] HOOD RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:36] [INFO] HOOD prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:36] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:37] [ERROR] HOOD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:37] [ERROR] 19/50 HOOD — FAILED
+[2026-02-18 00:16:39] [WARN] Alpha Vantage failed for RBLX: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:39] [INFO] RBLX prices: falling back to Yahoo Finance
+[2026-02-18 00:16:39] [WARN] Alpha Vantage RSI failed for RBLX: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:39] [INFO] RBLX RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:39] [INFO] RBLX prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:39] [INFO] RBLX RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:40] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:40] [ERROR] RBLX analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:40] [ERROR] 20/50 RBLX — FAILED
+[2026-02-18 00:16:42] [WARN] Alpha Vantage failed for UBER: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:42] [INFO] UBER prices: falling back to Yahoo Finance
+[2026-02-18 00:16:42] [WARN] Alpha Vantage RSI failed for UBER: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:42] [INFO] UBER RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:42] [INFO] UBER RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:42] [INFO] UBER prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:43] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:43] [ERROR] UBER analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:43] [ERROR] 21/50 UBER — FAILED
+[2026-02-18 00:16:45] [WARN] Alpha Vantage RSI failed for ABNB: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:45] [INFO] ABNB RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:45] [WARN] Alpha Vantage failed for ABNB: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:45] [INFO] ABNB prices: falling back to Yahoo Finance
+[2026-02-18 00:16:45] [INFO] ABNB prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:46] [INFO] ABNB RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:46] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:46] [ERROR] ABNB analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:46] [ERROR] 22/50 ABNB — FAILED
+[2026-02-18 00:16:49] [WARN] Alpha Vantage failed for DASH: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:49] [INFO] DASH prices: falling back to Yahoo Finance
+[2026-02-18 00:16:49] [WARN] Alpha Vantage RSI failed for DASH: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:49] [INFO] DASH RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:49] [INFO] DASH RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:49] [INFO] DASH prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:49] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:50] [ERROR] DASH analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:50] [ERROR] 23/50 DASH — FAILED
+[2026-02-18 00:16:52] [WARN] Alpha Vantage RSI failed for DUOL: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:52] [INFO] DUOL RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:52] [WARN] Alpha Vantage failed for DUOL: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:52] [INFO] DUOL prices: falling back to Yahoo Finance
+[2026-02-18 00:16:52] [INFO] DUOL RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:52] [INFO] DUOL prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:52] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:53] [ERROR] DUOL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:53] [ERROR] 24/50 DUOL — FAILED
+[2026-02-18 00:16:55] [WARN] Alpha Vantage failed for MNDY: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:55] [INFO] MNDY prices: falling back to Yahoo Finance
+[2026-02-18 00:16:55] [WARN] Alpha Vantage RSI failed for MNDY: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:55] [INFO] MNDY RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:55] [INFO] MNDY RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:55] [INFO] MNDY prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:56] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:56] [ERROR] MNDY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:56] [ERROR] 25/50 MNDY — FAILED
+[2026-02-18 00:16:58] [WARN] Alpha Vantage failed for ZS: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:16:58] [INFO] ZS prices: falling back to Yahoo Finance
+[2026-02-18 00:16:58] [WARN] Alpha Vantage RSI failed for ZS: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:16:58] [INFO] ZS RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:16:58] [INFO] ZS prices: Yahoo Finance — 251 days
+[2026-02-18 00:16:58] [INFO] ZS RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:16:59] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:16:59] [ERROR] ZS analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:16:59] [ERROR] 26/50 ZS — FAILED
+[2026-02-18 00:17:01] [WARN] Alpha Vantage failed for OKTA: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:01] [INFO] OKTA prices: falling back to Yahoo Finance
+[2026-02-18 00:17:01] [WARN] Alpha Vantage RSI failed for OKTA: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:01] [INFO] OKTA RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:01] [INFO] OKTA prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:01] [INFO] OKTA RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:01] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:02] [ERROR] OKTA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:02] [ERROR] 27/50 OKTA — FAILED
+[2026-02-18 00:17:04] [WARN] Alpha Vantage RSI failed for BILL: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:04] [INFO] BILL RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:04] [WARN] Alpha Vantage failed for BILL: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:04] [INFO] BILL prices: falling back to Yahoo Finance
+[2026-02-18 00:17:04] [INFO] BILL prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:04] [INFO] BILL RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:05] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:06] [ERROR] BILL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:06] [ERROR] 28/50 BILL — FAILED
+[2026-02-18 00:17:08] [WARN] Alpha Vantage failed for HUBS: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:08] [INFO] HUBS prices: falling back to Yahoo Finance
+[2026-02-18 00:17:08] [WARN] Alpha Vantage RSI failed for HUBS: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:08] [INFO] HUBS RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:08] [INFO] HUBS prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:08] [INFO] HUBS RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:08] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:08] [ERROR] HUBS analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:08] [ERROR] 29/50 HUBS — FAILED
+[2026-02-18 00:17:11] [WARN] Alpha Vantage RSI failed for GDDY: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:11] [INFO] GDDY RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:11] [WARN] Alpha Vantage failed for GDDY: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:11] [INFO] GDDY prices: falling back to Yahoo Finance
+[2026-02-18 00:17:11] [INFO] GDDY RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:11] [INFO] GDDY prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:12] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:12] [ERROR] GDDY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:12] [ERROR] 30/50 GDDY — FAILED
+[2026-02-18 00:17:14] [WARN] Alpha Vantage failed for TEAM: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:14] [INFO] TEAM prices: falling back to Yahoo Finance
+[2026-02-18 00:17:14] [WARN] Alpha Vantage RSI failed for TEAM: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:14] [INFO] TEAM RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:14] [INFO] TEAM RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:14] [INFO] TEAM prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:15] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:15] [ERROR] TEAM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:15] [ERROR] 31/50 TEAM — FAILED
+[2026-02-18 00:17:17] [WARN] Alpha Vantage failed for MDB: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:17] [INFO] MDB prices: falling back to Yahoo Finance
+[2026-02-18 00:17:17] [WARN] Alpha Vantage RSI failed for MDB: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:17] [INFO] MDB RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:18] [INFO] MDB prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:18] [INFO] MDB RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:18] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:18] [ERROR] MDB analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:18] [ERROR] 32/50 MDB — FAILED
+[2026-02-18 00:17:20] [WARN] Alpha Vantage RSI failed for ESTC: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:20] [INFO] ESTC RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:20] [WARN] Alpha Vantage failed for ESTC: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:20] [INFO] ESTC prices: falling back to Yahoo Finance
+[2026-02-18 00:17:21] [INFO] ESTC prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:21] [INFO] ESTC RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:21] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:21] [ERROR] ESTC analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:21] [ERROR] 33/50 ESTC — FAILED
+[2026-02-18 00:17:23] [WARN] Alpha Vantage RSI failed for IOT: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:23] [INFO] IOT RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:23] [WARN] Alpha Vantage failed for IOT: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:23] [INFO] IOT prices: falling back to Yahoo Finance
+[2026-02-18 00:17:24] [INFO] IOT RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:24] [INFO] IOT prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:24] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:25] [ERROR] IOT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:25] [ERROR] 34/50 IOT — FAILED
+[2026-02-18 00:17:27] [WARN] Alpha Vantage failed for CFLT: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:27] [INFO] CFLT prices: falling back to Yahoo Finance
+[2026-02-18 00:17:27] [WARN] Alpha Vantage RSI failed for CFLT: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:27] [INFO] CFLT RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:27] [INFO] CFLT RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:27] [INFO] CFLT prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:28] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:28] [ERROR] CFLT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:28] [ERROR] 35/50 CFLT — FAILED
+[2026-02-18 00:17:30] [WARN] Alpha Vantage RSI failed for TOST: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:30] [INFO] TOST RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:30] [WARN] Alpha Vantage failed for TOST: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:30] [INFO] TOST prices: falling back to Yahoo Finance
+[2026-02-18 00:17:30] [INFO] TOST RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:30] [INFO] TOST prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:31] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:31] [ERROR] TOST analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:31] [ERROR] 36/50 TOST — FAILED
+[2026-02-18 00:17:33] [WARN] Alpha Vantage RSI failed for APP: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:33] [INFO] APP RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:33] [WARN] Alpha Vantage failed for APP: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:33] [INFO] APP prices: falling back to Yahoo Finance
+[2026-02-18 00:17:34] [INFO] APP RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:34] [INFO] APP prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:34] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:35] [ERROR] APP analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:35] [ERROR] 37/50 APP — FAILED
+[2026-02-18 00:17:37] [WARN] Alpha Vantage RSI failed for CELH: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:37] [INFO] CELH RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:37] [WARN] Alpha Vantage failed for CELH: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:37] [INFO] CELH prices: falling back to Yahoo Finance
+[2026-02-18 00:17:37] [INFO] CELH RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:37] [INFO] CELH prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:37] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:38] [ERROR] CELH analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:38] [ERROR] 38/50 CELH — FAILED
+[2026-02-18 00:17:40] [WARN] Alpha Vantage RSI failed for ONON: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:40] [INFO] ONON RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:40] [WARN] Alpha Vantage failed for ONON: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:40] [INFO] ONON prices: falling back to Yahoo Finance
+[2026-02-18 00:17:40] [INFO] ONON RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:40] [INFO] ONON prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:40] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:40] [ERROR] ONON analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:40] [ERROR] 39/50 ONON — FAILED
+[2026-02-18 00:17:43] [WARN] Alpha Vantage RSI failed for DECK: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:43] [INFO] DECK RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:43] [WARN] Alpha Vantage failed for DECK: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:43] [INFO] DECK prices: falling back to Yahoo Finance
+[2026-02-18 00:17:43] [INFO] DECK prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:43] [INFO] DECK RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:43] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:44] [ERROR] DECK analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:44] [ERROR] 40/50 DECK — FAILED
+[2026-02-18 00:17:46] [WARN] Alpha Vantage RSI failed for AXON: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:46] [INFO] AXON RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:46] [WARN] Alpha Vantage failed for AXON: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:46] [INFO] AXON prices: falling back to Yahoo Finance
+[2026-02-18 00:17:46] [INFO] AXON RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:46] [INFO] AXON prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:46] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:47] [ERROR] AXON analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:47] [ERROR] 41/50 AXON — FAILED
+[2026-02-18 00:17:49] [WARN] Alpha Vantage RSI failed for TW: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:49] [INFO] TW RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:49] [WARN] Alpha Vantage failed for TW: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:49] [INFO] TW prices: falling back to Yahoo Finance
+[2026-02-18 00:17:49] [INFO] TW prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:49] [INFO] TW RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:50] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:50] [ERROR] TW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:50] [ERROR] 42/50 TW — FAILED
+[2026-02-18 00:17:52] [WARN] Alpha Vantage RSI failed for FICO: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:52] [INFO] FICO RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:52] [WARN] Alpha Vantage failed for FICO: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:52] [INFO] FICO prices: falling back to Yahoo Finance
+[2026-02-18 00:17:52] [INFO] FICO RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:52] [INFO] FICO prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:53] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:53] [ERROR] FICO analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:53] [ERROR] 43/50 FICO — FAILED
+[2026-02-18 00:17:55] [WARN] Alpha Vantage RSI failed for LULU: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:17:55] [INFO] LULU RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:55] [WARN] Alpha Vantage failed for LULU: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:55] [INFO] LULU prices: falling back to Yahoo Finance
+[2026-02-18 00:17:55] [INFO] LULU RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:55] [INFO] LULU prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:56] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:56] [ERROR] LULU analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:56] [ERROR] 44/50 LULU — FAILED
+[2026-02-18 00:17:58] [WARN] Alpha Vantage RSI failed for WDAY: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:58] [INFO] WDAY RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:17:58] [WARN] Alpha Vantage failed for WDAY: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:17:58] [INFO] WDAY prices: falling back to Yahoo Finance
+[2026-02-18 00:17:59] [INFO] WDAY RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:17:59] [INFO] WDAY prices: Yahoo Finance — 251 days
+[2026-02-18 00:17:59] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:17:59] [ERROR] WDAY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:17:59] [ERROR] 45/50 WDAY — FAILED
+[2026-02-18 00:18:01] [WARN] Alpha Vantage RSI failed for ADSK: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:18:01] [INFO] ADSK RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:18:01] [WARN] Alpha Vantage failed for ADSK: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:18:01] [INFO] ADSK prices: falling back to Yahoo Finance
+[2026-02-18 00:18:02] [INFO] ADSK RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:18:02] [INFO] ADSK prices: Yahoo Finance — 251 days
+[2026-02-18 00:18:02] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:18:02] [ERROR] ADSK analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:18:02] [ERROR] 46/50 ADSK — FAILED
+[2026-02-18 00:18:04] [WARN] Alpha Vantage RSI failed for FTNT: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:18:04] [INFO] FTNT RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:18:04] [WARN] Alpha Vantage failed for FTNT: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:18:04] [INFO] FTNT prices: falling back to Yahoo Finance
+[2026-02-18 00:18:04] [INFO] FTNT RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:18:04] [INFO] FTNT prices: Yahoo Finance — 251 days
+[2026-02-18 00:18:05] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:18:05] [ERROR] FTNT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:18:05] [ERROR] 47/50 FTNT — FAILED
+[2026-02-18 00:18:07] [WARN] Alpha Vantage failed for ARM: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:18:07] [INFO] ARM prices: falling back to Yahoo Finance
+[2026-02-18 00:18:07] [WARN] Alpha Vantage RSI failed for ARM: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:18:07] [INFO] ARM RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:18:07] [INFO] ARM RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:18:07] [INFO] ARM prices: Yahoo Finance — 251 days
+[2026-02-18 00:18:08] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:18:08] [ERROR] ARM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:18:08] [ERROR] 48/50 ARM — FAILED
+[2026-02-18 00:18:10] [WARN] Alpha Vantage failed for AAPL: Alpha Vantage API notice: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints
+[2026-02-18 00:18:10] [INFO] AAPL prices: falling back to Yahoo Finance
+[2026-02-18 00:18:10] [WARN] Alpha Vantage RSI failed for AAPL: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:18:10] [INFO] AAPL RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:18:11] [INFO] AAPL RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:18:11] [INFO] AAPL prices: Yahoo Finance — 251 days
+[2026-02-18 00:18:11] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:18:11] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:18:11] [ERROR] 49/50 AAPL — FAILED
+[2026-02-18 00:18:14] [WARN] Alpha Vantage failed for MSFT: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:18:14] [INFO] MSFT prices: falling back to Yahoo Finance
+[2026-02-18 00:18:14] [WARN] Alpha Vantage RSI failed for MSFT: Alpha Vantage API notice: We have detected your API key as TSAODLRYU6EVX79P and our standard API rate limit is 25 requests per day. Please subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly remove all daily rate limits.
+[2026-02-18 00:18:14] [INFO] MSFT RSI: falling back to Yahoo Finance + manual RSI
+[2026-02-18 00:18:14] [INFO] MSFT RSI: Yahoo Finance + manual RSI — 237 entries
+[2026-02-18 00:18:14] [INFO] MSFT prices: Yahoo Finance — 251 days
+[2026-02-18 00:18:14] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 00:18:14] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 00:18:14] [ERROR] 50/50 MSFT — FAILED
+[2026-02-18 00:18:14] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 00:18:14] [INFO]   SCAN COMPLETE — FULL | Post-market (05:15:35 PM ET)
+[2026-02-18 00:18:14] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 00:18:14] [INFO]   Tickers scanned:    50
+[2026-02-18 00:18:14] [INFO]   Successful:         0
+[2026-02-18 00:18:14] [INFO]   Failed:             50
+[2026-02-18 00:18:14] [INFO]   Passed all filters: 0
+[2026-02-18 00:18:14] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 00:18:14] [INFO] Results saved to OPPORTUNITIES.md
+[2026-02-18 12:01:40] [INFO] WallStreet To-Do Service — Analyzing AAPL
+[2026-02-18 12:01:40] [INFO] [1/12] Fetching daily prices...
+[2026-02-18 12:01:40] [INFO] AAPL prices: Yahoo Finance — 251 days
+[2026-02-18 12:01:40] [INFO] [2/12] Calculating RSI from price data...
+[2026-02-18 12:01:40] [INFO] [3/12] Fetching SPY benchmark prices...
+[2026-02-18 12:01:40] [INFO] [4/12] Fetching VIX...
+[2026-02-18 12:01:40] [INFO] [5/12] Fetching institutional ownership...
+[2026-02-18 12:01:43] [INFO] VIX: 19.36 [ELEVATED] (dropping)
+[2026-02-18 12:01:43] [INFO] Sector ETF: XLK -0.06% (red)
+[2026-02-18 12:01:43] [INFO] [6/12] Fetching analyst recommendations...
+[2026-02-18 12:01:43] [INFO] [7/12] Fetching insider sentiment...
+[2026-02-18 12:01:43] [INFO] [8/12] Fetching company news...
+[2026-02-18 12:01:43] [INFO] [9/12] Fetching earnings calendar...
+[2026-02-18 12:01:43] [INFO] [10/12] Fetching insider transactions...
+[2026-02-18 12:01:43] [INFO] [11/12] Fetching social sentiment...
+[2026-02-18 12:01:43] [INFO] [12/12] Fetching earnings surprise...
+[2026-02-18 12:01:43] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:01:43] [INFO] Prices: 251 days | RSI: 237 entries | SPY: 251 days | Recommendations: 4 periods | Insider sentiment: 8 | News: 20 articles | Earnings: 0 upcoming | Social: N/A | Insider trades (30d): 7 | Inst. ownership: 65.3% | Earnings surprise: +4.19% (Q1 2026)
+[2026-02-18 12:01:43] [INFO] Sending headlines to Claude for sentiment analysis...
+[2026-02-18 12:01:43] [ERROR] CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-02-18 12:02:43] [INFO] WallStreet To-Do Service — Analyzing AAPL
+[2026-02-18 12:02:43] [INFO] [1/12] Fetching daily prices...
+[2026-02-18 12:02:43] [INFO] AAPL prices: Yahoo Finance — 251 days
+[2026-02-18 12:02:43] [INFO] [2/12] Calculating RSI from price data...
+[2026-02-18 12:02:43] [INFO] [3/12] Fetching SPY benchmark prices...
+[2026-02-18 12:02:43] [INFO] [4/12] Fetching VIX...
+[2026-02-18 12:02:43] [INFO] [5/12] Fetching institutional ownership...
+[2026-02-18 12:02:45] [INFO] VIX: 19.37 [ELEVATED] (dropping)
+[2026-02-18 12:02:45] [INFO] Sector ETF: XLK -0.06% (red)
+[2026-02-18 12:02:45] [INFO] [6/12] Fetching analyst recommendations...
+[2026-02-18 12:02:45] [INFO] [7/12] Fetching insider sentiment...
+[2026-02-18 12:02:45] [INFO] [8/12] Fetching company news...
+[2026-02-18 12:02:45] [INFO] [9/12] Fetching earnings calendar...
+[2026-02-18 12:02:45] [INFO] [10/12] Fetching insider transactions...
+[2026-02-18 12:02:45] [INFO] [11/12] Fetching social sentiment...
+[2026-02-18 12:02:45] [INFO] [12/12] Fetching earnings surprise...
+[2026-02-18 12:02:46] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:02:46] [INFO] Prices: 251 days | RSI: 237 entries | SPY: 251 days | Recommendations: 4 periods | Insider sentiment: 8 | News: 20 articles | Earnings: 0 upcoming | Social: N/A | Insider trades (30d): 7 | Inst. ownership: 65.3% | Earnings surprise: +4.19% (Q1 2026)
+[2026-02-18 12:02:46] [INFO] AI sentiment SKIPPED (--no-ai flag). Defaulting to Neutral.
+[2026-02-18 12:02:46] [INFO] Sentiment: Neutral (15/30) — 0 headlines analyzed
+[2026-02-18 12:02:46] [INFO] Sentiment reasoning: Skipped (--no-ai)
+[2026-02-18 12:02:46] [INFO] Calculating weighted confidence score...
+[2026-02-18 12:02:46] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:02:46] [INFO]   MARKET CONTEXT
+[2026-02-18 12:02:46] [INFO]     VIX:         19.37 [ELEVATED]
+[2026-02-18 12:02:46] [INFO]     Sector:      Market Flat (SPY 0.16%)
+[2026-02-18 12:02:46] [INFO]     Sentiment:   Cautious — normal volatility
+[2026-02-18 12:02:46] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:02:46] [INFO]   TICKER:        AAPL
+[2026-02-18 12:02:46] [INFO]   ACTION:        SELL
+[2026-02-18 12:02:46] [INFO]   SCORE:         20
+[2026-02-18 12:02:46] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 12:02:46] [INFO]   Technical:     15/30
+[2026-02-18 12:02:46] [INFO]     RSI 30-45:   NO
+[2026-02-18 12:02:46] [INFO]     > 200d SMA:  YES (+15)
+[2026-02-18 12:02:46] [INFO]   Institutional: 0/30
+[2026-02-18 12:02:46] [INFO]     Strong Buy:  NO
+[2026-02-18 12:02:46] [INFO]     Insider Buy: NO
+[2026-02-18 12:02:46] [INFO]   AI Sentiment:  15/30  [Neutral]
+[2026-02-18 12:02:46] [INFO]   Volume:        0/15  [Low — 0.98x avg]
+[2026-02-18 12:02:46] [INFO]   Rel. Strength: +10  [3.17% vs SPY 0.16%]
+[2026-02-18 12:02:46] [INFO]   3M vs SPY:     -20  [-3.13% vs SPY 1.63%]
+[2026-02-18 12:02:46] [INFO]   Weekly Trend:  BEARISH  [Price $263.88 vs SMA100 $265.83]
+[2026-02-18 12:02:46] [INFO]   ATR(14):       $6.84  [Stop-loss: $250.2]
+[2026-02-18 12:02:46] [INFO]   Whale Tracker: 0  [No change]
+[2026-02-18 12:02:46] [INFO]   Consensus:     0  [Stable/Declining]
+[2026-02-18 12:02:46] [INFO]   Smart Money:   0  [No large insider buys]
+[2026-02-18 12:02:46] [INFO]   Social Spike:  +0  [Normal]
+[2026-02-18 12:02:46] [INFO]   Earnings Beat: +4.19% (Q1 2026)
+[2026-02-18 12:02:46] [INFO]   Explosion:     0  [No signals]
+[2026-02-18 12:02:46] [INFO]     52w High:    $288.62  (8.57% away)
+[2026-02-18 12:02:46] [INFO]   Expl. Factor:  Surprise +4.19% | 8.57% from 52w High
+[2026-02-18 12:02:46] [INFO]   Certainty:     60/100
+[2026-02-18 12:02:46] [INFO]     Price Action:    20/40  |  Volume Force:  30/30
+[2026-02-18 12:02:46] [INFO]     Mkt Tailwinds:   10/20  |  Surprise:      0/10
+[2026-02-18 12:02:46] [INFO]     Sector ETF:      XLK -0.06%
+[2026-02-18 12:02:46] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 12:02:46] [INFO]   RISK LEVEL:    NORMAL
+[2026-02-18 12:02:46] [WARN]   WARNING: 3M underperform: -3.13% vs SPY 1.63% (-20)
+[2026-02-18 12:02:46] [INFO]   REASONING:     Score 20: RSI neutral, above SMA200 (+15), no Strong Buy, no insider activity, AI neutral (+15), low vol 0.98x, outperform SPY (+10), 3M underperform (-20), below 20wk SMA, EPS surprise +4.19%, Certainty 60/100
+[2026-02-18 12:02:46] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 12:02:46] [INFO]   SAFETY CHECKLIST:
+[2026-02-18 12:02:46] [INFO]     [ ] Market Trend Alignment?
+[2026-02-18 12:02:46] [INFO]     [x] No Earnings within 3 days?
+[2026-02-18 12:02:46] [INFO]     [ ] Institutional Accumulation?
+[2026-02-18 12:02:46] [INFO]     [ ] Volume Confirmation?
+[2026-02-18 12:02:46] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:02:46] [INFO] Result appended to TODO.md
+[2026-02-18 12:28:46] [INFO] WallStreet Scanner — Mode: FAST | Session: Pre-market (05:28:46 AM ET) | Tickers: 10
+[2026-02-18 12:28:46] [INFO] Fast mode: scanning top 10 priority tickers with auto-retry on failure
+[2026-02-18 12:28:49] [INFO] VIX: 19.4 [ELEVATED] (dropping) | SPY: 251 days
+[2026-02-18 12:28:49] [INFO] Fetching 3 sector ETFs...
+[2026-02-18 12:28:50] [INFO] Sector ETFs: SMH: -0.05%  XLY: -0.12%  XLK: -0.06%
+[2026-02-18 12:28:50] [INFO] NVDA prices: Yahoo Finance — 251 days
+[2026-02-18 12:28:51] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:28:53] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:28:53] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:28:53] [INFO] 1/10 NVDA — SELL (20)
+[2026-02-18 12:28:57] [INFO] TSLA prices: Yahoo Finance — 251 days
+[2026-02-18 12:28:57] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:00] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:00] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:00] [INFO] 2/10 TSLA — SELL (25)
+[2026-02-18 12:29:03] [INFO] PLTR prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:04] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:06] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:06] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:06] [INFO] 3/10 PLTR — WATCH (30)
+[2026-02-18 12:29:10] [INFO] AMD prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:10] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:13] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:13] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:13] [INFO] 4/10 AMD — SELL (15)
+[2026-02-18 12:29:17] [INFO] MSFT prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:17] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:20] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:20] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:20] [INFO] 5/10 MSFT — SELL (0)
+[2026-02-18 12:29:24] [INFO] AAPL prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:24] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:28] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:28] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:28] [INFO] 6/10 AAPL — SELL (20)
+[2026-02-18 12:29:31] [INFO] AMZN prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:32] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:36] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:36] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:36] [INFO] 7/10 AMZN — SELL (5)
+[2026-02-18 12:29:39] [INFO] META prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:40] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:45] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:45] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:45] [INFO] 8/10 META — SELL (20)
+[2026-02-18 12:29:48] [INFO] GOOGL prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:49] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:52] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:52] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:52] [INFO] 9/10 GOOGL — WATCH (35)
+[2026-02-18 12:29:55] [INFO] MSTR prices: Yahoo Finance — 251 days
+[2026-02-18 12:29:56] [WARN] Social sentiment unavailable: Request failed with status code 403
+[2026-02-18 12:29:59] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
+{
+"... is not valid JSON
+[2026-02-18 12:29:59] [INFO] Defaulting to Neutral sentiment
+[2026-02-18 12:29:59] [INFO] 10/10 MSTR — SELL (15)
+[2026-02-18 12:29:59] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:29:59] [INFO]   SCAN COMPLETE — FAST | Pre-market (05:28:46 AM ET)
+[2026-02-18 12:29:59] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 12:29:59] [INFO]   Tickers scanned:    10
+[2026-02-18 12:29:59] [INFO]   Successful:         10
+[2026-02-18 12:29:59] [INFO]   Failed:             0
+[2026-02-18 12:29:59] [INFO]   Passed all filters: 0
+[2026-02-18 12:29:59] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:29:59] [INFO] Results saved to OPPORTUNITIES.md
+[2026-02-18 12:37:27] [INFO] WallStreet To-Do Service — Analyzing NVDA
+[2026-02-18 12:37:27] [INFO] [1/12] Fetching daily prices...
+[2026-02-18 12:37:28] [INFO] NVDA prices: Yahoo Finance — 251 days
+[2026-02-18 12:37:28] [INFO] [2/12] Calculating RSI from price data...
+[2026-02-18 12:37:28] [INFO] [3/12] Fetching SPY benchmark prices...
+[2026-02-18 12:37:28] [INFO] [4/12] Fetching VIX...
+[2026-02-18 12:37:28] [INFO] [5/12] Fetching institutional ownership...
+[2026-02-18 12:37:31] [INFO] VIX: 19.41 [ELEVATED] (dropping)
+[2026-02-18 12:37:31] [INFO] Sector ETF: SMH -0.05% (red)
+[2026-02-18 12:37:31] [INFO] [6/12] Fetching analyst recommendations...
+[2026-02-18 12:37:31] [INFO] [7/12] Fetching insider sentiment...
+[2026-02-18 12:37:31] [INFO] [8/12] Fetching company news...
+[2026-02-18 12:37:31] [INFO] [9/12] Fetching earnings calendar...
+[2026-02-18 12:37:31] [INFO] [10/12] Fetching insider transactions...
+[2026-02-18 12:37:31] [INFO] [11/12] Fetching social sentiment...
+[2026-02-18 12:37:31] [INFO] [12/12] Fetching earnings surprise...
+[2026-02-18 12:37:32] [INFO] Prices: 251 days | RSI: 237 entries | SPY: 251 days | Recommendations: 4 periods | Insider sentiment: 0 | News: 20 articles | Earnings: 1 upcoming | Social: N/A | Insider trades (30d): 25 | Inst. ownership: 69.5% | Earnings surprise: +1.99% (Q3 2026)
+[2026-02-18 12:37:32] [INFO] Sending headlines to Claude for sentiment analysis...
+[2026-02-18 12:37:35] [INFO] Sentiment: Bullish (30/30) — 20 headlines analyzed
+[2026-02-18 12:37:35] [INFO] Sentiment reasoning: Multiple headlines highlight significant deals with Meta and expansion in India, demonstrating strong demand for Nvidia's AI chips and partnerships that solidify its market position, outweighing isolated bearish predictions.
+[2026-02-18 12:37:35] [INFO] Calculating weighted confidence score...
+[2026-02-18 12:37:35] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:37:35] [INFO]   MARKET CONTEXT
+[2026-02-18 12:37:35] [INFO]     VIX:         19.41 [ELEVATED]
+[2026-02-18 12:37:35] [INFO]     Sector:      Market Flat (SPY 0.16%)
+[2026-02-18 12:37:35] [INFO]     Sentiment:   Cautious — normal volatility
+[2026-02-18 12:37:35] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:37:35] [INFO]   TICKER:        NVDA
+[2026-02-18 12:37:35] [INFO]   ACTION:        WATCH
+[2026-02-18 12:37:35] [INFO]   SCORE:         40
+[2026-02-18 12:37:35] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 12:37:35] [INFO]   Technical:     15/30
+[2026-02-18 12:37:35] [INFO]     RSI 30-45:   NO
+[2026-02-18 12:37:35] [INFO]     > 200d SMA:  YES (+15)
+[2026-02-18 12:37:35] [INFO]   Institutional: 0/30
+[2026-02-18 12:37:35] [INFO]     Strong Buy:  NO
+[2026-02-18 12:37:35] [INFO]     Insider Buy: NO
+[2026-02-18 12:37:35] [INFO]   AI Sentiment:  30/30  [Bullish]
+[2026-02-18 12:37:35] [INFO]   Volume:        0/15  [Low — 0.92x avg]
+[2026-02-18 12:37:35] [INFO]   Rel. Strength: +10  [1.18% vs SPY 0.16%]
+[2026-02-18 12:37:35] [INFO]   3M vs SPY:     -20  [-2.73% vs SPY 1.63%]
+[2026-02-18 12:37:35] [INFO]   Weekly Trend:  BEARISH  [Price $184.97 vs SMA100 $185.69]
+[2026-02-18 12:37:35] [INFO]   ATR(14):       $6.52  [Stop-loss: $171.92]
+[2026-02-18 12:37:35] [INFO]   Whale Tracker: 0  [No change]
+[2026-02-18 12:37:35] [INFO]   Consensus:     0  [Stable/Declining]
+[2026-02-18 12:37:35] [INFO]   Smart Money:   0  [No large insider buys]
+[2026-02-18 12:37:35] [INFO]   Social Spike:  +5  [Normal]
+[2026-02-18 12:37:35] [INFO]   Earnings Beat: +1.99% (Q3 2026)
+[2026-02-18 12:37:35] [INFO]   Explosion:     0  [No signals]
+[2026-02-18 12:37:35] [INFO]     52w High:    $212.19  (12.83% away)
+[2026-02-18 12:37:35] [INFO]   Expl. Factor:  Surprise +1.99% | 12.83% from 52w High
+[2026-02-18 12:37:35] [INFO]   Certainty:     40/100
+[2026-02-18 12:37:35] [INFO]     Price Action:    0/40  |  Volume Force:  30/30
+[2026-02-18 12:37:35] [INFO]     Mkt Tailwinds:   10/20  |  Surprise:      0/10
+[2026-02-18 12:37:35] [INFO]     Sector ETF:      SMH -0.05%
+[2026-02-18 12:37:35] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 12:37:35] [INFO]   RISK LEVEL:    NORMAL
+[2026-02-18 12:37:35] [WARN]   WARNING: 3M underperform: -2.73% vs SPY 1.63% (-20)
+[2026-02-18 12:37:35] [INFO]   REASONING:     Score 40: RSI neutral, above SMA200 (+15), no Strong Buy, no insider activity, AI bullish (+30), low vol 0.92x, outperform SPY (+10), 3M underperform (-20), below 20wk SMA, EPS surprise +1.99%, Certainty 40/100
+[2026-02-18 12:37:35] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-18 12:37:35] [INFO]   SAFETY CHECKLIST:
+[2026-02-18 12:37:35] [INFO]     [ ] Market Trend Alignment?
+[2026-02-18 12:37:35] [INFO]     [x] No Earnings within 3 days?
+[2026-02-18 12:37:35] [INFO]     [ ] Institutional Accumulation?
+[2026-02-18 12:37:35] [INFO]     [ ] Volume Confirmation?
+[2026-02-18 12:37:35] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-18 12:37:35] [INFO] Result appended to TODO.md
+[2026-02-18 12:40:30] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-18 12:40:30] [INFO] Telegram alert sent successfully
