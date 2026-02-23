@@ -433,60 +433,6 @@
     "action": "SELL"
   },
   {
-    "ticker": "NVDA",
-    "date": "2026-02-23",
-    "time": "06:34:55 AM",
-    "session": "Pre-market",
-    "price": 189.82000732421875,
-    "score": 28,
-    "action": "SELL"
-  },
-  {
-    "ticker": "TSLA",
-    "date": "2026-02-23",
-    "time": "06:34:55 AM",
-    "session": "Pre-market",
-    "price": 411.82000732421875,
-    "score": 8,
-    "action": "SELL"
-  },
-  {
-    "ticker": "PLTR",
-    "date": "2026-02-23",
-    "time": "06:34:55 AM",
-    "session": "Pre-market",
-    "price": 135.24000549316406,
-    "score": 50,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "AMD",
-    "date": "2026-02-23",
-    "time": "06:34:55 AM",
-    "session": "Pre-market",
-    "price": 200.14999389648438,
-    "score": 43,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "MSFT",
-    "date": "2026-02-23",
-    "time": "06:34:55 AM",
-    "session": "Pre-market",
-    "price": 397.2300109863281,
-    "score": 20,
-    "action": "SELL"
-  },
-  {
-    "ticker": "AAPL",
-    "date": "2026-02-23",
-    "time": "06:34:55 AM",
-    "session": "Pre-market",
-    "price": 264.5799865722656,
-    "score": 48,
-    "action": "WATCH"
-  },
-  {
     "ticker": "AMZN",
     "date": "2026-02-23",
     "time": "06:34:55 AM",
@@ -514,12 +460,444 @@
     "action": "BUY"
   },
   {
+    "ticker": "NVDA",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 190.0399932861328,
+    "score": 43,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TSLA",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 398.25,
+    "score": 38,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AMD",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 195.60000610351562,
+    "score": 28,
+    "action": "SELL"
+  },
+  {
+    "ticker": "PLTR",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 129.16000366210938,
+    "score": 10,
+    "action": "SELL"
+  },
+  {
     "ticker": "MSTR",
     "date": "2026-02-23",
-    "time": "06:34:55 AM",
-    "session": "Pre-market",
-    "price": 131.0500030517578,
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 124.9801025390625,
+    "score": -2,
+    "action": "SELL"
+  },
+  {
+    "ticker": "SMCI",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 31.176000595092773,
+    "score": 42,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "PANW",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 145.18499755859375,
+    "score": 5,
+    "action": "SELL"
+  },
+  {
+    "ticker": "ELF",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 90.06500244140625,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "CRWD",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 351.2250061035156,
+    "score": -17,
+    "action": "SELL"
+  },
+  {
+    "ticker": "SNOW",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 158.1699981689453,
+    "score": 12,
+    "action": "SELL"
+  },
+  {
+    "ticker": "NET",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 164.18499755859375,
+    "score": 21,
+    "action": "SELL"
+  },
+  {
+    "ticker": "DDOG",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 105.84500122070312,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "COIN",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 162.3300018310547,
+    "score": 41,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MELI",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 1914.0999755859375,
+    "score": 42,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TTD",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 24.218900680541992,
+    "score": 10,
+    "action": "SELL"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 117.19999694824219,
+    "score": 46,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AFRM",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 47.29999923706055,
+    "score": 21,
+    "action": "SELL"
+  },
+  {
+    "ticker": "HOOD",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 71.86150360107422,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "RBLX",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 61.70000076293945,
+    "score": 48,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "UBER",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 70.77999877929688,
+    "score": 42,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ABNB",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 120.51000213623047,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "DASH",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 165.11000061035156,
+    "score": 42,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "DUOL",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 105.45999908447266,
+    "score": -18,
+    "action": "SELL"
+  },
+  {
+    "ticker": "MNDY",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 70.875,
+    "score": -13,
+    "action": "SELL"
+  },
+  {
+    "ticker": "ZS",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 144.93499755859375,
+    "score": 5,
+    "action": "SELL"
+  },
+  {
+    "ticker": "OKTA",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 71.05000305175781,
+    "score": -17,
+    "action": "SELL"
+  },
+  {
+    "ticker": "BILL",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 41.92499923706055,
+    "score": -2,
+    "action": "SELL"
+  },
+  {
+    "ticker": "HUBS",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 220.02999877929688,
+    "score": 28,
+    "action": "SELL"
+  },
+  {
+    "ticker": "GDDY",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 87.4000015258789,
+    "score": 18,
+    "action": "SELL"
+  },
+  {
+    "ticker": "TEAM",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 70.9000015258789,
+    "score": 18,
+    "action": "SELL"
+  },
+  {
+    "ticker": "MDB",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 315.760009765625,
+    "score": 38,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ESTC",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 54.85499954223633,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 24.934999465942383,
+    "score": -2,
+    "action": "SELL"
+  },
+  {
+    "ticker": "CFLT",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 30.71500015258789,
+    "score": 58,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TOST",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 25.15999984741211,
+    "score": 5,
+    "action": "SELL"
+  },
+  {
+    "ticker": "APP",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 381.9198913574219,
     "score": 8,
+    "action": "SELL"
+  },
+  {
+    "ticker": "CELH",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 49.32899856567383,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ONON",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 47.27000045776367,
+    "score": 58,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "DECK",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 116.08999633789062,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AXON",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 423.9700012207031,
+    "score": 33,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TW",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 118.48500061035156,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "FICO",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 1287,
+    "score": 27,
+    "action": "SELL"
+  },
+  {
+    "ticker": "LULU",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 177.90499877929688,
+    "score": 38,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "WDAY",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 127.41500091552734,
+    "score": -13,
+    "action": "SELL"
+  },
+  {
+    "ticker": "ADSK",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 217.36000061035156,
+    "score": -7,
+    "action": "SELL"
+  },
+  {
+    "ticker": "FTNT",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 76.29000091552734,
+    "score": -2,
+    "action": "SELL"
+  },
+  {
+    "ticker": "ARM",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 123.11239624023438,
+    "score": 8,
+    "action": "SELL"
+  },
+  {
+    "ticker": "AAPL",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 266.0299987792969,
+    "score": -3,
+    "action": "SELL"
+  },
+  {
+    "ticker": "MSFT",
+    "date": "2026-02-23",
+    "time": "11:13:47 AM",
+    "session": "Intraday",
+    "price": 386.489990234375,
+    "score": 18,
     "action": "SELL"
   }
 ]
