@@ -1016,3 +1016,59 @@
 [2026-02-25 18:01:31] [INFO] Results saved to OPPORTUNITIES.md
 [2026-02-25 18:01:31] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-02-25 18:01:32] [INFO] Telegram alert sent successfully
+[2026-02-26 11:35:06] [INFO] WallStreet Scanner — Mode: FAST | Session: Pre-market (06:35:06 AM ET) | Tickers: 10
+[2026-02-26 11:35:06] [INFO] Fast mode: scanning top 10 priority tickers with auto-retry on failure
+[2026-02-26 11:35:06] [INFO] VIX: 18.02 [ELEVATED] (rising) | SPY: 251 days
+[2026-02-26 11:35:06] [INFO] Fetching 3 sector ETFs...
+[2026-02-26 11:35:06] [INFO] Sector ETFs: SMH: +1.67%  XLY: +0.3%  XLK: +1.92%
+[2026-02-26 11:35:06] [INFO] NVDA prices: Yahoo Finance — 251 days
+[2026-02-26 11:35:10] [INFO] 1/10 NVDA — BUY (72) Certainty 70/100 🚀
+[2026-02-26 11:35:10] [INFO] Sending Telegram for: NVDA (HIGH CONVICTION)
+[2026-02-26 11:35:10] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-26 11:35:11] [INFO] Telegram alert sent successfully
+[2026-02-26 11:35:14] [INFO] TSLA prices: Yahoo Finance — 251 days
+[2026-02-26 11:35:17] [INFO] 2/10 TSLA — WATCH (36)
+[2026-02-26 11:35:20] [INFO] PLTR prices: Yahoo Finance — 251 days
+[2026-02-26 11:35:24] [INFO] 3/10 PLTR — WATCH (50) Certainty 70/100 🚀
+[2026-02-26 11:35:24] [INFO] Sending Telegram for: PLTR (HIGH CONVICTION)
+[2026-02-26 11:35:24] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-26 11:35:25] [INFO] Telegram alert sent successfully
+[2026-02-26 11:35:28] [INFO] AMD prices: Yahoo Finance — 251 days
+[2026-02-26 11:35:31] [INFO] 4/10 AMD — WATCH (32)
+[2026-02-26 11:35:34] [INFO] MSFT prices: Yahoo Finance — 251 days
+[2026-02-26 11:35:39] [INFO] 5/10 MSFT — WATCH (43) Certainty 70/100 🚀
+[2026-02-26 11:35:39] [INFO] Sending Telegram for: MSFT (HIGH CONVICTION)
+[2026-02-26 11:35:39] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-26 11:35:39] [INFO] Telegram alert sent successfully
+[2026-02-26 11:35:42] [INFO] AAPL prices: Yahoo Finance — 251 days
+[2026-02-26 11:35:46] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 425 (line 6 column 1)
+[2026-02-26 11:35:46] [INFO] Defaulting to Neutral sentiment
+[2026-02-26 11:35:46] [INFO] 6/10 AAPL — SELL (13)
+[2026-02-26 11:35:49] [INFO] AMZN prices: Yahoo Finance — 251 days
+[2026-02-26 11:35:53] [INFO] 7/10 AMZN — WATCH (50)
+[2026-02-26 11:35:56] [INFO] META prices: Yahoo Finance — 251 days
+[2026-02-26 11:36:00] [INFO] 8/10 META — SELL (25) Certainty 70/100 🚀
+[2026-02-26 11:36:00] [INFO] Sending Telegram for: META (HIGH CONVICTION)
+[2026-02-26 11:36:00] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-26 11:36:00] [INFO] Telegram alert sent successfully
+[2026-02-26 11:36:03] [INFO] GOOGL prices: Yahoo Finance — 251 days
+[2026-02-26 11:36:08] [INFO] 9/10 GOOGL — WATCH (38) Certainty 70/100 🚀
+[2026-02-26 11:36:08] [INFO] Sending Telegram for: GOOGL (HIGH CONVICTION)
+[2026-02-26 11:36:08] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-26 11:36:08] [INFO] Telegram alert sent successfully
+[2026-02-26 11:36:12] [INFO] MSTR prices: Yahoo Finance — 251 days
+[2026-02-26 11:36:18] [INFO] 10/10 MSTR — SELL (18) Certainty 70/100 🚀
+[2026-02-26 11:36:18] [INFO] Sending Telegram for: MSTR (HIGH CONVICTION)
+[2026-02-26 11:36:18] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-26 11:36:18] [INFO] Telegram alert sent successfully
+[2026-02-26 11:36:18] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-26 11:36:18] [INFO]   SCAN COMPLETE — FAST | Pre-market (06:35:06 AM ET)
+[2026-02-26 11:36:18] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-26 11:36:18] [INFO]   Tickers scanned:    10
+[2026-02-26 11:36:18] [INFO]   Successful:         10
+[2026-02-26 11:36:18] [INFO]   Failed:             0
+[2026-02-26 11:36:18] [INFO]   Passed all filters: 0
+[2026-02-26 11:36:18] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-26 11:36:18] [INFO] Results saved to OPPORTUNITIES.md
+[2026-02-26 11:36:18] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-26 11:36:18] [INFO] Telegram alert sent successfully
