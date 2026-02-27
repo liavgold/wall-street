@@ -1126,3 +1126,120 @@
 [2026-02-27 11:28:14] [INFO] Results saved to OPPORTUNITIES.md
 [2026-02-27 11:28:14] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-02-27 11:28:14] [INFO] Telegram alert sent successfully
+[2026-02-27 15:59:43] [INFO] WallStreet Scanner — Mode: FULL | Session: Intraday (10:59:43 AM ET) | Tickers: 50
+[2026-02-27 15:59:44] [INFO] VIX: 20.11 [ELEVATED] (rising) | SPY: 252 days
+[2026-02-27 15:59:44] [INFO] Fetching 7 sector ETFs...
+[2026-02-27 15:59:44] [INFO] Sector ETFs: SMH: -1.01%  XLY: -0.48%  XLK: -1.15%  HACK: -2.21%  SKYY: -2.26%  BITO: -2%  ARKF: -1.3%
+[2026-02-27 15:59:44] [INFO] NVDA prices: Yahoo Finance — 252 days
+[2026-02-27 15:59:48] [INFO] 1/50 NVDA — WATCH (36)
+[2026-02-27 15:59:51] [INFO] TSLA prices: Yahoo Finance — 252 days
+[2026-02-27 15:59:54] [INFO] 2/50 TSLA — SELL (8)
+[2026-02-27 15:59:58] [INFO] AMD prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:01] [INFO] 3/50 AMD — WATCH (50)
+[2026-02-27 16:00:04] [INFO] PLTR prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:08] [INFO] 4/50 PLTR — WATCH (50)
+[2026-02-27 16:00:12] [INFO] MSTR prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:16] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 522 (line 6 column 1)
+[2026-02-27 16:00:16] [INFO] Defaulting to Neutral sentiment
+[2026-02-27 16:00:16] [INFO] 5/50 MSTR — SELL (28)
+[2026-02-27 16:00:19] [INFO] SMCI prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:23] [INFO] 6/50 SMCI — WATCH (31)
+[2026-02-27 16:00:26] [INFO] PANW prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:31] [INFO] 7/50 PANW — SELL (-2)
+[2026-02-27 16:00:34] [INFO] ELF prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:38] [INFO] 8/50 ELF — WATCH (60)
+[2026-02-27 16:00:41] [INFO] CRWD prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:45] [INFO] 9/50 CRWD — WATCH (38)
+[2026-02-27 16:00:48] [INFO] SNOW prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:52] [INFO] 10/50 SNOW — WATCH (46)
+[2026-02-27 16:00:55] [INFO] NET prices: Yahoo Finance — 252 days
+[2026-02-27 16:00:59] [INFO] 11/50 NET — SELL (-17)
+[2026-02-27 16:01:02] [INFO] DDOG prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:05] [INFO] 12/50 DDOG — WATCH (50)
+[2026-02-27 16:01:08] [INFO] COIN prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:13] [INFO] 13/50 COIN — WATCH (50)
+[2026-02-27 16:01:16] [INFO] MELI prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:19] [INFO] 14/50 MELI — SELL (-22)
+[2026-02-27 16:01:22] [INFO] TTD prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:26] [INFO] 15/50 TTD — SELL (-17)
+[2026-02-27 16:01:29] [INFO] SHOP prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:35] [INFO] 16/50 SHOP — SELL (10)
+[2026-02-27 16:01:39] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-02-27 16:01:39] [ERROR] 17/50 SQ — FAILED
+[2026-02-27 16:01:42] [INFO] AFRM prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:45] [INFO] 18/50 AFRM — SELL (16)
+[2026-02-27 16:01:48] [INFO] HOOD prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:52] [INFO] 19/50 HOOD — WATCH (50)
+[2026-02-27 16:01:55] [INFO] RBLX prices: Yahoo Finance — 252 days
+[2026-02-27 16:01:59] [INFO] 20/50 RBLX — SELL (-32)
+[2026-02-27 16:02:02] [INFO] UBER prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:07] [INFO] 21/50 UBER — WATCH (50)
+[2026-02-27 16:02:10] [INFO] ABNB prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:13] [INFO] 22/50 ABNB — WATCH (55)
+[2026-02-27 16:02:16] [INFO] DASH prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:21] [INFO] 23/50 DASH — SELL (18)
+[2026-02-27 16:02:24] [INFO] DUOL prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:28] [INFO] 24/50 DUOL — SELL (-13)
+[2026-02-27 16:02:31] [INFO] MNDY prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:35] [INFO] 25/50 MNDY — SELL (-21)
+[2026-02-27 16:02:38] [INFO] ZS prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:41] [INFO] 26/50 ZS — SELL (13)
+[2026-02-27 16:02:45] [INFO] OKTA prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:49] [INFO] 27/50 OKTA — SELL (-6)
+[2026-02-27 16:02:52] [INFO] BILL prices: Yahoo Finance — 252 days
+[2026-02-27 16:02:56] [INFO] 28/50 BILL — SELL (12)
+[2026-02-27 16:02:59] [INFO] HUBS prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:02] [INFO] 29/50 HUBS — SELL (-17)
+[2026-02-27 16:03:05] [INFO] GDDY prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:09] [INFO] 30/50 GDDY — SELL (-6)
+[2026-02-27 16:03:12] [INFO] TEAM prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:15] [INFO] 31/50 TEAM — WATCH (42)
+[2026-02-27 16:03:19] [INFO] MDB prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:24] [INFO] 32/50 MDB — WATCH (38)
+[2026-02-27 16:03:27] [INFO] ESTC prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:30] [INFO] 33/50 ESTC — WATCH (33)
+[2026-02-27 16:03:33] [INFO] IOT prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:36] [INFO] 34/50 IOT — SELL (-13)
+[2026-02-27 16:03:40] [INFO] CFLT prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:44] [INFO] 35/50 CFLT — WATCH (58)
+[2026-02-27 16:03:47] [INFO] TOST prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:50] [INFO] 36/50 TOST — SELL (28)
+[2026-02-27 16:03:53] [INFO] APP prices: Yahoo Finance — 252 days
+[2026-02-27 16:03:57] [INFO] 37/50 APP — SELL (-7)
+[2026-02-27 16:04:00] [INFO] CELH prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:03] [INFO] 38/50 CELH — WATCH (60)
+[2026-02-27 16:04:06] [INFO] ONON prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:12] [INFO] 39/50 ONON — WATCH (55)
+[2026-02-27 16:04:15] [INFO] DECK prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:19] [INFO] 40/50 DECK — WATCH (60)
+[2026-02-27 16:04:22] [INFO] AXON prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:26] [INFO] 41/50 AXON — WATCH (50)
+[2026-02-27 16:04:29] [INFO] TW prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:29] [INFO] 42/50 TW — WATCH (58)
+[2026-02-27 16:04:32] [INFO] FICO prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:38] [INFO] 43/50 FICO — WATCH (41)
+[2026-02-27 16:04:41] [INFO] LULU prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:46] [INFO] 44/50 LULU — WATCH (35)
+[2026-02-27 16:04:50] [INFO] WDAY prices: Yahoo Finance — 252 days
+[2026-02-27 16:04:54] [INFO] 45/50 WDAY — SELL (-21)
+[2026-02-27 16:04:57] [INFO] ADSK prices: Yahoo Finance — 252 days
+[2026-02-27 16:05:01] [INFO] 46/50 ADSK — WATCH (42)
+[2026-02-27 16:05:04] [INFO] FTNT prices: Yahoo Finance — 252 days
+[2026-02-27 16:05:17] [INFO] 47/50 FTNT — SELL (-2)
+[2026-02-27 16:05:20] [INFO] ARM prices: Yahoo Finance — 252 days
+[2026-02-27 16:05:25] [INFO] 48/50 ARM — WATCH (38)
+[2026-02-27 16:05:29] [INFO] AAPL prices: Yahoo Finance — 252 days
+[2026-02-27 16:05:33] [INFO] 49/50 AAPL — SELL (16)
+[2026-02-27 16:05:36] [INFO] MSFT prices: Yahoo Finance — 252 days
+[2026-02-27 16:05:40] [INFO] 50/50 MSFT — WATCH (41)
+[2026-02-27 16:05:40] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-27 16:05:40] [INFO]   SCAN COMPLETE — FULL | Intraday (10:59:43 AM ET)
+[2026-02-27 16:05:40] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-02-27 16:05:40] [INFO]   Tickers scanned:    50
+[2026-02-27 16:05:40] [INFO]   Successful:         49
+[2026-02-27 16:05:40] [INFO]   Failed:             1
+[2026-02-27 16:05:40] [INFO]   Passed all filters: 0
+[2026-02-27 16:05:40] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-02-27 16:05:40] [INFO] Results saved to OPPORTUNITIES.md
+[2026-02-27 16:05:40] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-02-27 16:05:41] [INFO] Telegram alert sent successfully
