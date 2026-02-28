@@ -1526,15 +1526,32 @@ def main() -> None:
                     "TAKE_PROFIT": PRIMARY,
                 }
 
-                df_exits    = pd.DataFrame(bt_rows)
-                df_exits["pct_change"] = pd.to_numeric(df_exits["pct_change"], errors="coerce").fillna(0)
-                exit_counts = df_exits["exitReason"].value_counts().reset_index()
+                df_exits = pd.DataFrame(bt_rows)
+                df_exits["pct_change"] = pd.to_numeric(
+                    df_exits["pct_change"], errors="coerce"
+                ).fillna(0)
+                # Safety: ensure exitReason column exists with a fallback
+                if "exitReason" not in df_exits.columns:
+                    df_exits["exitReason"] = "N/A"
+                else:
+                    df_exits["exitReason"] = df_exits["exitReason"].fillna("N/A")
+
+                exit_counts = (
+                    df_exits["exitReason"]
+                    .value_counts()
+                    .reset_index()
+                    .rename(columns={"exitReason": "reason", "count": "count"})
+                )
+                # value_counts().reset_index() col names differ by pandas version;
+                # force them to be consistent regardless.
                 exit_counts.columns = ["reason", "count"]
+
                 avg_by_exit = (
                     df_exits.groupby("exitReason")["pct_change"]
                     .mean()
                     .reset_index()
-                    .rename(columns={"pct_change": "avg_return"})
+                    # rename BOTH columns so downstream code can use "reason" everywhere
+                    .rename(columns={"exitReason": "reason", "pct_change": "avg_return"})
                 )
 
                 col_pie, col_bar = st.columns(2)
