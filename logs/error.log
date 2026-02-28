@@ -129,3 +129,20 @@
 [2026-02-18 12:29:59] [ERROR] Claude sentiment failed: Unexpected token '`', "```json
 {
 "... is not valid JSON
+[2026-02-23 16:17:07] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-02-23 16:17:07] [ERROR] 17/50 SQ — FAILED
+[2026-02-23 16:21:54] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 480 (line 6 column 1)
+[2026-02-23 18:02:25] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-02-23 18:02:25] [ERROR] 1/1 VIX — FAILED
+[2026-02-24 17:57:33] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-02-24 17:57:33] [ERROR] 1/1 VIX — FAILED
+[2026-02-25 18:01:11] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-02-25 18:01:11] [ERROR] 1/2 VIX — FAILED
+[2026-02-26 11:35:46] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 425 (line 6 column 1)
+[2026-02-26 17:57:01] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-02-26 17:57:01] [ERROR] 1/1 VIX — FAILED
+[2026-02-27 16:00:16] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 522 (line 6 column 1)
+[2026-02-27 16:01:39] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-02-27 16:01:39] [ERROR] 17/50 SQ — FAILED
+[2026-02-27 17:38:50] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-02-27 17:38:50] [ERROR] 1/1 VIX — FAILED
