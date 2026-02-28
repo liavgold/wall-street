@@ -27,36 +27,60 @@ import {
   delay,
 } from "./fetchers/marketData";
 import { scoreTechnical, detectExplosion } from "./analyzers/engine";
+import { sendLiveSignalsDigest } from "./utils/telegram";
 
 // ── Config ───────────────────────────────────────────────────────────────────
 
-const TICKERS = [
-  "NVDA", "TSLA", "AMD", "PLTR", "MSTR", "SMCI", "PANW", "ELF", "CRWD", "SNOW",
-  "NET",  "DDOG", "COIN", "MELI", "TTD",  "SHOP", "SQ",   "AFRM", "HOOD", "RBLX",
-  "UBER", "ABNB", "DASH", "DUOL", "MNDY", "ZS",   "OKTA", "BILL", "HUBS", "GDDY",
-  "TEAM", "MDB",  "ESTC", "IOT",  "CFLT", "TOST", "APP",  "CELH", "ONON", "DECK",
-  "AXON", "TW",   "FICO", "LULU", "WDAY", "ADSK", "FTNT", "ARM",  "AAPL", "MSFT",
+// ─── Curated universe: original 50 high-momentum names ──────────────────────
+// Organized by sub-sector to make the SECTOR heat-map logic intuitive.
+// Set DYNAMIC_TICKER_FETCH = true to replace with a live Polygon fetch instead.
+const TICKERS_HARDCODED = [
+  // AI / Semiconductors
+  "NVDA", "AMD",  "ARM",  "SMCI",
+  // Cybersecurity (CYBER sub-sector — max 2 per window)
+  "PANW", "CRWD", "ZS",   "OKTA", "FTNT", "NET",
+  // SaaS / Enterprise Software (SAAS sub-sector — max 2 per window)
+  "HUBS", "WDAY", "ADSK", "BILL", "MNDY", "TEAM",
+  // Data / Analytics / Infra (DATA_INFRA sub-sector — max 2 per window)
+  "SNOW", "MDB",  "DDOG", "ESTC", "IOT",  "CFLT", "TOST",
+  // Fintech / Crypto
+  "COIN", "MSTR", "HOOD", "AFRM", "SQ",   "TW",   "FICO",
+  // E-commerce
+  "SHOP", "MELI",
+  // Consumer / Lifestyle
+  "CELH", "ONON", "DECK", "LULU", "ELF",
+  // Mobility / Gig
+  "UBER", "ABNB", "DASH",
+  // Big Tech (retained — AAPL has momentum characteristics in breakout windows)
+  "AAPL", "MSFT",
+  // Specialty / High-conviction
+  "TSLA", "PLTR", "APP",  "TTD",  "AXON", "RBLX", "DUOL", "GDDY",
 ];
 
 const HOLD_DAYS              = 21;   // standard hold window
 const MAX_HOLD_DAYS          = 63;   // absolute max hold for tier2-locked winners (~3 months)
-const BUY_THRESHOLD          = 65;   // quality floor — entry filters do the heavy lifting
+const BUY_THRESHOLD          = 65;   // effective elite floor — scorer caps at ~80; SMA200+wkly caps enforce quality
+const LIVE_SIGNAL_THRESHOLD  = 75;   // score floor for today's live-signal export
 const ATR_STOP_MULT          = 1.5;  // stop = 1.5× ATR14 below entry
 const MAX_STOP_PCT           = 0.08; // ATR stop capped at 8%
 const BREAKEVEN_TRIGGER      = 0.05; // tier-1: raise stop to break-even once +5% gained
 const TRAIL_LOCK_TRIGGER     = 0.15; // tier-2: lock in +10% floor once +15% is reached
 const TRAIL_LOCK_FLOOR       = 0.10; // the locked profit floor for tier-2
 const TRAIL_UNLIMITED_TRIGGER = 0.25; // tier-3: activate unlimited trailing once +25% hit
-const TRAIL_UNLIMITED_STOP   = 0.10; // tier-3: 10% trailing stop below running peak
-const POSITION_SIZE          = 0.05; // standard 5% per trade
-const POWER_POSITION_SIZE    = 0.075; // 7.5% for near-max-score signals
-const POWER_SCORE_THRESHOLD  = 70;   // score at which pyramid sizing activates
-const POWER_PLAY_RS_MIN      = 10;   // RS3M margin (pp) needed to earn a power play re-entry
-const MIN_HOLD_DAYS          = 2;    // volatility buffer: stop-loss deferred for first 2 days
-const CATASTROPHIC_STOP      = 0.10; // override MIN_HOLD_DAYS if price drops > 10% intraday
-const VOL_CONFIRM_MULT       = 1.20; // breakout volume must be ≥ 120% of 10-day avg
-const RS3M_LEAD_MIN          = 5;    // ticker must beat SPY by ≥ 5pp over 3 months
-const SECTOR_MAX_OPEN        = 2;    // max concurrent sector entries within a hold window
+const TRAIL_ATR_MULT           = 2.5;  // tier-3: trail = 2.5× ATR14 below running peak (dynamic)
+const POSITION_SIZE            = 0.05; // standard 5% per trade
+const POWER_POSITION_SIZE      = 0.075; // 7.5% for near-max-score signals (score ≥ 70)
+const AGGRESSIVE_POSITION_SIZE = 0.10;  // 10% for A+ setups (score ≥ 75)
+const POWER_SCORE_THRESHOLD    = 70;   // score threshold for 7.5% pyramid sizing
+const AGGRESSIVE_SCORE_THRESHOLD = 75; // score threshold for 10% aggressive sizing (proxy for max ~80)
+const POWER_PLAY_RS_MIN        = 10;   // RS3M margin (pp) needed to earn a power play re-entry
+const MAX_CONCURRENT_TRADES    = 10;   // max open positions across all tickers at any time
+const MIN_HOLD_DAYS            = 2;    // volatility buffer: stop-loss deferred for first 2 days
+const CATASTROPHIC_STOP        = 0.10; // override MIN_HOLD_DAYS if price drops > 10% intraday
+const VOL_CONFIRM_MULT         = 1.20; // breakout volume must be ≥ 120% of 10-day avg
+const RS3M_LEAD_MIN            = 5;    // ticker must beat SPY by ≥ 5pp over 3 months
+const SECTOR_MAX_OPEN          = 2;    // max concurrent sector entries within a hold window
+const DYNAMIC_TICKER_FETCH     = false; // true = fetch top-90 Nasdaq tickers from Polygon at runtime
 const STARTING_CASH = 100_000;
 const RATE_LIMIT_MS = 15000;   // ms between Polygon requests (free-tier safe)
 
@@ -179,6 +203,37 @@ async function fetchBars(ticker: string): Promise<DailyPrice[]> {
   }
 }
 
+// ── Polygon top-N Nasdaq tickers by market cap (7-day cache) ──────────────────
+// Enable with DYNAMIC_TICKER_FETCH = true. Requires a Polygon paid plan.
+
+async function fetchTopNasdaqTickers(limit = 90): Promise<string[]> {
+  const cacheFile = path.join(CACHE_DIR, "_nasdaq_tickers.json");
+  interface TickerListCache { fetchedAt: number; tickers: string[] }
+
+  try {
+    if (fs.existsSync(cacheFile)) {
+      const raw = JSON.parse(fs.readFileSync(cacheFile, "utf-8")) as TickerListCache;
+      if (Date.now() - raw.fetchedAt < 7 * 24 * 60 * 60 * 1000) {
+        console.log(`  [cache]   Nasdaq top-${limit}: ${raw.tickers.length} tickers loaded`);
+        return raw.tickers;
+      }
+    }
+  } catch { /* stale or corrupt — refetch */ }
+
+  const url =
+    `${POLYGON_BASE}/v3/reference/tickers` +
+    `?market=stocks&exchange=XNAS&type=CS&active=true` +
+    `&order=desc&sort=market_cap&limit=${limit}&apiKey=${POLYGON_KEY!}`;
+
+  const resp = await axios.get<{ results?: { ticker: string }[] }>(url, { timeout: 20_000 });
+  const tickers = (resp.data.results ?? []).map(r => r.ticker);
+
+  fs.writeFileSync(cacheFile, JSON.stringify({ fetchedAt: Date.now(), tickers }, null, 2));
+  console.log(`  [polygon] Nasdaq top-${limit} by market cap → ${tickers.length} tickers`);
+  await delay(RATE_LIMIT_MS);
+  return tickers;
+}
+
 // ── Simplified technical-only score (no AI / no Finnhub) ──────────────────────
 // Reuses scoreTechnical + detectExplosion from engine.ts, plus helper functions
 // from marketData.ts. Max achievable score ≈ 80.
@@ -245,26 +300,39 @@ function calcATR14(prices: DailyPrice[]): number {
 
 const SECTOR_GROUPS: Record<string, string> = {
   // AI / Semiconductors
-  NVDA: "AI_SEMI",  AMD: "AI_SEMI",  ARM: "AI_SEMI",  SMCI: "AI_SEMI",
-  // Fintech / Crypto
-  COIN: "FINTECH",  MSTR: "FINTECH", HOOD: "FINTECH", AFRM: "FINTECH", SQ: "FINTECH",
-  TW:   "FINTECH",  FICO: "FINTECH",
-  // Cloud / Cybersecurity
-  NET:  "CLOUD",  DDOG: "CLOUD",  ZS:   "CLOUD",  OKTA: "CLOUD",  PANW: "CLOUD",
-  CRWD: "CLOUD",  SNOW: "CLOUD",  HUBS: "CLOUD",  WDAY: "CLOUD",  ADSK: "CLOUD",
-  BILL: "CLOUD",  MNDY: "CLOUD",  MDB:  "CLOUD",  ESTC: "CLOUD",  IOT:  "CLOUD",
-  CFLT: "CLOUD",  TOST: "CLOUD",  TEAM: "CLOUD",  FTNT: "CLOUD",
-  // Consumer / Lifestyle
-  CELH: "CONSUMER", ONON: "CONSUMER", DECK: "CONSUMER", LULU: "CONSUMER", ELF: "CONSUMER",
-  // Mobility / Gig
-  UBER: "MOBILITY", ABNB: "MOBILITY", DASH: "MOBILITY",
-  // E-commerce
-  SHOP: "ECOMM", MELI: "ECOMM",
+  NVDA: "AI_SEMI",  AMD: "AI_SEMI",  ARM:  "AI_SEMI",  SMCI: "AI_SEMI",
+  MRVL: "AI_SEMI",  AVGO: "AI_SEMI", QCOM: "AI_SEMI",
+  AMAT: "AI_SEMI",  KLAC: "AI_SEMI", LRCX: "AI_SEMI",
+  // Fintech / Crypto / Payments (MA removed from universe)
+  COIN: "FINTECH",  MSTR: "FINTECH", HOOD: "FINTECH", AFRM: "FINTECH", SQ:   "FINTECH",
+  TW:   "FINTECH",  FICO: "FINTECH", PYPL: "FINTECH",
+  // Cybersecurity — formerly part of CLOUD (now its own CYBER bucket)
+  PANW: "CYBER",  CRWD: "CYBER",  ZS:   "CYBER",  OKTA: "CYBER",  FTNT: "CYBER",  NET: "CYBER",
+  // SaaS / Enterprise Software — formerly part of CLOUD
+  HUBS: "SAAS",  WDAY: "SAAS",  ADSK: "SAAS",  BILL: "SAAS",  MNDY: "SAAS",
+  TEAM: "SAAS",  NOW:  "SAAS",  VEEV: "SAAS",  INTU: "SAAS",
+  // Data / Analytics / Infra — formerly part of CLOUD
+  SNOW: "DATA_INFRA",  MDB:  "DATA_INFRA",  DDOG: "DATA_INFRA",  ESTC: "DATA_INFRA",
+  IOT:  "DATA_INFRA",  CFLT: "DATA_INFRA",  TOST: "DATA_INFRA",
+  CDNS: "DATA_INFRA",  SNPS: "DATA_INFRA",
+  // E-commerce / Consumer Internet (AMZN, BKNG removed; CPNG, SE added)
+  SHOP: "ECOMM", MELI: "ECOMM", CPNG: "ECOMM", SE: "ECOMM",
   // Big Tech
   AAPL: "BIG_TECH", MSFT: "BIG_TECH",
-  // Specialty (solo)
+  // Consumer / Lifestyle
+  CELH: "CONSUMER", ONON: "CONSUMER", DECK: "CONSUMER", LULU: "CONSUMER", ELF: "CONSUMER",
+  CMG:  "CONSUMER", CAVA: "CONSUMER",
+  // Mobility / Gig
+  UBER: "MOBILITY", ABNB: "MOBILITY", DASH: "MOBILITY",
+  // Specialty (solo buckets)
   TSLA: "EV",  PLTR: "DATA_GOV", APP: "ADTECH", TTD: "ADTECH",
-  AXON: "GOV_TECH", RBLX: "GAMING", DUOL: "EDTECH", GDDY: "WEB_INFRA",
+  AXON: "GOV_TECH", RBLX: "GAMING", DUOL: "EDTECH", GDDY: "WEB_INFRA", SPOT: "STREAMING",
+  // Med Tech
+  ISRG: "MEDTECH", DXCM: "MEDTECH", PODD: "MEDTECH",
+  // Energy / Power Infrastructure
+  VST:  "ENERGY", CEG: "ENERGY", FSLR: "ENERGY", GEV: "ENERGY",
+  // Quality Compounders
+  CPRT: "QUALITY", CTAS: "QUALITY", ODFL: "QUALITY",
 };
 
 // ── Max Drawdown ─────────────────────────────────────────────────────────────
@@ -286,16 +354,22 @@ async function runBacktest(): Promise<void> {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   fs.mkdirSync(LOGS_DIR,  { recursive: true });
 
+  // Resolve ticker universe
+  const tickers = DYNAMIC_TICKER_FETCH
+    ? await fetchTopNasdaqTickers(90)
+    : TICKERS_HARDCODED;
+
   console.log(`\nWallStreet TS Backtester`);
-  console.log(`Period  : ${TWO_YEARS_AGO} → ${TODAY}`);
-  console.log(`Tickers : ${TICKERS.length} + SPY`);
-  console.log(`Threshold : score ≥ ${BUY_THRESHOLD}  |  Hold: ${HOLD_DAYS}d (${MAX_HOLD_DAYS}d for winners)  |  Position: ${POSITION_SIZE * 100}% / ${POWER_POSITION_SIZE * 100}%`);
-  console.log(`Stop-Loss : ATR14 × ${ATR_STOP_MULT} (max -${(MAX_STOP_PCT * 100).toFixed(0)}%)  |  No hard take-profit — unlimited trailing`);
-  console.log(`Trailing  : +${(BREAKEVEN_TRIGGER*100).toFixed(0)}% → break-even  |  +${(TRAIL_LOCK_TRIGGER*100).toFixed(0)}% → lock +${(TRAIL_LOCK_FLOOR*100).toFixed(0)}%  |  +${(TRAIL_UNLIMITED_TRIGGER*100).toFixed(0)}% → ${(TRAIL_UNLIMITED_STOP*100).toFixed(0)}%-from-peak trail`);
+  console.log(`Period    : ${TWO_YEARS_AGO} → ${TODAY}`);
+  console.log(`Tickers   : ${tickers.length} + SPY  (${DYNAMIC_TICKER_FETCH ? "dynamic Polygon fetch" : "hardcoded universe"})`);
+  console.log(`Threshold : score ≥ ${BUY_THRESHOLD}  |  Hold: ${HOLD_DAYS}d (${MAX_HOLD_DAYS}d for winners)  |  Capacity: ≤ ${MAX_CONCURRENT_TRADES} concurrent`);
+  console.log(`Sizing    : base ${POSITION_SIZE * 100}%  |  power (≥${POWER_SCORE_THRESHOLD}) ${POWER_POSITION_SIZE * 100}%  |  A+ (≥${AGGRESSIVE_SCORE_THRESHOLD}) ${AGGRESSIVE_POSITION_SIZE * 100}%`);
+  console.log(`Stop-Loss : ATR14 × ${ATR_STOP_MULT} (max -${(MAX_STOP_PCT * 100).toFixed(0)}%)  |  No hard take-profit — unlimited dynamic trailing`);
+  console.log(`Trailing  : +${(BREAKEVEN_TRIGGER*100).toFixed(0)}% → break-even  |  +${(TRAIL_LOCK_TRIGGER*100).toFixed(0)}% → lock +${(TRAIL_LOCK_FLOOR*100).toFixed(0)}%  |  +${(TRAIL_UNLIMITED_TRIGGER*100).toFixed(0)}% → ${TRAIL_ATR_MULT}×ATR14-from-peak trail`);
   console.log(`Re-entry  : Power Play after leader stop-out (RS3M ≥ ${POWER_PLAY_RS_MIN}pp) on SMA20 reclaim + vol`);
-  console.log(`Entry     : score ≥ ${BUY_THRESHOLD}  AND  close > prior-day high  AND  close > SMA10`);
-  console.log(`          : volume ≥ ${((VOL_CONFIRM_MULT - 1) * 100).toFixed(0)}% above 10-day avg  AND  SPY above SMA50`);
-  console.log(`          : 3M RS beats SPY by ≥ ${RS3M_LEAD_MIN}pp  AND  sector heat < ${SECTOR_MAX_OPEN} open\n`);
+  console.log(`Entry     : score ≥ ${BUY_THRESHOLD}  AND  close > prior-day high  AND  close > SMA10  AND  close > SMA200`);
+  console.log(`          : volume ≥ ${((VOL_CONFIRM_MULT - 1) * 100).toFixed(0)}% above 10-day avg  AND  SPY SMA10 > SPY SMA50 (timing)`);
+  console.log(`          : 3M RS beats SPY by ≥ ${RS3M_LEAD_MIN}pp  AND  sector heat < ${SECTOR_MAX_OPEN}  AND  open slots < ${MAX_CONCURRENT_TRADES}\n`);
 
   // ── 1. Fetch all bars ───────────────────────────────────────────────────────
   console.log("── Fetching price data ──────────────────────────────────────");
@@ -303,7 +377,7 @@ async function runBacktest(): Promise<void> {
 
   priceMap.set("SPY", await fetchBars("SPY"));
 
-  for (const ticker of TICKERS) {
+  for (const ticker of tickers) {
     priceMap.set(ticker, await fetchBars(ticker));
   }
 
@@ -329,7 +403,7 @@ async function runBacktest(): Promise<void> {
   // so we never hold more than SECTOR_MAX_OPEN concurrent positions in the same theme.
   const sectorEntryDates = new Map<string, string[]>();
 
-  for (const ticker of TICKERS) {
+  for (const ticker of tickers) {
     const prices = priceMap.get(ticker) ?? [];
 
     if (prices.length < 220) {
@@ -347,6 +421,7 @@ async function runBacktest(): Promise<void> {
     let powerPlayEligible    = false; // true after a leader (RS>10pp) is stopped out
     let entryRs3mMargin      = 0;     // RS3M advantage at entry (for power play check)
     let tradePositionSize    = STARTING_CASH * POSITION_SIZE; // per-trade capital
+    let trailStopAtrDist     = 0;     // 2×ATR14 distance locked at entry for tier-3 trail
     let count                = 0;
 
     for (let i = 200; i < prices.length - 1; i++) {
@@ -366,6 +441,13 @@ async function runBacktest(): Promise<void> {
           const sma10      = calc10DaySMA(prices.slice(0, i + 1));
           const aboveSma10 = sma10 !== null && prices[i].close > sma10;
 
+          // ── Entry filter 2b: 200-day SMA — laggard screen ────────────────
+          // We only want stocks in a long-term structural uptrend.
+          // A close below SMA200 means the stock is still in a bear phase — skip it.
+          const priceWindow200 = prices.slice(0, i + 1);
+          const aboveSma200    = priceWindow200.length >= 200 &&
+            prices[i].close > (priceWindow200.slice(-200).reduce((s, p) => s + p.close, 0) / 200);
+
           // ── Entry filter 3: Volume confirmation ──────────────────────────
           // Breakout day volume must be ≥ 120% of the prior 10-day avg volume.
           // No "low volume" breakouts — they fail to follow through.
@@ -375,13 +457,15 @@ async function runBacktest(): Promise<void> {
             : 0;
           const volumeConfirmed = avgVol10 > 0 && prices[i].volume >= avgVol10 * VOL_CONFIRM_MULT;
 
-          // ── Entry filter 4: Market regime filter ─────────────────────────
-          // Only enter if SPY is trading above its 50-day SMA.
-          // We don't buy even the best stock in a market downtrend.
+          // ── Entry filter 4: Market timing — SPY SMA10 > SMA50 ───────────────
+          // Short-term SPY momentum must be leading the long-term baseline.
+          // Stronger than "SPY above SMA50": filters out exhaustion phases
+          // where SPY is still above its long-term MA but already rolling over.
           const spySMA50Confirmed = (() => {
             if (spyWindow.length < 50) return false;
-            const sma50 = spyWindow.slice(-50).reduce((s, p) => s + p.close, 0) / 50;
-            return spyWindow[spyWindow.length - 1].close >= sma50;
+            const spySma10 = spyWindow.slice(-10).reduce((s, p) => s + p.close, 0) / 10;
+            const spySma50 = spyWindow.slice(-50).reduce((s, p) => s + p.close, 0) / 50;
+            return spySma10 >= spySma50;
           })();
 
           // ── Entry filter 5: Sector leader — 3M RS must beat SPY by ≥ 5pp ─
@@ -402,8 +486,14 @@ async function runBacktest(): Promise<void> {
           }).length;
           const sectorCool  = recentCount < SECTOR_MAX_OPEN;
 
-          if (breakoutConfirmed && aboveSma10 && volumeConfirmed &&
-              spySMA50Confirmed && leadsMarket && sectorCool) {
+          // ── Entry filter 7: Portfolio capacity ───────────────────────────────
+          // Count open concurrent trades across all already-simulated tickers.
+          // If ≥ MAX_CONCURRENT_TRADES are open on this date, skip — no capital.
+          const openCount  = allTrades.filter(t => t.date <= signalDate && t.exitDate >= signalDate).length;
+          const capacityOk = openCount < MAX_CONCURRENT_TRADES;
+
+          if (breakoutConfirmed && aboveSma10 && aboveSma200 && volumeConfirmed &&
+              spySMA50Confirmed && leadsMarket && sectorCool && capacityOk) {
             // Enter at next-day open to avoid look-ahead bias
             entryIdx             = i + 1;
             entryPrice           = prices[entryIdx].open;
@@ -417,10 +507,17 @@ async function runBacktest(): Promise<void> {
             const stopPct     = Math.min(atrStopDist, MAX_STOP_PCT);
             currentStop = entryPrice * (1 - stopPct);
 
-            // ── Pyramid sizing: near-max score earns 7.5%, rest get 5% ───────
-            tradePositionSize = score >= POWER_SCORE_THRESHOLD
-              ? STARTING_CASH * POWER_POSITION_SIZE
-              : STARTING_CASH * POSITION_SIZE;
+            // ── Three-tier sizing: A+ (≥75) → 10%, power (≥70) → 7.5%, base → 5% ─
+            tradePositionSize = score >= AGGRESSIVE_SCORE_THRESHOLD
+              ? STARTING_CASH * AGGRESSIVE_POSITION_SIZE   // 10%
+              : score >= POWER_SCORE_THRESHOLD
+                ? STARTING_CASH * POWER_POSITION_SIZE      // 7.5%
+                : STARTING_CASH * POSITION_SIZE;           // 5%
+
+            // Lock in 2×ATR14 trail fraction at entry (ATR as % of entry price).
+            // Storing as a fraction makes the trail scale proportionally as price rises,
+            // giving high-priced stocks the same ATR-proportional breathing room.
+            trailStopAtrDist = (atr14 * TRAIL_ATR_MULT) / entryPrice;
 
             // Store RS3M margin so exit logic can decide on power play eligibility
             entryRs3mMargin = rs3mEntry !== null
@@ -457,6 +554,7 @@ async function runBacktest(): Promise<void> {
               currentStop = entryPrice * (1 - stopPct);
 
               tradePositionSize = STARTING_CASH * POSITION_SIZE; // standard 5% for re-entries
+              trailStopAtrDist  = (calcATR14(prices.slice(0, i + 1)) * TRAIL_ATR_MULT) / entryPrice;
               entryRs3mMargin   = 0;       // no chained power plays
               powerPlayEligible = false;   // one-time use consumed
               inTrade           = true;
@@ -480,12 +578,14 @@ async function runBacktest(): Promise<void> {
           currentStop = trailLockPrice;
           tier2Locked = true;
         }
-        // Tier 3 (+25%): activate unlimited trailing — 10% below running peak.
+        // Tier 3 (+25%): activate unlimited trailing — 2×ATR14 below running peak.
+        // Dynamic distance (locked at entry) tightens on low-volatility names,
+        // loosens on high-volatility names, giving each trade room proportional to its range.
         if (peakPrice >= entryPrice * (1 + TRAIL_UNLIMITED_TRIGGER)) {
           unlimitedTrailActive = true;
         }
         if (unlimitedTrailActive) {
-          const dynamicStop = peakPrice * (1 - TRAIL_UNLIMITED_STOP);
+          const dynamicStop = peakPrice * (1 - trailStopAtrDist); // 2×ATR14% below peak
           if (dynamicStop > currentStop) currentStop = dynamicStop;
         }
 
@@ -632,6 +732,62 @@ async function runBacktest(): Promise<void> {
   console.log(`    TIME        : ${timeExits.length}  (avg ${avg(timeExits)}%)`);
   console.log(`${sep}`);
   console.log(`  Saved → ${OUTPUT_PATH}`);
+
+  // ── 7. Export live signals ─────────────────────────────────────────────────
+  // Scores every ticker against TODAY's full price window and exports those
+  // scoring ≥ LIVE_SIGNAL_THRESHOLD to logs/live_signals.json so the dashboard
+  // can highlight them for tomorrow's open.
+  console.log(`\n── Live signals (score ≥ ${LIVE_SIGNAL_THRESHOLD}) ──────────────────────────────────`);
+
+  interface LiveSignal {
+    ticker:      string;
+    score:       number;
+    close:       number;
+    date:        string;
+    aboveSma200: boolean;
+  }
+
+  const liveSignals: LiveSignal[] = [];
+
+  for (const ticker of tickers) {
+    const prices = priceMap.get(ticker) ?? [];
+    if (prices.length < 220) continue;
+
+    const spyFull = spyAll.slice(0, Math.min(prices.length, spyAll.length));
+    const score   = simplifiedScore(prices, spyFull);
+
+    if (score >= LIVE_SIGNAL_THRESHOLD) {
+      const last     = prices[prices.length - 1];
+      const sma200   = prices.length >= 200
+        ? prices.slice(-200).reduce((s, p) => s + p.close, 0) / 200
+        : null;
+      const above200 = sma200 !== null && last.close > sma200;
+
+      liveSignals.push({
+        ticker,
+        score,
+        close:       parseFloat(last.close.toFixed(2)),
+        date:        last.date,
+        aboveSma200: above200,
+      });
+      console.log(`  ${ticker.padEnd(6)} score=${score.toFixed(0).padStart(3)}  $${last.close.toFixed(2)}  SMA200:${above200 ? "✓" : "✗"}  ${last.date}`);
+    }
+  }
+
+  liveSignals.sort((a, b) => b.score - a.score);
+
+  const LIVE_SIGNALS_PATH = path.resolve(LOGS_DIR, "live_signals.json");
+  fs.writeFileSync(LIVE_SIGNALS_PATH, JSON.stringify({
+    generated_at: TODAY,
+    threshold:    LIVE_SIGNAL_THRESHOLD,
+    count:        liveSignals.length,
+    signals:      liveSignals,
+  }, null, 2));
+
+  console.log(`  → ${liveSignals.length} signal(s) written to ${LIVE_SIGNALS_PATH}`);
+
+  // Send consolidated digest to Telegram
+  await sendLiveSignalsDigest();
 }
 
 // ── Entry point ────────────────────────────────────────────────────────────────

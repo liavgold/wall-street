@@ -22,6 +22,7 @@ HISTORY_PATH      = ROOT / "logs" / "history.json"
 OPPORTUNITIES_PATH= ROOT / "OPPORTUNITIES.md"
 PERFORMANCE_PATH  = ROOT / "logs" / "performance.md"
 BACKTEST_PATH     = ROOT / "logs" / "backtest_results.json"
+LIVE_SIGNALS_PATH = ROOT / "logs" / "live_signals.json"
 PERF_SUMMARY_PATH = ROOT / "logs" / "performance_summary.json"
 SCANNER_LOG_PATH  = ROOT / "logs" / "scanner.log"
 COMBINED_LOG_PATH = ROOT / "logs" / "combined.log"
@@ -438,6 +439,18 @@ def load_backtest_results() -> dict:
         return {}
     try:
         with open(BACKTEST_PATH) as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+@st.cache_data(ttl=60)
+def load_live_signals() -> dict:
+    """Load logs/live_signals.json written by npm run backtest."""
+    if not LIVE_SIGNALS_PATH.exists():
+        return {}
+    try:
+        with open(LIVE_SIGNALS_PATH) as f:
             return json.load(f)
     except (json.JSONDecodeError, OSError):
         return {}
@@ -1040,6 +1053,51 @@ def _render_sidebar(df: pd.DataFrame, opp: dict) -> None:
                 unsafe_allow_html=True,
             )
 
+        # ── ATR Stop Calculator ───────────────────────────────────────────────
+        st.markdown(
+            f"<div style='margin-top:20px;padding-top:12px;"
+            f"border-top:1px solid {BORDER};font-family:monospace;"
+            f"font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;"
+            f"color:{MUTED};margin-bottom:8px;'>⚡ ATR Stop Calculator</div>",
+            unsafe_allow_html=True,
+        )
+        atr_price = st.number_input(
+            "Entry Price ($)", min_value=0.01, value=100.0,
+            step=0.5, format="%.2f", key="atr_price",
+        )
+        atr_val = st.number_input(
+            "ATR-14 ($)", min_value=0.01, value=3.0,
+            step=0.1, format="%.2f", key="atr_val",
+        )
+        if atr_price > 0 and atr_val > 0:
+            stop_dist   = atr_val * 1.5
+            trail_dist  = atr_val * 2.5
+            stop_price  = atr_price - stop_dist
+            trail_frac  = trail_dist / atr_price
+            be_price    = atr_price * 1.05
+            stop_pct    = (stop_dist / atr_price) * 100
+            trail_pct   = trail_frac * 100
+
+            st.markdown(
+                f"<div style='background:{DARK_BG};border:1px solid {BORDER};"
+                f"border-radius:6px;padding:10px 12px;font-family:monospace;"
+                f"font-size:0.79rem;line-height:2;'>"
+                f"<div><span style='color:{MUTED}'>Initial Stop (1.5×ATR)</span><br>"
+                f"<span style='color:{RED};font-weight:600;'>"
+                f"${stop_price:.2f}</span>"
+                f"<span style='color:{MUTED};font-size:0.72rem;'> (−{stop_pct:.1f}%)</span></div>"
+                f"<div><span style='color:{MUTED}'>Trail Dist (2.5×ATR)</span><br>"
+                f"<span style='color:{GOLD};font-weight:600;'>"
+                f"${trail_dist:.2f}</span>"
+                f"<span style='color:{MUTED};font-size:0.72rem;'> (−{trail_pct:.1f}% from peak)</span></div>"
+                f"<div><span style='color:{MUTED}'>Break-even Trigger</span><br>"
+                f"<span style='color:{DIM_GRN};font-weight:600;'>"
+                f"${be_price:.2f}</span>"
+                f"<span style='color:{MUTED};font-size:0.72rem;'> (+5%)</span></div>"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
+
 # ── Main Layout ───────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -1048,6 +1106,7 @@ def main() -> None:
     perf = parse_performance()
     bt   = load_backtest_results()
     ps   = load_performance_summary()
+    ls   = load_live_signals()
 
     _render_sidebar(df, opp)
 
@@ -1067,11 +1126,12 @@ def main() -> None:
     )
 
     # ── Tabs ──────────────────────────────────────────────────────────────────
-    tab_scan, tab_perf, tab_inst, tab_bt = st.tabs([
+    tab_scan, tab_perf, tab_inst, tab_bt, tab_live = st.tabs([
         "📡  Current Scan",
         "📊  Historical Performance",
         "🏦  Institutional Performance",
         "🔬  TS Backtest",
+        "🎯  Live Signals",
     ])
 
     # ══════════════════════════════════════════════════════════════════════════
@@ -1703,6 +1763,162 @@ names while staying tight on stable ones.</span>
                 f"5% position / 7.5% pyramid (score ≥ 70) &nbsp;·&nbsp; "
                 f"Power Play re-entry on SMA20 reclaim"
                 f"</div>",
+                unsafe_allow_html=True,
+            )
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # TAB 5 — Live Signals
+    # ══════════════════════════════════════════════════════════════════════════
+    with tab_live:
+        signals     = ls.get("signals", [])
+        threshold   = ls.get("threshold", 75)
+        gen_at_live = ls.get("generated_at", "—")
+        sig_count   = ls.get("count", len(signals))
+
+        st.markdown(
+            f"<h2 style='font-family:monospace;color:{PRIMARY};'>🎯 Live Signals</h2>"
+            f"<div style='font-family:monospace;font-size:0.78rem;color:{MUTED};"
+            f"margin-bottom:1.2rem;'>"
+            f"Score ≥ {threshold} · Generated: {gen_at_live} · "
+            f"Source: <code>logs/live_signals.json</code> "
+            f"— re-run <code>npm run backtest</code> to refresh"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+
+        if not signals:
+            # ── Empty state ───────────────────────────────────────────────────
+            st.markdown(
+                f"<div style='background:{CARD_BG};border:1px solid {BORDER};"
+                f"border-radius:10px;padding:40px 32px;text-align:center;"
+                f"font-family:monospace;'>"
+                f"<div style='font-size:2.5rem;margin-bottom:12px;'>🔍</div>"
+                f"<div style='font-size:1.05rem;color:{WHITE};font-weight:600;"
+                f"margin-bottom:8px;'>Scan complete: No high-conviction setups found.</div>"
+                f"<div style='font-size:0.85rem;color:{MUTED};'>"
+                f"Waiting for quality. The filters are doing their job.</div>"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
+        else:
+            # ── Signals table ─────────────────────────────────────────────────
+            st.markdown(
+                f"<div style='font-family:monospace;font-size:0.78rem;"
+                f"color:{MUTED};margin-bottom:8px;'>"
+                f"{sig_count} setup(s) above threshold — sorted by score descending</div>",
+                unsafe_allow_html=True,
+            )
+
+            rows_html = ""
+            for s in signals:
+                ticker   = s.get("ticker", "—")
+                score    = s.get("score", 0)
+                close    = s.get("close", 0.0)
+                above200 = s.get("aboveSma200", False)
+                sig_date = s.get("date", "—")
+
+                action   = "BUY NOW 🚀" if score >= 75 else "WATCH 👀"
+                act_col  = PRIMARY if score >= 75 else GOLD
+
+                badge_bg  = "#0d3d1a" if score >= 75 else "#2a2000"
+                badge_col = PRIMARY   if score >= 75 else GOLD
+                badge_txt = "● BULLISH" if score >= 75 else "● ELEVATED"
+
+                sma200_icon = (
+                    f"<span style='color:{DIM_GRN};'>✓ SMA200</span>"
+                    if above200
+                    else f"<span style='color:{RED};'>✗ SMA200</span>"
+                )
+
+                rows_html += f"""
+<tr style='border-bottom:1px solid {BORDER};'>
+  <td style='padding:12px 16px;font-family:monospace;font-size:1rem;
+             font-weight:700;color:{WHITE};'>{ticker}</td>
+  <td style='padding:12px 16px;'>
+    <span style='background:{badge_bg};color:{badge_col};
+                 font-family:monospace;font-size:0.78rem;font-weight:600;
+                 padding:4px 10px;border-radius:20px;border:1px solid {badge_col}33;'>
+      {badge_txt}
+    </span>
+    <span style='font-family:monospace;font-size:0.82rem;color:{MUTED};
+                 margin-left:8px;'>{score}</span>
+  </td>
+  <td style='padding:12px 16px;font-family:monospace;font-size:0.9rem;
+             color:{WHITE};'>${close:.2f}</td>
+  <td style='padding:12px 16px;font-family:monospace;font-size:0.82rem;
+             color:{act_col};font-weight:600;'>{action}</td>
+  <td style='padding:12px 16px;font-family:monospace;font-size:0.78rem;
+             color:{MUTED};'>{sma200_icon}</td>
+  <td style='padding:12px 16px;font-family:monospace;font-size:0.75rem;
+             color:{MUTED};'>{sig_date}</td>
+</tr>"""
+
+            st.markdown(
+                f"<div style='background:{CARD_BG};border:1px solid {BORDER};"
+                f"border-radius:10px;overflow:hidden;'>"
+                f"<table style='width:100%;border-collapse:collapse;'>"
+                f"<thead><tr style='background:{DARK_BG};'>"
+                f"<th style='padding:10px 16px;font-family:monospace;font-size:0.68rem;"
+                f"text-transform:uppercase;letter-spacing:0.1em;color:{MUTED};"
+                f"text-align:left;'>Ticker</th>"
+                f"<th style='padding:10px 16px;font-family:monospace;font-size:0.68rem;"
+                f"text-transform:uppercase;letter-spacing:0.1em;color:{MUTED};"
+                f"text-align:left;'>Signal / Score</th>"
+                f"<th style='padding:10px 16px;font-family:monospace;font-size:0.68rem;"
+                f"text-transform:uppercase;letter-spacing:0.1em;color:{MUTED};"
+                f"text-align:left;'>Price</th>"
+                f"<th style='padding:10px 16px;font-family:monospace;font-size:0.68rem;"
+                f"text-transform:uppercase;letter-spacing:0.1em;color:{MUTED};"
+                f"text-align:left;'>Action</th>"
+                f"<th style='padding:10px 16px;font-family:monospace;font-size:0.68rem;"
+                f"text-transform:uppercase;letter-spacing:0.1em;color:{MUTED};"
+                f"text-align:left;'>Trend</th>"
+                f"<th style='padding:10px 16px;font-family:monospace;font-size:0.68rem;"
+                f"text-transform:uppercase;letter-spacing:0.1em;color:{MUTED};"
+                f"text-align:left;'>Date</th>"
+                f"</tr></thead>"
+                f"<tbody>{rows_html}</tbody>"
+                f"</table></div>",
+                unsafe_allow_html=True,
+            )
+
+        # ── Performance context strip ──────────────────────────────────────────
+        st.markdown("<br>", unsafe_allow_html=True)
+        if bt and "total_return" in bt:
+            tr   = bt.get("total_return", 0.0)
+            pf   = bt.get("profit_factor", 0.0)
+            wr   = bt.get("win_rate", 0.0)
+            dd   = bt.get("max_drawdown", 0.0)
+            pts  = bt.get("data_points", 0)
+            rows = bt.get("rows", [])
+            trail_rows = [r for r in rows if r.get("exitReason") == "TRAIL_STOP"]
+            trail_avg  = (
+                sum(r["pct_change"] for r in trail_rows) / len(trail_rows)
+                if trail_rows else 0.0
+            )
+            tr_col  = PRIMARY if tr >= 0 else RED
+            tr_sign = "+" if tr >= 0 else ""
+
+            st.markdown("### 📊 Strategy Benchmark (TS Backtest)")
+            c1, c2, c3, c4, c5 = st.columns(5)
+            c1.metric("Total Return",   f"{tr_sign}{tr:.2f}%")
+            c2.metric("Profit Factor",  f"{pf:.2f}")
+            c3.metric("Win Rate",       f"{wr:.1f}%")
+            c4.metric("Max Drawdown",   f"{dd:.2f}%")
+            c5.metric("Avg Trail Exit", f"+{trail_avg:.1f}%" if trail_avg else "—")
+
+            st.markdown(
+                f"<div style='font-family:monospace;font-size:0.75rem;color:{MUTED};"
+                f"margin-top:6px;'>Based on {pts} trades · "
+                f"2-yr Polygon OHLCV simulation · "
+                f"Signals on this page use the same 9-filter entry gate</div>",
+                unsafe_allow_html=True,
+            )
+        else:
+            st.markdown(
+                f"<div class='empty-card'>No backtest data. "
+                f"Run <code>npm run backtest</code> to populate both this tab "
+                f"and the benchmark strip.</div>",
                 unsafe_allow_html=True,
             )
 

@@ -23,7 +23,7 @@ on:
 jobs:
   scan-fast:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     if: >
       (github.event_name == 'schedule' && github.event.schedule == '0 11 * * 1-5') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'fast')
@@ -50,6 +50,7 @@ jobs:
       - run: npm ci
       - run: mkdir -p logs
       - run: npm run scan -- --mode=fast
+      - run: npm run backtest
 
       - name: Commit updated results
         run: |
@@ -96,6 +97,7 @@ jobs:
       - run: npm ci
       - run: mkdir -p logs
       - run: npm run scan -- --mode=full
+      - run: npm run backtest
 
       - name: Commit updated results
         run: |
@@ -115,7 +117,7 @@ jobs:
 # ── Daily Close — Monitor Scan (22:30 IST / 17:00 UTC) ───────────────────────
   scan-monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     if: >
       (github.event_name == 'schedule' && github.event.schedule == '0 17 * * 1-5') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'monitor')
@@ -142,6 +144,7 @@ jobs:
       - run: npm ci
       - run: mkdir -p logs
       - run: npm run scan -- --mode=monitor
+      - run: npm run backtest
 
       - name: Commit updated results
         run: |

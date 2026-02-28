@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { Telegram } from "telegraf";
 import logger from "./logger";
 import { TodoAction } from "../analyzers/engine";
@@ -121,11 +123,17 @@ function formatStandardAlert(r: TodoAction): string {
   const pos       = price > 0 ? calculatePositionSize(price) : null;
   const summary   = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
   const qualLine  = formatQualityLine(r);
+  const sectorETF = r.breakdown.details.sectorETFData;
+  const sectorStr = sectorETF
+    ? `${sectorETF.etf} ${sectorETF.changePercent > 0 ? "+" : ""}${sectorETF.changePercent}%`
+    : null;
+  const breakEven = price > 0 ? `$${(price * 1.05).toFixed(2)}` : "—";
 
   const lines: (string | null)[] = [
     `⭐ *Strong Setup: ${r.ticker}*`,
     ``,
     `💰 *Price:* $${price.toFixed(2)}`,
+    sectorStr ? `📊 *Sector:* ${sectorStr}` : null,
     `📊 *Score:* ${r.score}  |  *Certainty:* ${ci.total}/100`,
     `⚡ *Confidence:* ${confidenceMeter(ci.total)}`,
     ``,
@@ -137,8 +145,10 @@ function formatStandardAlert(r: TodoAction): string {
     `_${summary}_`,
     ``,
     pos && pos.shares > 0
-      ? `📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | SL: ${stopLoss}`
-      : `📏 *Trade Setup:* SL: ${stopLoss}`,
+      ? `📏 *Entry:* Buy ${pos.shares} shares at $${price.toFixed(2)}`
+      : `📏 *Entry:* $${price.toFixed(2)}`,
+    `🛡️ *Stop Loss:* ${stopLoss} (1.5×ATR)`,
+    `📈 *Break-even:* ${breakEven} (+5%)`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),
@@ -165,6 +175,11 @@ function formatGoldenAlert(r: TodoAction): string {
   const pos       = price > 0 ? calculatePositionSize(price) : null;
   const summary   = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
   const qualLine  = formatQualityLine(r);
+  const sectorETF = r.breakdown.details.sectorETFData;
+  const sectorStr = sectorETF
+    ? `${sectorETF.etf} ${sectorETF.changePercent > 0 ? "+" : ""}${sectorETF.changePercent}%`
+    : null;
+  const breakEven = price > 0 ? `$${(price * 1.05).toFixed(2)}` : "—";
 
   const header = isGolden
     ? `🏆🏆🏆 *GOLDEN TRADE: ${r.ticker}* 🏆🏆🏆`
@@ -175,6 +190,7 @@ function formatGoldenAlert(r: TodoAction): string {
     `━━━━━━━━━━━━━━━━━━━━`,
     ``,
     `💰 *Price:* $${price.toFixed(2)}`,
+    sectorStr ? `📊 *Sector:* ${sectorStr}` : null,
     `📊 *Score:* ${r.score}  |  *Certainty:* ${ci.total}/100`,
     `⚡ *Confidence:* ${confidenceMeter(ci.total)}`,
     ``,
@@ -187,8 +203,10 @@ function formatGoldenAlert(r: TodoAction): string {
     `_${summary}_`,
     ``,
     pos && pos.shares > 0
-      ? `📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | SL: ${stopLoss}`
-      : `📏 *Trade Setup:* SL: ${stopLoss}`,
+      ? `📏 *Entry:* Buy ${pos.shares} shares at $${price.toFixed(2)}`
+      : `📏 *Entry:* $${price.toFixed(2)}`,
+    `🛡️ *Stop Loss:* ${stopLoss} (1.5×ATR)`,
+    `📈 *Break-even:* ${breakEven} (+5%)`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),
@@ -250,5 +268,70 @@ export async function sendAlert(result: TodoAction, modeTag?: string): Promise<v
   if (modeTag) {
     message = `${modeTag}\n\n${message}`;
   }
+  await send(message);
+}
+
+// ── Live Signals Digest ───────────────────────────────────────────────────────
+
+interface LiveSignalEntry {
+  ticker:      string;
+  score:       number;
+  close:       number;
+  date:        string;
+  aboveSma200: boolean;
+}
+
+interface LiveSignalsFile {
+  generated_at: string;
+  threshold:    number;
+  count:        number;
+  signals:      LiveSignalEntry[];
+}
+
+/**
+ * Read logs/live_signals.json (written by `npm run backtest`) and send a
+ * consolidated Golden Run digest to Telegram.
+ *
+ * Each row: Ticker · Score · Price · Break-even (+5%) · SMA200 status
+ */
+export async function sendLiveSignalsDigest(): Promise<void> {
+  const signalsPath = path.join(process.cwd(), "logs", "live_signals.json");
+
+  if (!fs.existsSync(signalsPath)) {
+    logger.warn("live_signals.json not found — skipping digest");
+    return;
+  }
+
+  let data: LiveSignalsFile;
+  try {
+    data = JSON.parse(fs.readFileSync(signalsPath, "utf-8"));
+  } catch {
+    logger.error("Failed to parse live_signals.json — skipping digest");
+    return;
+  }
+
+  if (!data.signals?.length) {
+    await send(
+      `🎯 *Golden Run — Live Signals (${data.generated_at})*\n\n` +
+      `No high-conviction setups today (score ≥${data.threshold}).\n` +
+      `_Waiting for quality._`,
+    );
+    return;
+  }
+
+  const rows = data.signals.map((s, i) => {
+    const trend = s.aboveSma200 ? "✅ SMA200" : "⚠️ Below SMA200";
+    const be    = (s.close * 1.05).toFixed(2);
+    return `*${i + 1}. ${s.ticker}* — Score ${s.score} | $${s.close} | BE: $${be} | ${trend}`;
+  });
+
+  const message = [
+    `🎯 *Golden Run — Live Signals (${data.generated_at})*`,
+    `_Score ≥${data.threshold} · ATR Stop 1.5x · Trail 2.5xATR · Break-even +5%_`,
+    ``,
+    ...rows,
+  ].join("\n");
+
+  logger.info(`Sending live signals digest (${data.signals.length} signals)...`);
   await send(message);
 }
