@@ -48,6 +48,54 @@ function resolvePrice(r: TodoAction): number {
     ?? 0;
 }
 
+/**
+ * Builds a one-line fundamentals quality summary for Telegram messages.
+ * Returns null when no fundamentals data is available.
+ *
+ * Examples:
+ *   💎 Quality: High (EPS +40% | Rev +22%)
+ *   📊 Quality: Mixed (EPS +28%)
+ *   ⚠️ Quality: Risky (D/E 2.8 — high debt)
+ *   📊 Quality: No data
+ */
+function formatQualityLine(r: TodoAction): string | null {
+  const fd = r.breakdown.details.fundamentalsData;
+  if (!fd) return null;
+
+  const parts: string[] = [];
+  if (fd.epsGrowthYoY !== null) {
+    parts.push(`EPS ${fd.epsGrowthYoY > 0 ? "+" : ""}${fd.epsGrowthYoY.toFixed(0)}%`);
+  }
+  if (fd.revenueGrowthYoY !== null) {
+    parts.push(`Rev ${fd.revenueGrowthYoY > 0 ? "+" : ""}${fd.revenueGrowthYoY.toFixed(0)}%`);
+  }
+
+  const epsHigh = fd.epsGrowthYoY !== null && fd.epsGrowthYoY > 20;
+  const revHigh = fd.revenueGrowthYoY !== null && fd.revenueGrowthYoY > 15;
+  const debtRisky = fd.debtToEquity !== null && fd.debtToEquity > 2.0;
+
+  let icon: string;
+  let label: string;
+
+  if (debtRisky) {
+    icon = "⚠️";
+    label = `Risky (D/E ${fd.debtToEquity!.toFixed(1)} — high debt)`;
+  } else if (epsHigh && revHigh) {
+    icon = "💎";
+    label = `High (${parts.join(" | ")})`;
+  } else if (epsHigh || revHigh) {
+    icon = "📊";
+    label = `Mixed (${parts.join(" | ")})`;
+  } else if (parts.length > 0) {
+    icon = "📊";
+    label = `Low (${parts.join(" | ")})`;
+  } else {
+    return null; // No data worth showing
+  }
+
+  return `${icon} *Quality:* ${label}`;
+}
+
 function actionLabel(r: TodoAction): string {
   if (r.action === "GOLDEN TRADE")  return "GOLDEN TRADE";
   if (r.action === "EXPLOSIVE BUY") return "EXPLOSIVE BUY";
@@ -62,18 +110,19 @@ function actionLabel(r: TodoAction): string {
  * Clean layout with AI Insight and Risk Management sections.
  */
 function formatStandardAlert(r: TodoAction): string {
-  const ci       = r.breakdown.certaintyIndex;
-  const price    = resolvePrice(r);
-  const rs       = r.breakdown.details.relativeStrengthData;
-  const rsStr    = rs ? `${rs.tickerChange > 0 ? "+" : ""}${rs.tickerChange}% vs SPY` : "N/A";
-  const stopLoss = r.stopLoss !== null ? `$${r.stopLoss}` : "—";
-  const vol      = r.breakdown.details.volumeRatio;
-  const volLabel = r.breakdown.details.volumeStatus;
-  const footer   = dashboardFooter();
-  const pos      = price > 0 ? calculatePositionSize(price) : null;
-  const summary  = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
+  const ci        = r.breakdown.certaintyIndex;
+  const price     = resolvePrice(r);
+  const rs        = r.breakdown.details.relativeStrengthData;
+  const rsStr     = rs ? `${rs.tickerChange > 0 ? "+" : ""}${rs.tickerChange}% vs SPY` : "N/A";
+  const stopLoss  = r.stopLoss !== null ? `$${r.stopLoss}` : "—";
+  const vol       = r.breakdown.details.volumeRatio;
+  const volLabel  = r.breakdown.details.volumeStatus;
+  const footer    = dashboardFooter();
+  const pos       = price > 0 ? calculatePositionSize(price) : null;
+  const summary   = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
+  const qualLine  = formatQualityLine(r);
 
-  const lines = [
+  const lines: (string | null)[] = [
     `⭐ *Strong Setup: ${r.ticker}*`,
     ``,
     `💰 *Price:* $${price.toFixed(2)}`,
@@ -82,19 +131,20 @@ function formatStandardAlert(r: TodoAction): string {
     ``,
     `📈 *RS (1d):* ${rsStr}`,
     `📦 *Volume:* ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
+    qualLine,
     ``,
     `📰 *AI Insight*`,
     `_${summary}_`,
     ``,
-    ...(pos && pos.shares > 0
-      ? [`📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | Stop Loss: ${stopLoss}`]
-      : [`📏 *Trade Setup:* Stop Loss: ${stopLoss}`]),
+    pos && pos.shares > 0
+      ? `📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | SL: ${stopLoss}`
+      : `📏 *Trade Setup:* SL: ${stopLoss}`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),
   ];
 
-  return lines.join("\n");
+  return lines.filter((l): l is string => l !== null).join("\n");
 }
 
 /**
@@ -102,18 +152,19 @@ function formatStandardAlert(r: TodoAction): string {
  * Bold headers, AI Insight, and Risk Management sections.
  */
 function formatGoldenAlert(r: TodoAction): string {
-  const ci       = r.breakdown.certaintyIndex;
-  const isGolden = r.action === "GOLDEN TRADE";
-  const price    = resolvePrice(r);
-  const rs       = r.breakdown.details.relativeStrengthData;
-  const rsStr    = rs ? `${rs.tickerChange > 0 ? "+" : ""}${rs.tickerChange}% vs SPY` : "N/A";
-  const stopLoss = r.stopLoss !== null ? `$${r.stopLoss}` : "—";
-  const vol      = r.breakdown.details.volumeRatio;
-  const volLabel = r.breakdown.details.volumeStatus;
-  const es       = r.breakdown.details.earningsSurprise;
-  const footer   = dashboardFooter();
-  const pos      = price > 0 ? calculatePositionSize(price) : null;
-  const summary  = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
+  const ci        = r.breakdown.certaintyIndex;
+  const isGolden  = r.action === "GOLDEN TRADE";
+  const price     = resolvePrice(r);
+  const rs        = r.breakdown.details.relativeStrengthData;
+  const rsStr     = rs ? `${rs.tickerChange > 0 ? "+" : ""}${rs.tickerChange}% vs SPY` : "N/A";
+  const stopLoss  = r.stopLoss !== null ? `$${r.stopLoss}` : "—";
+  const vol       = r.breakdown.details.volumeRatio;
+  const volLabel  = r.breakdown.details.volumeStatus;
+  const es        = r.breakdown.details.earningsSurprise;
+  const footer    = dashboardFooter();
+  const pos       = price > 0 ? calculatePositionSize(price) : null;
+  const summary   = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
+  const qualLine  = formatQualityLine(r);
 
   const header = isGolden
     ? `🏆🏆🏆 *GOLDEN TRADE: ${r.ticker}* 🏆🏆🏆`
@@ -130,13 +181,14 @@ function formatGoldenAlert(r: TodoAction): string {
     `📈 *RS (1d):* ${rsStr}`,
     `📦 *Volume:* ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
     es ? `💥 *Earnings Beat:* ${es.surprisePercent > 0 ? "+" : ""}${es.surprisePercent}%` : null,
+    qualLine,
     ``,
     `📰 *AI Insight*`,
     `_${summary}_`,
     ``,
     pos && pos.shares > 0
-      ? `📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | Stop Loss: ${stopLoss}`
-      : `📏 *Trade Setup:* Stop Loss: ${stopLoss}`,
+      ? `📏 *Trade Setup:* Buy ${pos.shares} shares at $${price.toFixed(2)} | SL: ${stopLoss}`
+      : `📏 *Trade Setup:* SL: ${stopLoss}`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
     ...(footer ? [footer] : []),

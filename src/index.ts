@@ -5,7 +5,7 @@ import fs from "fs";
 import path from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { fetchDailyPrices, calculateRSIFromPrices, fetchSPYPrices, fetchVIX, getSectorETF, fetchSectorETF } from "./fetchers/marketData";
+import { fetchDailyPrices, calculateRSIFromPrices, fetchSPYPrices, fetchVIX, fetchYieldCurve, getSectorETF, fetchSectorETF } from "./fetchers/marketData";
 import {
   fetchRecommendationTrends,
   fetchInsiderSentiment,
@@ -15,6 +15,7 @@ import {
   fetchInsiderTransactions,
   fetchInstitutionalOwnership,
   fetchEarningsSurprise,
+  fetchFundamentals,
 } from "./fetchers/socialData";
 import { getAISentiment, analyzeMarket, TodoAction, MarketContext } from "./analyzers/engine";
 import logger from "./utils/logger";
@@ -66,9 +67,10 @@ async function main() {
   logger.info("[5/12] Fetching institutional ownership...");
 
   const sectorETFSymbol = getSectorETF(symbol);
-  const [spyPrices, vix, institutionalOwnership, sectorETF] = await Promise.all([
+  const [spyPrices, vix, yieldCurve, institutionalOwnership, sectorETF] = await Promise.all([
     fetchSPYPrices(),
     fetchVIX(),
+    fetchYieldCurve(),
     fetchInstitutionalOwnership(symbol),
     fetchSectorETF(sectorETFSymbol),
   ]);
@@ -82,15 +84,16 @@ async function main() {
   const earningsToDate = earningsTo.toISOString().split("T")[0];
 
   // Finnhub calls can run in parallel
-  logger.info("[6/12] Fetching analyst recommendations...");
-  logger.info("[7/12] Fetching insider sentiment...");
-  logger.info("[8/12] Fetching company news...");
-  logger.info("[9/12] Fetching earnings calendar...");
-  logger.info("[10/12] Fetching insider transactions...");
-  logger.info("[11/12] Fetching social sentiment...");
-  logger.info("[12/12] Fetching earnings surprise...");
+  logger.info("[6/13] Fetching analyst recommendations...");
+  logger.info("[7/13] Fetching insider sentiment...");
+  logger.info("[8/13] Fetching company news...");
+  logger.info("[9/13] Fetching earnings calendar...");
+  logger.info("[10/13] Fetching insider transactions...");
+  logger.info("[11/13] Fetching social sentiment...");
+  logger.info("[12/13] Fetching earnings surprise...");
+  logger.info("[13/13] Fetching fundamentals (EPS/Revenue growth, D/E)...");
 
-  const [recommendations, insiderSentiment, news, earnings, insiderTransactions, socialSentiment, earningsSurprise] = await Promise.all([
+  const [recommendations, insiderSentiment, news, earnings, insiderTransactions, socialSentiment, earningsSurprise, fundamentals] = await Promise.all([
     fetchRecommendationTrends(symbol),
     fetchInsiderSentiment(symbol, fromDate, toDate),
     fetchCompanyNews(symbol, newsFromDate, toDate),
@@ -98,6 +101,7 @@ async function main() {
     fetchInsiderTransactions(symbol),
     fetchSocialSentiment(symbol, newsFromDate, toDate),
     fetchEarningsSurprise(symbol),
+    fetchFundamentals(symbol),
   ]);
 
   logger.info(
@@ -130,7 +134,7 @@ async function main() {
   const snapshot = {
     symbol, prices, rsi, recommendations, insiderSentiment, news,
     earnings, spyPrices, socialSentiment, vix, insiderTransactions, institutionalOwnership,
-    earningsSurprise, sectorETF,
+    earningsSurprise, sectorETF, fundamentals, yieldCurve,
   };
   const result = await analyzeMarket(snapshot, sentiment);
 

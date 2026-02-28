@@ -4,7 +4,7 @@ import logger from "../utils/logger";
 import {
   DailyPrice, RSIEntry, VolumeAnalysis, analyzeVolume, RelativeStrength, calculateRelativeStrength,
   VIXData, ThreeMonthRS, calculate3MonthRelativeStrength, WeeklyTrend, calculateWeeklyTrend,
-  ATRResult, calculateATR, SectorETFData,
+  ATRResult, calculateATR, SectorETFData, YieldCurveData,
 } from "../fetchers/marketData";
 import {
   RecommendationTrend,
@@ -15,6 +15,7 @@ import {
   InsiderTransaction,
   InstitutionalOwnership,
   EarningsSurprise,
+  FundamentalsData,
 } from "../fetchers/socialData";
 
 // ── Zod Schemas ──────────────────────────────────────────────────────────────
@@ -43,6 +44,8 @@ export interface MarketSnapshot {
   institutionalOwnership: InstitutionalOwnership | null;
   earningsSurprise: EarningsSurprise | null;
   sectorETF: SectorETFData | null;
+  fundamentals: FundamentalsData | null;
+  yieldCurve: YieldCurveData;
 }
 
 export interface MarketContext {
@@ -51,6 +54,8 @@ export interface MarketContext {
   vixMultiplier: number;
   sectorHealth: string;
   generalSentiment: string;
+  yieldCurveInverted: boolean;
+  yieldCurveSpread: number | null;
 }
 
 export interface SafetyChecklist {
@@ -83,6 +88,7 @@ export interface ScoreBreakdown {
   consensusMomentum: number;
   smartMoney: number;
   explosion: number;
+  fundamentals: number;
   explosiveBuy: boolean;
   goldenTrade: boolean;
   explosionFactor: string;
@@ -92,6 +98,8 @@ export interface ScoreBreakdown {
   volumeCapped: boolean;
   trendCapped: boolean;
   vixApplied: boolean;
+  macroExtreme: boolean;
+  yieldCurveInverted: boolean;
   riskLevel: "NORMAL" | "EXTREME";
   warnings: string[];
   marketContext: MarketContext;
@@ -122,6 +130,7 @@ export interface ScoreBreakdown {
     consensusImproving: boolean;
     smartMoneyBuy: boolean;
     smartMoneyDetails: string | null;
+    fundamentalsData: FundamentalsData | null;
   };
 }
 
@@ -140,14 +149,14 @@ export interface TodoAction {
 
 // ── Technical Score (30 pts) ─────────────────────────────────────────────────
 
-function calculate200DaySMA(prices: DailyPrice[]): number | null {
+export function calculate200DaySMA(prices: DailyPrice[]): number | null {
   if (prices.length < 200) return null;
   const last200 = prices.slice(-200);
   const sum = last200.reduce((acc, p) => acc + p.close, 0);
   return sum / 200;
 }
 
-function scoreTechnical(
+export function scoreTechnical(
   prices: DailyPrice[],
   rsi: RSIEntry[]
 ): { score: number; rsiRecovering: boolean; aboveSMA200: boolean } {
@@ -373,7 +382,7 @@ export interface ExplosionSignal {
   rangesShrinking: number[];
 }
 
-function detectExplosion(prices: DailyPrice[], vol: VolumeAnalysis | null): ExplosionSignal {
+export function detectExplosion(prices: DailyPrice[], vol: VolumeAnalysis | null): ExplosionSignal {
   const result: ExplosionSignal = {
     vcpDetected: false,
     nearHigh: false,
@@ -483,6 +492,7 @@ function calculateCertaintyIndex(
 
 function buildMarketContext(
   vix: VIXData,
+  yieldCurve: YieldCurveData,
   rs: RelativeStrength | null,
   sentimentLabel: string
 ): MarketContext {
@@ -495,18 +505,79 @@ function buildMarketContext(
     sectorHealth = "N/A";
   }
 
+  const macroExtreme = vix.level > 28;                            // NEW: Extreme Regime
+  const macroFiring  = vix.level > 25 || yieldCurve.inverted;    // Recession Shield
+
   let generalSentiment: string;
-  if (vix.level > 35) generalSentiment = "Extreme Fear — defensive positioning advised";
-  else if (vix.level > 25) generalSentiment = "Elevated Fear — reduce exposure";
+  if (vix.level > 35)     generalSentiment = "Extreme Fear — defensive positioning advised";
+  else if (macroExtreme)  generalSentiment = "Extreme Risk-Off — Macro Regime active (0.5x, BUY ≥ 85)";
+  else if (macroFiring)   generalSentiment = "Elevated Fear — Recession Shield active (0.7x)";
   else if (vix.level > 18) generalSentiment = "Cautious — normal volatility";
-  else generalSentiment = "Calm — risk-on environment";
+  else                    generalSentiment = "Calm — risk-on environment";
 
-  const vixMultiplier = vix.level > 25 ? 0.8 : 1.0;
+  // 0.5x if VIX > 28 (Macro Extreme); 0.7x if VIX > 25 or yield inverted (Recession Shield)
+  const vixMultiplier = macroExtreme ? 0.5 : (macroFiring ? 0.7 : 1.0);
 
-  return { vixLevel: vix.level, vixLabel: vix.label, vixMultiplier, sectorHealth, generalSentiment };
+  return {
+    vixLevel: vix.level,
+    vixLabel: vix.label,
+    vixMultiplier,
+    sectorHealth,
+    generalSentiment,
+    yieldCurveInverted: yieldCurve.inverted,
+    yieldCurveSpread: yieldCurve.spread,
+  };
 }
 
 // ── Confidence Score Aggregator ──────────────────────────────────────────────
+
+// ── Fundamentals Score (45 pts max) ──────────────────────────────────────────
+// +15 for EPS Growth YoY > 20%
+// +15 for Revenue Growth YoY > 15%
+// +10 for PEG Ratio < 1.2 (quality at a reasonable price)
+// +5  for Gross Margin > 40% (high-quality business model)
+// -20 if Debt/Equity > 2.0, unless high-growth justifies it (EPS > 30% OR Rev > 25%)
+
+function scoreFundamentals(
+  fundamentals: FundamentalsData | null
+): {
+  score: number;
+  epsGrowthFired: boolean;
+  revenueGrowthFired: boolean;
+  pegFired: boolean;
+  grossMarginFired: boolean;
+  debtPenaltyApplied: boolean;
+} {
+  if (!fundamentals) {
+    return { score: 0, epsGrowthFired: false, revenueGrowthFired: false, pegFired: false, grossMarginFired: false, debtPenaltyApplied: false };
+  }
+
+  let score = 0;
+  const { epsGrowthYoY, revenueGrowthYoY, debtToEquity, pegRatio, grossMargin } = fundamentals;
+
+  const epsGrowthFired = epsGrowthYoY !== null && epsGrowthYoY > 20;
+  if (epsGrowthFired) score += 15;
+
+  const revenueGrowthFired = revenueGrowthYoY !== null && revenueGrowthYoY > 15;
+  if (revenueGrowthFired) score += 15;
+
+  // PEG < 1.2 = growing business trading at a reasonable multiple
+  const pegFired = pegRatio !== null && pegRatio > 0 && pegRatio < 1.2;
+  if (pegFired) score += 10;
+
+  // Gross margin > 40% = high-quality, scalable business model
+  const grossMarginFired = grossMargin !== null && grossMargin > 40;
+  if (grossMarginFired) score += 5;
+
+  const highGrowthJustifies =
+    (epsGrowthYoY !== null && epsGrowthYoY > 30) ||
+    (revenueGrowthYoY !== null && revenueGrowthYoY > 25);
+  const debtPenaltyApplied =
+    debtToEquity !== null && debtToEquity > 2.0 && !highGrowthJustifies;
+  if (debtPenaltyApplied) score -= 20;
+
+  return { score, epsGrowthFired, revenueGrowthFired, pegFired, grossMarginFired, debtPenaltyApplied };
+}
 
 export async function calculateConfidenceScore(
   snapshot: MarketSnapshot,
@@ -515,7 +586,7 @@ export async function calculateConfidenceScore(
   const {
     prices, rsi, recommendations, insiderSentiment, earnings,
     spyPrices, socialSentiment, vix, insiderTransactions, institutionalOwnership,
-    earningsSurprise,
+    earningsSurprise, fundamentals,
   } = snapshot;
 
   const technical = scoreTechnical(prices, rsi);
@@ -575,6 +646,13 @@ export async function calculateConfidenceScore(
   let smartMoneyScore = 0;
   const smartMoney = findSmartMoneyBuy(insiderTransactions);
   if (smartMoney.found) smartMoneyScore = 20;
+
+  // Fundamentals: +15 EPS Growth > 20%, +15 Revenue Growth > 15%, -20 D/E > 2 (unless high-growth)
+  const fundamentalsResult = scoreFundamentals(fundamentals);
+  const fundamentalsScore = fundamentalsResult.score;
+  if (fundamentalsResult.debtPenaltyApplied) {
+    warnings.push(`⚠️ High Debt/Equity (D/E > 2.0) — fundamentals penalty -20`);
+  }
 
   // Explosion Detection: +25 if triggered (2 of 3: VCP, near 52w high, volume spark)
   const explosionSignal = detectExplosion(prices, vol);
@@ -637,7 +715,8 @@ export async function calculateConfidenceScore(
   let rawTotal = technical.score + institutional.score + sentimentResult.score
     + sentimentResult.catalystScore
     + volumeScore + relativeStrengthScore + threeMonthRSScore + socialSpikeScore
-    + whaleScore + consensusMomentumScore + smartMoneyScore + explosionScore;
+    + whaleScore + consensusMomentumScore + smartMoneyScore + explosionScore
+    + fundamentalsScore;
 
   // Cap at 60 if volume is below average (low-conviction filter)
   const volumeCapped = vol !== null && vol.status === "Low" && rawTotal > 60;
@@ -650,18 +729,28 @@ export async function calculateConfidenceScore(
     warnings.push(`Below 20-week SMA ($${weeklyTrend!.sma100}) — score capped at 50`);
   }
 
-  // VIX Fear Filter: 0.8x multiplier if VIX > 25
-  const marketCtx = buildMarketContext(vix, rs, sentimentResult.sentiment);
-  const vixApplied = vix.level > 25;
-  let total = vixApplied ? Math.round(rawTotal * 0.8) : rawTotal;
+  // Macro Regime Multiplier:
+  //   VIX > 28 → 0.5x (Macro Extreme Regime, BUY threshold raised to 85)
+  //   VIX > 25 OR yield inverted → 0.7x (Recession Shield)
+  const yieldCurveInverted = snapshot.yieldCurve.inverted;
+  const marketCtx   = buildMarketContext(vix, snapshot.yieldCurve, rs, sentimentResult.sentiment);
+  const macroExtreme = vix.level > 28;
+  const vixApplied   = vix.level > 25 || yieldCurveInverted;
+  const macroMultiplier = macroExtreme ? 0.5 : (vixApplied ? 0.7 : 1.0);
+  let total = macroMultiplier < 1.0 ? Math.round(rawTotal * macroMultiplier) : rawTotal;
 
   // VIX > 35: force WATCH regardless
   if (vix.level > 35) {
     warnings.push(`VIX EXTREME (${vix.level}) — all actions forced to WATCH`);
   }
 
-  if (vixApplied) {
-    warnings.push(`VIX elevated (${vix.level}) — 0.8x fear multiplier applied`);
+  if (macroExtreme) {
+    warnings.push(`🔴 MACRO EXTREME REGIME: VIX ${vix.level} > 28 → 0.5x multiplier, BUY threshold raised to 85`);
+  } else if (vixApplied) {
+    const reasons: string[] = [];
+    if (vix.level > 25) reasons.push(`VIX ${vix.level}`);
+    if (yieldCurveInverted) reasons.push(`Yield Curve Inverted (spread ${snapshot.yieldCurve.spread?.toFixed(2)}%)`);
+    warnings.push(`⚠️ RECESSION SHIELD: 0.7x macro multiplier (${reasons.join(" + ")})`);
   }
 
   // Earnings Safeguard
@@ -697,6 +786,7 @@ export async function calculateConfidenceScore(
     consensusMomentum: consensusMomentumScore,
     smartMoney: smartMoneyScore,
     explosion: explosionScore,
+    fundamentals: fundamentalsScore,
     explosiveBuy,
     goldenTrade,
     explosionFactor,
@@ -706,6 +796,8 @@ export async function calculateConfidenceScore(
     volumeCapped,
     trendCapped,
     vixApplied,
+    macroExtreme,
+    yieldCurveInverted,
     riskLevel,
     warnings,
     marketContext: marketCtx,
@@ -736,14 +828,15 @@ export async function calculateConfidenceScore(
       consensusImproving,
       smartMoneyBuy: smartMoney.found,
       smartMoneyDetails: smartMoney.details,
+      fundamentalsData: fundamentals,
     },
   };
 }
 
 // ── Action + Stop-Loss ───────────────────────────────────────────────────────
 
-function deriveAction(score: number): "BUY" | "SELL" | "WATCH" {
-  if (score > 70) return "BUY";
+function deriveAction(score: number, buyThreshold = 70): "BUY" | "SELL" | "WATCH" {
+  if (score > buyThreshold) return "BUY";
   if (score < 30) return "SELL";
   return "WATCH";
 }
@@ -855,9 +948,14 @@ function buildReasoning(breakdown: ScoreBreakdown): string {
     parts.push(`Certainty ${ci.total}/100${ciLabel}`);
   }
 
-  // VIX
-  if (breakdown.vixApplied) {
-    parts.push(`VIX ${breakdown.marketContext.vixLevel} [0.8x applied]`);
+  // Macro Regime Multiplier
+  if (breakdown.macroExtreme) {
+    parts.push(`🔴 MACRO EXTREME [0.5x: VIX ${breakdown.marketContext.vixLevel}, BUY ≥ 85]`);
+  } else if (breakdown.vixApplied) {
+    const reasons: string[] = [];
+    if (breakdown.marketContext.vixLevel > 25) reasons.push(`VIX ${breakdown.marketContext.vixLevel}`);
+    if (breakdown.yieldCurveInverted) reasons.push("Yield Inverted");
+    parts.push(`RECESSION SHIELD [0.7x: ${reasons.join(" + ")}]`);
   }
 
   // Earnings
@@ -945,8 +1043,11 @@ export async function analyzeMarket(
     };
   }
 
+  // Macro Extreme: raise BUY threshold to 85 when VIX > 28
+  const buyThreshold = snapshot.vix.level > 28 ? 85 : 70;
+
   // VIX > 35: force all actions to WATCH
-  const action = snapshot.vix.level > 35 ? "WATCH" : deriveAction(breakdown.total);
+  const action = snapshot.vix.level > 35 ? "WATCH" : deriveAction(breakdown.total, buyThreshold);
 
   return {
     ticker: snapshot.symbol,

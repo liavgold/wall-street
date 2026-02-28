@@ -194,6 +194,38 @@ export async function fetchVIX(): Promise<VIXData> {
   };
 }
 
+// ── Yield Curve ──────────────────────────────────────────────────────────────
+
+export interface YieldCurveData {
+  tenYear: number | null;     // 10-year treasury yield % (^TNX)
+  threeMonth: number | null;  // 3-month treasury yield % (^IRX)
+  spread: number | null;      // tenYear - threeMonth; negative = inverted
+  inverted: boolean;
+}
+
+export async function fetchYieldCurve(): Promise<YieldCurveData> {
+  try {
+    const [tnx, irx] = await Promise.all([
+      yf.quote("^TNX") as Promise<{ regularMarketPrice?: number }>,
+      yf.quote("^IRX") as Promise<{ regularMarketPrice?: number }>,
+    ]);
+    const tenYear    = typeof tnx.regularMarketPrice === "number" ? tnx.regularMarketPrice : null;
+    const threeMonth = typeof irx.regularMarketPrice === "number" ? irx.regularMarketPrice : null;
+    const spread     = tenYear !== null && threeMonth !== null
+      ? parseFloat((tenYear - threeMonth).toFixed(3))
+      : null;
+    return {
+      tenYear:    tenYear    !== null ? parseFloat(tenYear.toFixed(3))    : null,
+      threeMonth: threeMonth !== null ? parseFloat(threeMonth.toFixed(3)) : null,
+      spread,
+      inverted: spread !== null && spread < 0,
+    };
+  } catch (err) {
+    logger.warn(`Yield curve fetch failed: ${err instanceof Error ? err.message : String(err)}`);
+    return { tenYear: null, threeMonth: null, spread: null, inverted: false };
+  }
+}
+
 // ── Sector ETF ──────────────────────────────────────────────────────────────
 
 export interface SectorETFData {

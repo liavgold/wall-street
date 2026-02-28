@@ -467,6 +467,60 @@ export async function fetchInstitutionalOwnership(
   }
 }
 
+// ── Fundamentals (EPS Growth, Revenue Growth, Debt/Equity) ──────────────────
+
+const BasicFinancialsMetricSchema = z.object({
+  epsGrowthTTMYoy:           z.number().nullable().optional(),
+  revenueGrowthTTMYoy:       z.number().nullable().optional(),
+  "totalDebt/totalEquityAnnual": z.number().nullable().optional(),
+  pegNormalizedAnnual:       z.number().nullable().optional(),
+  grossMarginTTM:            z.number().nullable().optional(),
+});
+
+const BasicFinancialsResponseSchema = z.object({
+  metric: BasicFinancialsMetricSchema,
+});
+
+export interface FundamentalsData {
+  epsGrowthYoY: number | null;      // TTM EPS growth YoY (%)
+  revenueGrowthYoY: number | null;  // TTM Revenue growth YoY (%)
+  debtToEquity: number | null;      // Total Debt / Total Equity (annual)
+  pegRatio: number | null;          // Normalized annual PEG — < 1.2 = +10 pts
+  grossMargin: number | null;       // TTM gross margin % — > 40% = +5 pts
+}
+
+export async function fetchFundamentals(
+  symbol: string
+): Promise<FundamentalsData | null> {
+  const token = process.env.FINNHUB_API_KEY;
+  if (!token) {
+    logger.warn("FINNHUB_API_KEY is not set — skipping fundamentals");
+    return null;
+  }
+
+  try {
+    const { data } = await axios.get(
+      `${FINNHUB_BASE_URL}/stock/metric`,
+      { params: { symbol, metric: "all", token }, timeout: API_TIMEOUT }
+    );
+
+    const parsed = BasicFinancialsResponseSchema.parse(data);
+    const m = parsed.metric;
+
+    return {
+      epsGrowthYoY:    m.epsGrowthTTMYoy                  ?? null,
+      revenueGrowthYoY: m.revenueGrowthTTMYoy             ?? null,
+      debtToEquity:    m["totalDebt/totalEquityAnnual"]    ?? null,
+      pegRatio:        m.pegNormalizedAnnual               ?? null,
+      grossMargin:     m.grossMarginTTM                    ?? null,
+    };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    logger.warn(`Fundamentals unavailable for ${symbol}: ${msg}`);
+    return null;
+  }
+}
+
 export async function fetchEarningsSurprise(
   symbol: string
 ): Promise<EarningsSurprise | null> {

@@ -5,7 +5,8 @@ import fs from "fs";
 import path from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { fetchDailyPrices, calculateRSIFromPrices, fetchSPYPrices, fetchVIX, delay, getSectorETF, fetchSectorETF, SectorETFData } from "./fetchers/marketData";
+import { fetchDailyPrices, calculateRSIFromPrices, fetchSPYPrices, fetchVIX, fetchYieldCurve, delay, getSectorETF, fetchSectorETF, SectorETFData, YieldCurveData } from "./fetchers/marketData";
+import { checkSectorCap } from "./utils/finance";
 import {
   fetchRecommendationTrends,
   fetchInsiderSentiment,
@@ -15,6 +16,7 @@ import {
   fetchInsiderTransactions,
   fetchInstitutionalOwnership,
   fetchEarningsSurprise,
+  fetchFundamentals,
 } from "./fetchers/socialData";
 import { getAISentiment, analyzeMarket, TodoAction, MarketContext } from "./analyzers/engine";
 import logger from "./utils/logger";
@@ -77,7 +79,7 @@ const TICKERS =
 const modeTag =
   scanMode === "fast"    ? "⚡ *FAST SCAN*" :
   scanMode === "monitor" ? "👁 *MONITORING*" :
-  "🔍 *FULL SCAN*";
+  "💎 *QUALITY SCAN*";
 
 // ── Session Timing ──────────────────────────────────────────────────────────
 
@@ -105,6 +107,7 @@ function getSessionLabel(): SessionLabel {
 interface SharedData {
   spyPrices: Awaited<ReturnType<typeof fetchSPYPrices>>;
   vix: Awaited<ReturnType<typeof fetchVIX>>;
+  yieldCurve: YieldCurveData;
   sectorETFs: Map<string, SectorETFData | null>;
 }
 
@@ -150,7 +153,7 @@ async function analyzeTicker(symbol: string, shared: SharedData): Promise<TodoAc
 
       const institutionalOwnership = await fetchInstitutionalOwnership(symbol);
 
-      const [recommendations, insiderSentiment, news, earnings, insiderTransactions, socialSentiment, earningsSurprise] = await Promise.all([
+      const [recommendations, insiderSentiment, news, earnings, insiderTransactions, socialSentiment, earningsSurprise, fundamentals] = await Promise.all([
         fetchRecommendationTrends(symbol),
         fetchInsiderSentiment(symbol, fromDate, toDate),
         fetchCompanyNews(symbol, newsFromDate, toDate),
@@ -158,6 +161,7 @@ async function analyzeTicker(symbol: string, shared: SharedData): Promise<TodoAc
         fetchInsiderTransactions(symbol),
         fetchSocialSentiment(symbol, newsFromDate, toDate),
         fetchEarningsSurprise(symbol),
+        fetchFundamentals(symbol),
       ]);
 
       const sentiment = await getAISentiment(symbol, news);
@@ -169,6 +173,7 @@ async function analyzeTicker(symbol: string, shared: SharedData): Promise<TodoAc
         symbol, prices, rsi, recommendations, insiderSentiment, news,
         earnings, spyPrices: shared.spyPrices, socialSentiment, vix: shared.vix,
         insiderTransactions, institutionalOwnership, earningsSurprise, sectorETF,
+        fundamentals, yieldCurve: shared.yieldCurve,
       };
 
       return await analyzeMarket(snapshot, sentiment);
@@ -220,7 +225,7 @@ function writeOpportunities(
     "",
     "| Indicator | Value |",
     "| --------- | ----- |",
-    `| VIX | ${mc.vixLevel} (${mc.vixLabel})${mc.vixMultiplier < 1 ? " — **0.8x fear multiplier**" : ""} |`,
+    `| VIX | ${mc.vixLevel} (${mc.vixLabel})${mc.vixMultiplier < 1 ? ` — **${mc.vixMultiplier}x macro multiplier**` : ""} |`,
     `| Sector Health | ${mc.sectorHealth} |`,
     `| General Sentiment | ${mc.generalSentiment} |`,
     "",
@@ -384,10 +389,10 @@ async function main() {
   }
 
   // Fetch shared data once (quietly)
-  const [spyPrices, vix] = await quietYahoo(() =>
-    Promise.all([fetchSPYPrices(), fetchVIX()])
+  const [spyPrices, vix, yieldCurve] = await quietYahoo(() =>
+    Promise.all([fetchSPYPrices(), fetchVIX(), fetchYieldCurve()])
   );
-  logger.info(`VIX: ${vix.level} [${vix.label}]${vix.isDropping ? " (dropping)" : " (rising)"} | SPY: ${spyPrices.length} days`);
+  logger.info(`VIX: ${vix.level} [${vix.label}]${vix.isDropping ? " (dropping)" : " (rising)"} | SPY: ${spyPrices.length} days | Yield Curve: ${yieldCurve.spread !== null ? `${yieldCurve.spread > 0 ? "+" : ""}${yieldCurve.spread.toFixed(2)}% (${yieldCurve.inverted ? "⚠️ INVERTED" : "normal"})` : "N/A"}`);
 
   // Fetch unique sector ETFs
   const uniqueETFs = [...new Set(TICKERS.map((t) => getSectorETF(t)))];
@@ -408,7 +413,7 @@ async function main() {
     .join("  ");
   logger.info(`Sector ETFs: ${etfSummary}`);
 
-  const shared: SharedData = { spyPrices, vix, sectorETFs };
+  const shared: SharedData = { spyPrices, vix, yieldCurve, sectorETFs };
   const allResults: TodoAction[] = [];
   let completed = 0;
   let failed = 0;
@@ -416,7 +421,18 @@ async function main() {
   for (const symbol of TICKERS) {
     completed++;
 
-    const result = await analyzeTickerWithRetry(symbol, shared, isFastMode);
+    let result = await analyzeTickerWithRetry(symbol, shared, isFastMode);
+
+    // Sector Concentration Cap: downgrade BUY → WATCH if sector >= 25% of portfolio
+    if (result && (result.action === "BUY" || result.action === "EXPLOSIVE BUY" || result.action === "GOLDEN TRADE")) {
+      const etf = getSectorETF(symbol);
+      const cap = checkSectorCap(etf, OPP_PATH);
+      if (cap.capped) {
+        const warning = `⚠️ SECTOR LIMIT REACHED: ${cap.sector} already at ${Math.round(cap.projectedPct * 100)}% of portfolio (${cap.sectorPositions} of ${cap.totalPositions} existing positions)`;
+        logger.warn(`${symbol} — ${warning}`);
+        result = { ...result, action: "WATCH", warnings: [...result.warnings, warning] };
+      }
+    }
 
     if (result) {
       allResults.push(result);
@@ -460,9 +476,16 @@ async function main() {
   });
 
   // Write results
+  const macroFiring = vix.level > 25 || yieldCurve.inverted;
   const mc = allResults.length > 0
     ? allResults[0].marketContext
-    : { vixLevel: vix.level, vixLabel: vix.label, vixMultiplier: vix.level > 25 ? 0.8 : 1.0, sectorHealth: "N/A", generalSentiment: "N/A" };
+    : {
+        vixLevel: vix.level, vixLabel: vix.label,
+        vixMultiplier: macroFiring ? 0.7 : 1.0,
+        sectorHealth: "N/A", generalSentiment: "N/A",
+        yieldCurveInverted: yieldCurve.inverted,
+        yieldCurveSpread: yieldCurve.spread,
+      };
 
   writeOpportunities(opportunities, allResults.length, mc, scanMode, session, scanTime);
   appendToHistory(allResults, session, scanTime);
