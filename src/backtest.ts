@@ -27,7 +27,7 @@ import {
   delay,
 } from "./fetchers/marketData";
 import { scoreTechnical, detectExplosion } from "./analyzers/engine";
-import { sendLiveSignalsDigest } from "./utils/telegram";
+import { sendLiveSignalsDigest, sendBreakevenAlert } from "./utils/telegram";
 
 // ── Config ───────────────────────────────────────────────────────────────────
 
@@ -334,6 +334,105 @@ const SECTOR_GROUPS: Record<string, string> = {
   // Quality Compounders
   CPRT: "QUALITY", CTAS: "QUALITY", ODFL: "QUALITY",
 };
+
+// ── Open-position break-even tracker ─────────────────────────────────────────
+// open_positions.json tracks every new live signal so we can fire a secondary
+// Telegram alert the moment the trade hits its +5% break-even trigger.
+
+interface OpenPosition {
+  ticker:            string;
+  entryDate:         string;  // ISO date the signal was first seen
+  entryPrice:        number;
+  stopPrice:         number;
+  breakevenNotified: boolean;
+  expiresAfter:      string;  // ISO date — prune after ~90 calendar days
+}
+
+const OPEN_POSITIONS_PATH = path.resolve(LOGS_DIR, "open_positions.json");
+const POSITION_EXPIRY_DAYS = 90; // ≈ MAX_HOLD_DAYS (63 trading days)
+
+function loadOpenPositions(): OpenPosition[] {
+  if (!fs.existsSync(OPEN_POSITIONS_PATH)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(OPEN_POSITIONS_PATH, "utf-8"));
+  } catch {
+    return [];
+  }
+}
+
+function saveOpenPositions(positions: OpenPosition[]): void {
+  fs.writeFileSync(OPEN_POSITIONS_PATH, JSON.stringify(positions, null, 2));
+}
+
+/**
+ * For each tracked open position that hasn't yet hit break-even, check the
+ * latest price from priceMap. Fire a Telegram alert and mark as notified if
+ * currentPrice ≥ entryPrice × 1.05.  Expired positions are pruned.
+ */
+async function checkBreakevenAlerts(
+  priceMap: Map<string, DailyPrice[]>,
+  today: string,
+): Promise<void> {
+  const positions = loadOpenPositions();
+  if (!positions.length) return;
+
+  let changed = false;
+  for (const pos of positions) {
+    if (pos.breakevenNotified)       continue;
+    if (pos.expiresAfter < today)    continue;  // expired — will be pruned below
+
+    const prices = priceMap.get(pos.ticker);
+    if (!prices?.length) continue;
+
+    const currentPrice = prices[prices.length - 1].close;
+    if (currentPrice >= pos.entryPrice * 1.05) {
+      await sendBreakevenAlert(pos.ticker, pos.entryPrice, currentPrice);
+      pos.breakevenNotified = true;
+      changed = true;
+    }
+  }
+
+  // Prune expired entries
+  const active = positions.filter(p => p.expiresAfter >= today);
+  if (changed || active.length !== positions.length) {
+    saveOpenPositions(active);
+  }
+}
+
+/**
+ * Add newly detected live signals to open_positions.json.
+ * Existing tickers are not duplicated — only truly new signals are appended.
+ */
+function addToOpenPositions(
+  liveSignals: { ticker: string; close: number; stopPrice: number }[],
+  today: string,
+): void {
+  const existing = loadOpenPositions();
+  const knownTickers = new Set(existing.map(p => p.ticker));
+
+  const expiry = new Date(today);
+  expiry.setDate(expiry.getDate() + POSITION_EXPIRY_DAYS);
+  const expiresAfter = expiry.toISOString().split("T")[0];
+
+  let added = 0;
+  for (const sig of liveSignals) {
+    if (knownTickers.has(sig.ticker)) continue;
+    existing.push({
+      ticker:            sig.ticker,
+      entryDate:         today,
+      entryPrice:        sig.close,
+      stopPrice:         sig.stopPrice,
+      breakevenNotified: false,
+      expiresAfter,
+    });
+    added++;
+  }
+
+  if (added > 0) {
+    saveOpenPositions(existing);
+    console.log(`  → ${added} new position(s) added to open_positions.json`);
+  }
+}
 
 // ── Max Drawdown ─────────────────────────────────────────────────────────────
 
@@ -745,6 +844,10 @@ async function runBacktest(): Promise<void> {
     close:       number;
     date:        string;
     aboveSma200: boolean;
+    atr14:       number;   // 14-day ATR
+    stopPrice:   number;   // 1.5×ATR stop, capped at MAX_STOP_PCT
+    stopPct:     number;   // stop distance as % of entry
+    sector:      string;   // sub-sector label from SECTOR_GROUPS
   }
 
   const liveSignals: LiveSignal[] = [];
@@ -757,11 +860,16 @@ async function runBacktest(): Promise<void> {
     const score   = simplifiedScore(prices, spyFull);
 
     if (score >= LIVE_SIGNAL_THRESHOLD) {
-      const last     = prices[prices.length - 1];
-      const sma200   = prices.length >= 200
+      const last       = prices[prices.length - 1];
+      const sma200     = prices.length >= 200
         ? prices.slice(-200).reduce((s, p) => s + p.close, 0) / 200
         : null;
-      const above200 = sma200 !== null && last.close > sma200;
+      const above200   = sma200 !== null && last.close > sma200;
+      const atr14      = calcATR14(prices);
+      const rawStop    = last.close - atr14 * ATR_STOP_MULT;
+      const minStop    = last.close * (1 - MAX_STOP_PCT);
+      const stopPrice  = parseFloat(Math.max(rawStop, minStop).toFixed(2));
+      const stopPct    = parseFloat(((last.close - stopPrice) / last.close * 100).toFixed(1));
 
       liveSignals.push({
         ticker,
@@ -769,13 +877,21 @@ async function runBacktest(): Promise<void> {
         close:       parseFloat(last.close.toFixed(2)),
         date:        last.date,
         aboveSma200: above200,
+        atr14:       parseFloat(atr14.toFixed(2)),
+        stopPrice,
+        stopPct,
+        sector:      SECTOR_GROUPS[ticker] ?? "OTHER",
       });
-      console.log(`  ${ticker.padEnd(6)} score=${score.toFixed(0).padStart(3)}  $${last.close.toFixed(2)}  SMA200:${above200 ? "✓" : "✗"}  ${last.date}`);
+      console.log(`  ${ticker.padEnd(6)} score=${score.toFixed(0).padStart(3)}  $${last.close.toFixed(2)}  stop=$${stopPrice} (-${stopPct}%)  SMA200:${above200 ? "✓" : "✗"}  ${last.date}`);
     }
   }
 
   liveSignals.sort((a, b) => b.score - a.score);
 
+  // ── Check break-even on previously tracked positions ─────────────────────
+  await checkBreakevenAlerts(priceMap, TODAY);
+
+  // ── Write live_signals.json ───────────────────────────────────────────────
   const LIVE_SIGNALS_PATH = path.resolve(LOGS_DIR, "live_signals.json");
   fs.writeFileSync(LIVE_SIGNALS_PATH, JSON.stringify({
     generated_at: TODAY,
@@ -786,7 +902,12 @@ async function runBacktest(): Promise<void> {
 
   console.log(`  → ${liveSignals.length} signal(s) written to ${LIVE_SIGNALS_PATH}`);
 
-  // Send consolidated digest to Telegram
+  // ── Track new positions for future break-even monitoring ─────────────────
+  if (liveSignals.length > 0) {
+    addToOpenPositions(liveSignals, TODAY);
+  }
+
+  // ── Send Telegram alerts ──────────────────────────────────────────────────
   await sendLiveSignalsDigest();
 }
 

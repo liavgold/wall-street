@@ -279,6 +279,10 @@ interface LiveSignalEntry {
   close:       number;
   date:        string;
   aboveSma200: boolean;
+  atr14?:      number;   // 14-day ATR (added in enriched run)
+  stopPrice?:  number;   // 1.5×ATR stop
+  stopPct?:    number;   // stop distance as % of entry
+  sector?:     string;   // sub-sector label
 }
 
 interface LiveSignalsFile {
@@ -289,10 +293,10 @@ interface LiveSignalsFile {
 }
 
 /**
- * Read logs/live_signals.json (written by `npm run backtest`) and send a
- * consolidated Golden Run digest to Telegram.
+ * Read logs/live_signals.json (written by `npm run backtest`) and fire one
+ * Telegram alert per signal using the Golden Run template.
  *
- * Each row: Ticker · Score · Price · Break-even (+5%) · SMA200 status
+ * No-signal case: sends a single summary message.
  */
 export async function sendLiveSignalsDigest(): Promise<void> {
   const signalsPath = path.join(process.cwd(), "logs", "live_signals.json");
@@ -310,28 +314,66 @@ export async function sendLiveSignalsDigest(): Promise<void> {
     return;
   }
 
+  // ── No signals ─────────────────────────────────────────────────────────────
   if (!data.signals?.length) {
     await send(
-      `🎯 *Golden Run — Live Signals (${data.generated_at})*\n\n` +
-      `No high-conviction setups today (score ≥${data.threshold}).\n` +
-      `_Waiting for quality._`,
+      `📋 *Daily scan complete. No high-conviction setups today.*\n\n` +
+      `_Portfolio remains in cash/existing positions._\n` +
+      `Score threshold: ${data.threshold}/80  ·  Date: ${data.generated_at}`,
     );
     return;
   }
 
-  const rows = data.signals.map((s, i) => {
-    const trend = s.aboveSma200 ? "✅ SMA200" : "⚠️ Below SMA200";
-    const be    = (s.close * 1.05).toFixed(2);
-    return `*${i + 1}. ${s.ticker}* — Score ${s.score} | $${s.close} | BE: $${be} | ${trend}`;
-  });
+  // ── One alert per signal ───────────────────────────────────────────────────
+  logger.info(`Sending ${data.signals.length} live signal alert(s)...`);
 
+  for (const s of data.signals) {
+    const stopPrice = s.stopPrice ?? parseFloat((s.close * 0.92).toFixed(2));
+    const stopPct   = s.stopPct   ?? parseFloat(((s.close - stopPrice) / s.close * 100).toFixed(1));
+    const bePrice   = (s.close * 1.05).toFixed(2);
+    const sector    = s.sector ?? "—";
+
+    const message = [
+      `🚀 *NEW SIGNAL: ${s.ticker}*`,
+      ``,
+      `⭐ *Score:* ${s.score}/80 (High Conviction)`,
+      `💰 *Entry Price:* $${s.close}`,
+      `🛡️ *Initial Stop (1.5x ATR):* $${stopPrice} (${stopPct}%)`,
+      `📈 *Break-even Trigger (+5%):* $${bePrice}`,
+      `📊 *Sector:* ${sector}`,
+      ``,
+      `_Action: Set a Trailing Stop of 2.5x ATR in your broker._`,
+      ``,
+      `🔗 [TradingView: ${s.ticker}](${tradingViewUrl(s.ticker)})`,
+      ...(dashboardFooter() ? [dashboardFooter()] : []),
+    ].join("\n");
+
+    await send(message);
+  }
+}
+
+/**
+ * Send a break-even alert when an open position hits the +5% trigger.
+ * Called from backtest.ts after price comparison against open_positions.json.
+ */
+export async function sendBreakevenAlert(
+  ticker:       string,
+  entryPrice:   number,
+  currentPrice: number,
+): Promise<void> {
+  const gainPct = ((currentPrice - entryPrice) / entryPrice * 100).toFixed(1);
   const message = [
-    `🎯 *Golden Run — Live Signals (${data.generated_at})*`,
-    `_Score ≥${data.threshold} · ATR Stop 1.5x · Trail 2.5xATR · Break-even +5%_`,
+    `📈 *BREAK-EVEN HIT: ${ticker}*`,
     ``,
-    ...rows,
+    `✅ *+${gainPct}% gain reached — protect your profit now*`,
+    ``,
+    `💰 *Current Price:* $${currentPrice.toFixed(2)}`,
+    `🔒 *Action:* Move your stop loss to entry price $${entryPrice.toFixed(2)}`,
+    `📊 *Your risk is now:* ZERO`,
+    ``,
+    `_Trailing stop (2.5x ATR) continues to run above break-even._`,
   ].join("\n");
 
-  logger.info(`Sending live signals digest (${data.signals.length} signals)...`);
+  logger.info(`Sending break-even alert for ${ticker} (entry $${entryPrice} → current $${currentPrice.toFixed(2)})`);
   await send(message);
 }
