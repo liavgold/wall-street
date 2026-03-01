@@ -19,11 +19,13 @@ import axios from "axios";
 
 import {
   DailyPrice,
+  VIXData,
   calculateRSIFromPrices,
   analyzeVolume,
   calculateRelativeStrength,
   calculate3MonthRelativeStrength,
   calculateWeeklyTrend,
+  fetchVIX,
   delay,
 } from "./fetchers/marketData";
 import { scoreTechnical, detectExplosion } from "./analyzers/engine";
@@ -84,6 +86,15 @@ const DYNAMIC_TICKER_FETCH     = false; // true = fetch top-90 Nasdaq tickers fr
 const STARTING_CASH = 100_000;
 const RATE_LIMIT_MS = 15000;   // ms between Polygon requests (free-tier safe)
 
+// ── Friction & regime constants ───────────────────────────────────────────────
+// 10 basis points (0.10%) per side — simulates bid-ask spread + market-impact.
+// Round-trip cost: 20 bps (0.20%), which turns marginal set-ups into real losses.
+const SLIPPAGE_BPS         = 0.10;                    // 0.10% per side
+const SLIPPAGE_MULT        = SLIPPAGE_BPS / 100;      // 0.001 multiplicative factor
+const VIX_REDUCE_THRESHOLD = 28;                      // VIX > 28 → halve position sizes
+const VIX_BLOCK_THRESHOLD  = 35;                      // VIX > 35 → no new entries
+const RISK_FREE_ANNUAL     = 0.05;                    // 5% — approx T-bill rate used in Sharpe
+
 const LOGS_DIR    = path.resolve(process.cwd(), "logs");
 const CACHE_DIR   = path.resolve(LOGS_DIR, "price_cache");
 const OUTPUT_PATH = path.resolve(LOGS_DIR, "backtest_results.json");
@@ -133,6 +144,11 @@ interface BacktestResults {
   total_return:  number;
   spy_return:    number;
   max_drawdown:  number;
+  sharpe_ratio:  number;
+  calmar_ratio:  number;
+  slippage_bps:  number;
+  vix_at_run:    number;
+  vix_regime:    string;
   rows:          TradeRow[];
 }
 
@@ -335,6 +351,43 @@ const SECTOR_GROUPS: Record<string, string> = {
   CPRT: "QUALITY", CTAS: "QUALITY", ODFL: "QUALITY",
 };
 
+// ── Sharpe & Calmar Ratios ────────────────────────────────────────────────────
+// Sharpe = (annualised return − risk-free rate) / annualised volatility of trade returns.
+// Calmar = annualised return / |max drawdown| — how much return per unit of tail pain.
+
+function calcSharpeCalmar(
+  trades:         TradeRow[],
+  totalReturnPct: number,   // e.g. +0.06
+  maxDrawdownPct: number,   // e.g. -3.96 (already negative from calcMaxDrawdown)
+  periodYears = 2,
+): { sharpe: number; calmar: number } {
+  if (trades.length < 2) return { sharpe: 0, calmar: 0 };
+
+  // Compound annualised return over the backtest window
+  const annualReturn = Math.pow(1 + totalReturnPct / 100, 1 / periodYears) - 1;
+
+  // Per-trade return distribution (fraction)
+  const returns  = trades.map(t => t.pct_change / 100);
+  const mu       = returns.reduce((s, r) => s + r, 0) / returns.length;
+  const variance = returns.reduce((s, r) => s + Math.pow(r - mu, 2), 0) / returns.length;
+  const stdDev   = Math.sqrt(variance);
+
+  // Annualise std dev using the base hold period as the compounding unit
+  const periodsPerYear = 252 / HOLD_DAYS; // ≈ 12 round-trips per year at 21-day holds
+  const annualStd      = stdDev * Math.sqrt(periodsPerYear);
+
+  const sharpe = annualStd > 0
+    ? parseFloat(((annualReturn - RISK_FREE_ANNUAL) / annualStd).toFixed(2))
+    : 0;
+
+  // Calmar: annual return / |max drawdown| (drawdown is already negative, take absolute)
+  const calmar = maxDrawdownPct < 0
+    ? parseFloat((annualReturn / Math.abs(maxDrawdownPct / 100)).toFixed(2))
+    : 99; // no drawdown → effectively infinite; cap display at 99
+
+  return { sharpe, calmar };
+}
+
 // ── Open-position break-even tracker ─────────────────────────────────────────
 // open_positions.json tracks every new live signal so we can fire a secondary
 // Telegram alert the moment the trade hits its +5% break-even trigger.
@@ -480,7 +533,24 @@ async function runBacktest(): Promise<void> {
     priceMap.set(ticker, await fetchBars(ticker));
   }
 
-  // ── 2. SPY buy-and-hold return (benchmark) ─────────────────────────────────
+  // ── 2. Current VIX regime (applies to live sizing + entry gating) ─────────
+  let vixData: VIXData | null = null;
+  try {
+    vixData = await fetchVIX();
+    console.log(`\nVIX at run: ${vixData.level} [${vixData.label}]${vixData.level > VIX_BLOCK_THRESHOLD ? " — ⛔ ALL NEW ENTRIES BLOCKED" : vixData.level > VIX_REDUCE_THRESHOLD ? " — ⚠️ Position sizes halved" : ""}`);
+  } catch {
+    console.warn("  VIX fetch failed — running without regime filter");
+  }
+
+  const vixLevel          = vixData?.level ?? 20;
+  const vixBlockAllNew    = vixLevel > VIX_BLOCK_THRESHOLD;
+  const vixPositionMult   = vixLevel > VIX_REDUCE_THRESHOLD ? 0.5 : 1.0;
+  const vixRegimeLabel    =
+    vixBlockAllNew            ? `${vixLevel} — EXTREME FEAR (no new entries)`
+    : vixLevel > VIX_REDUCE_THRESHOLD ? `${vixLevel} — RISK-OFF (0.5x sizing)`
+    :                                   `${vixLevel} — Normal`;
+
+  // ── 3. SPY buy-and-hold return (benchmark) ─────────────────────────────────
   const spyAll = priceMap.get("SPY") ?? [];
   const spyReturn =
     spyAll.length >= 2
@@ -591,11 +661,12 @@ async function runBacktest(): Promise<void> {
           const openCount  = allTrades.filter(t => t.date <= signalDate && t.exitDate >= signalDate).length;
           const capacityOk = openCount < MAX_CONCURRENT_TRADES;
 
-          if (breakoutConfirmed && aboveSma10 && aboveSma200 && volumeConfirmed &&
+          if (!vixBlockAllNew &&
+              breakoutConfirmed && aboveSma10 && aboveSma200 && volumeConfirmed &&
               spySMA50Confirmed && leadsMarket && sectorCool && capacityOk) {
-            // Enter at next-day open to avoid look-ahead bias
+            // Enter at next-day open + slippage (pays the ask side of the spread)
             entryIdx             = i + 1;
-            entryPrice           = prices[entryIdx].open;
+            entryPrice           = prices[entryIdx].open * (1 + SLIPPAGE_MULT);
             peakPrice            = entryPrice;
             tier2Locked          = false;
             unlimitedTrailActive = false;
@@ -606,12 +677,14 @@ async function runBacktest(): Promise<void> {
             const stopPct     = Math.min(atrStopDist, MAX_STOP_PCT);
             currentStop = entryPrice * (1 - stopPct);
 
-            // ── Three-tier sizing: A+ (≥75) → 10%, power (≥70) → 7.5%, base → 5% ─
-            tradePositionSize = score >= AGGRESSIVE_SCORE_THRESHOLD
+            // ── Three-tier sizing × VIX multiplier ───────────────────────────
+            // VIX > 28 → 0.5x all sizes (Macro Extreme regime)
+            const baseSizing = score >= AGGRESSIVE_SCORE_THRESHOLD
               ? STARTING_CASH * AGGRESSIVE_POSITION_SIZE   // 10%
               : score >= POWER_SCORE_THRESHOLD
                 ? STARTING_CASH * POWER_POSITION_SIZE      // 7.5%
                 : STARTING_CASH * POSITION_SIZE;           // 5%
+            tradePositionSize = baseSizing * vixPositionMult;
 
             // Lock in 2×ATR14 trail fraction at entry (ATR as % of entry price).
             // Storing as a fraction makes the trail scale proportionally as price rises,
@@ -642,7 +715,7 @@ async function runBacktest(): Promise<void> {
 
             if (aboveSma20 && ppVolOk) {
               entryIdx             = i + 1;
-              entryPrice           = prices[entryIdx].open;
+              entryPrice           = prices[entryIdx].open * (1 + SLIPPAGE_MULT);
               peakPrice            = entryPrice;
               tier2Locked          = false;
               unlimitedTrailActive = false;
@@ -652,7 +725,7 @@ async function runBacktest(): Promise<void> {
               const stopPct     = Math.min(atrStopDist, MAX_STOP_PCT);
               currentStop = entryPrice * (1 - stopPct);
 
-              tradePositionSize = STARTING_CASH * POSITION_SIZE; // standard 5% for re-entries
+              tradePositionSize = STARTING_CASH * POSITION_SIZE * vixPositionMult; // 5% × VIX mult
               trailStopAtrDist  = (calcATR14(prices.slice(0, i + 1)) * TRAIL_ATR_MULT) / entryPrice;
               entryRs3mMargin   = 0;       // no chained power plays
               powerPlayEligible = false;   // one-time use consumed
@@ -701,11 +774,12 @@ async function runBacktest(): Promise<void> {
         let exitReason: ExitReason;
 
         if (stopHit) {
-          exitPrice = parseFloat(currentStop.toFixed(2));
-          // Profitable stop = trailing exit on a winner; unprofitable = actual loss.
+          // Exit at stop level minus slippage (selling into a fast market costs extra)
+          exitPrice  = parseFloat((currentStop * (1 - SLIPPAGE_MULT)).toFixed(2));
           exitReason = exitPrice > entryPrice ? "TRAIL_STOP" : "STOP_LOSS";
         } else {
-          exitPrice  = parseFloat(bar.close.toFixed(2));
+          // Time exit at close minus slippage (bid side of spread)
+          exitPrice  = parseFloat((bar.close * (1 - SLIPPAGE_MULT)).toFixed(2));
           exitReason = "TIME";
         }
 
@@ -747,10 +821,10 @@ async function runBacktest(): Promise<void> {
       }
     }
 
-    // Close any still-open trade at last bar
+    // Close any still-open trade at last bar (with slippage)
     if (inTrade && entryIdx < prices.length - 1) {
       const last      = prices.length - 1;
-      const exitPrice = parseFloat(prices[last].close.toFixed(2));
+      const exitPrice = parseFloat((prices[last].close * (1 - SLIPPAGE_MULT)).toFixed(2));
       const pct       = parseFloat(
         (((exitPrice - entryPrice) / entryPrice) * 100).toFixed(2),
       );
@@ -788,7 +862,10 @@ async function runBacktest(): Promise<void> {
   const alphaVsSpy   = parseFloat((totalReturn - spyReturn).toFixed(2));
   const maxDrawdown  = calcMaxDrawdown(equityCurve);
 
-  // ── 5. Write results ───────────────────────────────────────────────────────
+  // ── 5. Risk-adjusted metrics ───────────────────────────────────────────────
+  const { sharpe, calmar } = calcSharpeCalmar(allTrades, totalReturn, maxDrawdown);
+
+  // ── 6. Write results ───────────────────────────────────────────────────────
   const results: BacktestResults = {
     generated_at:  TODAY,
     start_date:    TWO_YEARS_AGO,
@@ -800,12 +877,17 @@ async function runBacktest(): Promise<void> {
     total_return:  totalReturn,
     spy_return:    spyReturn,
     max_drawdown:  maxDrawdown,
+    sharpe_ratio:  sharpe,
+    calmar_ratio:  calmar,
+    slippage_bps:  SLIPPAGE_BPS,
+    vix_at_run:    vixLevel,
+    vix_regime:    vixRegimeLabel,
     rows:          allTrades,
   };
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(results, null, 2));
 
-  // ── 6. Summary ─────────────────────────────────────────────────────────────
+  // ── 7. Summary ─────────────────────────────────────────────────────────────
   const byReason    = (r: ExitReason) => allTrades.filter(t => t.exitReason === r);
   const stopHits    = byReason("STOP_LOSS");
   const trailStops  = byReason("TRAIL_STOP");
@@ -813,10 +895,10 @@ async function runBacktest(): Promise<void> {
   const avg = (arr: TradeRow[]) =>
     arr.length ? (arr.reduce((s, t) => s + t.pct_change, 0) / arr.length).toFixed(2) : "0";
 
-  const sep = "═".repeat(55);
+  const sep = "═".repeat(60);
   console.log(`\n${sep}`);
-  console.log(`  BACKTEST COMPLETE`);
-  console.log(`${"─".repeat(55)}`);
+  console.log(`  BACKTEST COMPLETE  [Slippage: ${SLIPPAGE_BPS}% per side | VIX: ${vixRegimeLabel}]`);
+  console.log(`${"─".repeat(60)}`);
   console.log(`  Trades simulated : ${n}`);
   console.log(`  Win Rate         : ${winRate}%`);
   console.log(`  Profit Factor    : ${profitFactor}`);
@@ -824,7 +906,11 @@ async function runBacktest(): Promise<void> {
   console.log(`  SPY Buy & Hold   : +${spyReturn}%`);
   console.log(`  Alpha vs SPY     : ${alphaVsSpy >= 0 ? "+" : ""}${alphaVsSpy}%`);
   console.log(`  Max Drawdown     : ${maxDrawdown}%`);
-  console.log(`${"─".repeat(55)}`);
+  console.log(`${"─".repeat(60)}`);
+  console.log(`  Risk-Adjusted:`);
+  console.log(`    Sharpe Ratio   : ${sharpe}   (>1.0 = good, >2.0 = excellent)`);
+  console.log(`    Calmar Ratio   : ${calmar}   (annual return / |max drawdown|)`);
+  console.log(`${"─".repeat(60)}`);
   console.log(`  Exit breakdown:`);
   console.log(`    STOP_LOSS   : ${stopHits.length}  (avg ${avg(stopHits)}%)`);
   console.log(`    TRAIL_STOP  : ${trailStops.length}  (avg ${avg(trailStops)}%)  ← profitable trailing exits`);
@@ -832,11 +918,24 @@ async function runBacktest(): Promise<void> {
   console.log(`${sep}`);
   console.log(`  Saved → ${OUTPUT_PATH}`);
 
-  // ── 7. Export live signals ─────────────────────────────────────────────────
+  // ── 8. Export live signals ─────────────────────────────────────────────────
   // Scores every ticker against TODAY's full price window and exports those
   // scoring ≥ LIVE_SIGNAL_THRESHOLD to logs/live_signals.json so the dashboard
   // can highlight them for tomorrow's open.
   console.log(`\n── Live signals (score ≥ ${LIVE_SIGNAL_THRESHOLD}) ──────────────────────────────────`);
+
+  if (vixBlockAllNew) {
+    console.log(`  ⛔ VIX ${vixLevel} > ${VIX_BLOCK_THRESHOLD} — EXTREME FEAR REGIME. All live signals suppressed.`);
+    const LIVE_SIGNALS_PATH = path.resolve(LOGS_DIR, "live_signals.json");
+    fs.writeFileSync(LIVE_SIGNALS_PATH, JSON.stringify({
+      generated_at: TODAY, threshold: LIVE_SIGNAL_THRESHOLD,
+      count: 0, signals: [],
+      vix_suppressed: true, vix_level: vixLevel,
+      message: `VIX ${vixLevel} > ${VIX_BLOCK_THRESHOLD}: Force-WATCH mode active. No new entries.`,
+    }, null, 2));
+    await sendLiveSignalsDigest();
+    return;
+  }
 
   interface LiveSignal {
     ticker:      string;
@@ -900,7 +999,7 @@ async function runBacktest(): Promise<void> {
     signals:      liveSignals,
   }, null, 2));
 
-  console.log(`  → ${liveSignals.length} signal(s) written to ${LIVE_SIGNALS_PATH}`);
+  console.log(`  → ${liveSignals.length} signal(s) written to ${LIVE_SIGNALS_PATH}${vixLevel > VIX_REDUCE_THRESHOLD ? `  ⚠️ VIX ${vixLevel}: sizes halved` : ""}`);
 
   // ── Track new positions for future break-even monitoring ─────────────────
   if (liveSignals.length > 0) {

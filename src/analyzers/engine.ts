@@ -569,9 +569,11 @@ function scoreFundamentals(
   const grossMarginFired = grossMargin !== null && grossMargin > 40;
   if (grossMarginFired) score += 5;
 
+  // High-growth override: if the company is scaling aggressively (EPS > 30% OR Rev > 30%)
+  // the debt penalty is waived — we don't want to miss the next Amazon/Tesla.
   const highGrowthJustifies =
     (epsGrowthYoY !== null && epsGrowthYoY > 30) ||
-    (revenueGrowthYoY !== null && revenueGrowthYoY > 25);
+    (revenueGrowthYoY !== null && revenueGrowthYoY > 30);
   const debtPenaltyApplied =
     debtToEquity !== null && debtToEquity > 2.0 && !highGrowthJustifies;
   if (debtPenaltyApplied) score -= 20;
