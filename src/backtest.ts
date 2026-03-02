@@ -63,13 +63,13 @@ const HOLD_DAYS              = 21;   // standard hold window
 const MAX_HOLD_DAYS          = 63;   // absolute max hold for tier2-locked winners (~3 months)
 const BUY_THRESHOLD          = 65;   // effective elite floor — scorer caps at ~80; SMA200+wkly caps enforce quality
 const LIVE_SIGNAL_THRESHOLD  = 75;   // score floor for today's live-signal export
-const ATR_STOP_MULT          = 1.5;  // stop = 1.5× ATR14 below entry
-const MAX_STOP_PCT           = 0.08; // ATR stop capped at 8%
-const BREAKEVEN_TRIGGER      = 0.05; // tier-1: raise stop to break-even once +5% gained
-const TRAIL_LOCK_TRIGGER     = 0.15; // tier-2: lock in +10% floor once +15% is reached
-const TRAIL_LOCK_FLOOR       = 0.10; // the locked profit floor for tier-2
+const STOP_HARD_FLOOR        = 0.12; // hard cap — initial stop never wider than 12% from entry
+const STOP_HALF_SIZE_PCT     = 0.08; // stop > 8% → halve position size to maintain constant $ risk
+const BREAKEVEN_TRIGGER      = 0.08; // tier-1: raise stop to break-even once +8% gained
+const TRAIL_LOCK_TRIGGER     = 0.18; // tier-2: lock in +12% floor once +18% is reached
+const TRAIL_LOCK_FLOOR       = 0.12; // the locked profit floor for tier-2
 const TRAIL_UNLIMITED_TRIGGER = 0.25; // tier-3: activate unlimited trailing once +25% hit
-const TRAIL_ATR_MULT           = 2.5;  // tier-3: trail = 2.5× ATR14 below running peak (dynamic)
+const TRAIL_ATR_MULT           = 2.0;  // tier-3: trail = 2.0× ATR14, recalculated daily from live prices
 const POSITION_SIZE            = 0.05; // standard 5% per trade
 const POWER_POSITION_SIZE      = 0.075; // 7.5% for near-max-score signals (score ≥ 70)
 const AGGRESSIVE_POSITION_SIZE = 0.10;  // 10% for A+ setups (score ≥ 75)
@@ -80,8 +80,10 @@ const MAX_CONCURRENT_TRADES    = 10;   // max open positions across all tickers 
 const MIN_HOLD_DAYS            = 2;    // volatility buffer: stop-loss deferred for first 2 days
 const CATASTROPHIC_STOP        = 0.10; // override MIN_HOLD_DAYS if price drops > 10% intraday
 const VOL_CONFIRM_MULT         = 1.20; // breakout volume must be ≥ 120% of 10-day avg
-const RS3M_LEAD_MIN            = 5;    // ticker must beat SPY by ≥ 5pp over 3 months
+const RS3M_LEAD_MIN            = -10;  // ticker must not underperform SPY by more than 10pp over 3 months
 const SECTOR_MAX_OPEN          = 2;    // max concurrent sector entries within a hold window
+const MIN_ADV_USD              = 50_000_000; // Gate 10: min avg daily dollar volume — $50 M
+const ADV_LOOKBACK             = 20;   // trading days used to compute ADV
 const DYNAMIC_TICKER_FETCH     = false; // true = fetch top-90 Nasdaq tickers from Polygon at runtime
 const STARTING_CASH = 100_000;
 const RATE_LIMIT_MS = 15000;   // ms between Polygon requests (free-tier safe)
@@ -286,6 +288,35 @@ function calc10DaySMA(prices: DailyPrice[]): number | null {
   if (prices.length < 10) return null;
   const last10 = prices.slice(-10);
   return last10.reduce((sum, p) => sum + p.close, 0) / 10;
+}
+
+// ── Volatility-Adaptive Stop Calculator ──────────────────────────────────────
+// Mirrors the engine.ts logic so live signals and backtest use identical stops.
+//
+//   ATR% < 2%  (Low Vol)  → 2.5× ATR — orderly breakouts need more room
+//   ATR% 2–5%  (Normal)   → 2.0× ATR — baseline
+//   ATR% > 5%  (High Vol) → 1.5× ATR — high-beta names (MSTR, NVDA) get tighter mult
+//
+// Hard floor: stop is capped at STOP_HARD_FLOOR (12%) from entry price.
+// Position link: if the resulting stop% > STOP_HALF_SIZE_PCT (8%), the caller
+// must halve the position size to maintain constant dollar-risk per trade.
+
+interface AdaptiveStop {
+  stopPrice:      number;
+  stopPct:        number;
+  halfSizeNeeded: boolean;
+}
+
+function calcAdaptiveStop(atr14: number, entryPrice: number): AdaptiveStop {
+  const atrPct = (atr14 / entryPrice) * 100;
+  const mult   = atrPct < 2 ? 2.5 : atrPct <= 5 ? 2.0 : 1.5;
+  const rawPct = (mult * atr14) / entryPrice;
+  const stopPct = Math.min(rawPct, STOP_HARD_FLOOR);
+  return {
+    stopPrice:      parseFloat((entryPrice * (1 - stopPct)).toFixed(2)),
+    stopPct,
+    halfSizeNeeded: stopPct > STOP_HALF_SIZE_PCT,
+  };
 }
 
 // ── 20-day SMA (power play re-entry signal) ───────────────────────────────────
@@ -516,12 +547,13 @@ async function runBacktest(): Promise<void> {
   console.log(`Tickers   : ${tickers.length} + SPY  (${DYNAMIC_TICKER_FETCH ? "dynamic Polygon fetch" : "hardcoded universe"})`);
   console.log(`Threshold : score ≥ ${BUY_THRESHOLD}  |  Hold: ${HOLD_DAYS}d (${MAX_HOLD_DAYS}d for winners)  |  Capacity: ≤ ${MAX_CONCURRENT_TRADES} concurrent`);
   console.log(`Sizing    : base ${POSITION_SIZE * 100}%  |  power (≥${POWER_SCORE_THRESHOLD}) ${POWER_POSITION_SIZE * 100}%  |  A+ (≥${AGGRESSIVE_SCORE_THRESHOLD}) ${AGGRESSIVE_POSITION_SIZE * 100}%`);
-  console.log(`Stop-Loss : ATR14 × ${ATR_STOP_MULT} (max -${(MAX_STOP_PCT * 100).toFixed(0)}%)  |  No hard take-profit — unlimited dynamic trailing`);
-  console.log(`Trailing  : +${(BREAKEVEN_TRIGGER*100).toFixed(0)}% → break-even  |  +${(TRAIL_LOCK_TRIGGER*100).toFixed(0)}% → lock +${(TRAIL_LOCK_FLOOR*100).toFixed(0)}%  |  +${(TRAIL_UNLIMITED_TRIGGER*100).toFixed(0)}% → ${TRAIL_ATR_MULT}×ATR14-from-peak trail`);
+  console.log(`Stop-Loss : ATR14 adaptive (2.5×/<2% | 2.0×/2-5% | 1.5×/>5%), ${(STOP_HARD_FLOOR*100).toFixed(0)}% hard floor, >${(STOP_HALF_SIZE_PCT*100).toFixed(0)}% → half-size`);
+  console.log(`Trailing  : +${(BREAKEVEN_TRIGGER*100).toFixed(0)}% → break-even  |  +${(TRAIL_LOCK_TRIGGER*100).toFixed(0)}% → lock +${(TRAIL_LOCK_FLOOR*100).toFixed(0)}%  |  +${(TRAIL_UNLIMITED_TRIGGER*100).toFixed(0)}% → ${TRAIL_ATR_MULT}×ATR14 daily-recalc (3% floor)`);
   console.log(`Re-entry  : Power Play after leader stop-out (RS3M ≥ ${POWER_PLAY_RS_MIN}pp) on SMA20 reclaim + vol`);
   console.log(`Entry     : score ≥ ${BUY_THRESHOLD}  AND  close > prior-day high  AND  close > SMA10  AND  close > SMA200`);
   console.log(`          : volume ≥ ${((VOL_CONFIRM_MULT - 1) * 100).toFixed(0)}% above 10-day avg  AND  SPY SMA10 > SPY SMA50 (timing)`);
-  console.log(`          : 3M RS beats SPY by ≥ ${RS3M_LEAD_MIN}pp  AND  sector heat < ${SECTOR_MAX_OPEN}  AND  open slots < ${MAX_CONCURRENT_TRADES}\n`);
+  console.log(`          : 3M RS ≥ SPY ${RS3M_LEAD_MIN}pp (OR breakout-exempt)  AND  sector heat < ${SECTOR_MAX_OPEN}  AND  open slots < ${MAX_CONCURRENT_TRADES}`);
+  console.log(`          : ADV ≥ $${(MIN_ADV_USD / 1_000_000).toFixed(0)}M avg dollar volume (liquidity gate)\n`);
 
   // ── 1. Fetch all bars ───────────────────────────────────────────────────────
   console.log("── Fetching price data ──────────────────────────────────────");
@@ -590,7 +622,6 @@ async function runBacktest(): Promise<void> {
     let powerPlayEligible    = false; // true after a leader (RS>10pp) is stopped out
     let entryRs3mMargin      = 0;     // RS3M advantage at entry (for power play check)
     let tradePositionSize    = STARTING_CASH * POSITION_SIZE; // per-trade capital
-    let trailStopAtrDist     = 0;     // 2×ATR14 distance locked at entry for tier-3 trail
     let count                = 0;
 
     for (let i = 200; i < prices.length - 1; i++) {
@@ -637,11 +668,20 @@ async function runBacktest(): Promise<void> {
             return spySma10 >= spySma50;
           })();
 
-          // ── Entry filter 5: Sector leader — 3M RS must beat SPY by ≥ 5pp ─
-          // Only the strongest stocks within their own theme qualify.
-          const rs3mEntry    = calculate3MonthRelativeStrength(prices.slice(0, i + 1), spyWindow);
-          const leadsMarket  = rs3mEntry !== null &&
-            (rs3mEntry.tickerChange3M - rs3mEntry.spyChange3M) >= RS3M_LEAD_MIN;
+          // ── Entry filter 5: 3M RS gate — relaxed to allow base-building stocks ──
+          // Ticker must not underperform SPY by more than 10pp over 3 months.
+          // Breakout Exception: gate is waived entirely when Explosion fires
+          // (VCP confirmed + within 3% of 52w high).  Minervini/O'Neil base-
+          // building patterns inherently lag SPY during consolidation — that is
+          // the setup, not a disqualifying weakness signal.
+          const rs3mEntry      = calculate3MonthRelativeStrength(prices.slice(0, i + 1), spyWindow);
+          const rs3mMargin     = rs3mEntry !== null
+            ? rs3mEntry.tickerChange3M - rs3mEntry.spyChange3M  // positive = outperforming
+            : 0;
+          const volForExpl     = analyzeVolume(prices.slice(0, i + 1));
+          const expl           = detectExplosion(prices.slice(0, i + 1), volForExpl);
+          const breakoutExempt = expl.triggered && expl.nearHigh;
+          const leadsMarket    = breakoutExempt || (rs3mEntry !== null && rs3mMargin >= RS3M_LEAD_MIN);
 
           // ── Entry filter 6: Sector heat — no more than SECTOR_MAX_OPEN ────
           // Prevents over-clustering in the same theme in the same window.
@@ -661,9 +701,17 @@ async function runBacktest(): Promise<void> {
           const openCount  = allTrades.filter(t => t.date <= signalDate && t.exitDate >= signalDate).length;
           const capacityOk = openCount < MAX_CONCURRENT_TRADES;
 
+          // ── Entry filter Gate 10: Minimum Average Daily Volume ≥ $50 M ─────
+          // The flat 10bps slippage model is only realistic on liquid names.
+          // Low-ADV stocks have wide spreads and market-impact on breakout days
+          // that would make the modelled friction optimistic by 3–5×.
+          const advWindow   = prices.slice(Math.max(0, i - ADV_LOOKBACK), i + 1);
+          const avgDolVol   = advWindow.reduce((s, p) => s + p.volume * p.close, 0) / advWindow.length;
+          const liquidityOk = avgDolVol >= MIN_ADV_USD;
+
           if (!vixBlockAllNew &&
               breakoutConfirmed && aboveSma10 && aboveSma200 && volumeConfirmed &&
-              spySMA50Confirmed && leadsMarket && sectorCool && capacityOk) {
+              spySMA50Confirmed && leadsMarket && sectorCool && capacityOk && liquidityOk) {
             // Enter at next-day open + slippage (pays the ask side of the spread)
             entryIdx             = i + 1;
             entryPrice           = prices[entryIdx].open * (1 + SLIPPAGE_MULT);
@@ -671,30 +719,24 @@ async function runBacktest(): Promise<void> {
             tier2Locked          = false;
             unlimitedTrailActive = false;
 
-            // ── Volatility-adjusted stop: 1.5× ATR14, capped at MAX_STOP_PCT ──
-            const atr14       = calcATR14(prices.slice(0, i + 1));
-            const atrStopDist = (atr14 * ATR_STOP_MULT) / entryPrice;
-            const stopPct     = Math.min(atrStopDist, MAX_STOP_PCT);
-            currentStop = entryPrice * (1 - stopPct);
+            // ── Volatility-adaptive stop (2.5×/2.0×/1.5× ATR, 12% hard floor) ──
+            const atr14      = calcATR14(prices.slice(0, i + 1));
+            const adaptStop  = calcAdaptiveStop(atr14, entryPrice);
+            currentStop      = adaptStop.stopPrice;
 
-            // ── Three-tier sizing × VIX multiplier ───────────────────────────
-            // VIX > 28 → 0.5x all sizes (Macro Extreme regime)
-            const baseSizing = score >= AGGRESSIVE_SCORE_THRESHOLD
+            // ── Three-tier sizing × VIX multiplier × wide-stop halving ───────
+            // VIX > 28        → 0.5× all sizes (Macro Extreme regime)
+            // stop% > 8%      → additional 0.5× to maintain constant dollar-risk
+            const baseSizing  = score >= AGGRESSIVE_SCORE_THRESHOLD
               ? STARTING_CASH * AGGRESSIVE_POSITION_SIZE   // 10%
               : score >= POWER_SCORE_THRESHOLD
                 ? STARTING_CASH * POWER_POSITION_SIZE      // 7.5%
                 : STARTING_CASH * POSITION_SIZE;           // 5%
-            tradePositionSize = baseSizing * vixPositionMult;
-
-            // Lock in 2×ATR14 trail fraction at entry (ATR as % of entry price).
-            // Storing as a fraction makes the trail scale proportionally as price rises,
-            // giving high-priced stocks the same ATR-proportional breathing room.
-            trailStopAtrDist = (atr14 * TRAIL_ATR_MULT) / entryPrice;
+            const stopMult    = adaptStop.halfSizeNeeded ? 0.5 : 1.0;
+            tradePositionSize = baseSizing * vixPositionMult * stopMult;
 
             // Store RS3M margin so exit logic can decide on power play eligibility
-            entryRs3mMargin = rs3mEntry !== null
-              ? rs3mEntry.tickerChange3M - rs3mEntry.spyChange3M
-              : 0;
+            entryRs3mMargin = rs3mMargin;
 
             // Register this sector entry so future tickers see it
             sectorEntryDates.set(sector, [...sectorDates, signalDate]);
@@ -720,13 +762,11 @@ async function runBacktest(): Promise<void> {
               tier2Locked          = false;
               unlimitedTrailActive = false;
 
-              const atr14       = calcATR14(prices.slice(0, i + 1));
-              const atrStopDist = (atr14 * ATR_STOP_MULT) / entryPrice;
-              const stopPct     = Math.min(atrStopDist, MAX_STOP_PCT);
-              currentStop = entryPrice * (1 - stopPct);
-
-              tradePositionSize = STARTING_CASH * POSITION_SIZE * vixPositionMult; // 5% × VIX mult
-              trailStopAtrDist  = (calcATR14(prices.slice(0, i + 1)) * TRAIL_ATR_MULT) / entryPrice;
+              const atr14      = calcATR14(prices.slice(0, i + 1));
+              const adaptStop  = calcAdaptiveStop(atr14, entryPrice);
+              currentStop      = adaptStop.stopPrice;
+              const ppStopMult = adaptStop.halfSizeNeeded ? 0.5 : 1.0;
+              tradePositionSize = STARTING_CASH * POSITION_SIZE * vixPositionMult * ppStopMult;
               entryRs3mMargin   = 0;       // no chained power plays
               powerPlayEligible = false;   // one-time use consumed
               inTrade           = true;
@@ -740,24 +780,32 @@ async function runBacktest(): Promise<void> {
         if (bar.high > peakPrice) peakPrice = bar.high;
 
         // ── Three-tier trailing stop system ───────────────────────────────────
-        // Tier 1 (+5%): raise stop to break-even — can't lose money.
+        // Tier 1 (+8%): raise stop to break-even — can't lose money.
+        // Raised from +5% to give high-ATR momentum names room to breathe
+        // without being shaken out by normal intraday noise on day 2–3.
         if (bar.high >= entryPrice * (1 + BREAKEVEN_TRIGGER) && currentStop < entryPrice) {
           currentStop = entryPrice;
         }
-        // Tier 2 (+15%): lock in +10% floor, unlock extended hold.
+        // Tier 2 (+18%): lock in +12% floor, unlock extended hold to MAX_HOLD_DAYS.
         const trailLockPrice = entryPrice * (1 + TRAIL_LOCK_FLOOR);
         if (bar.high >= entryPrice * (1 + TRAIL_LOCK_TRIGGER) && currentStop < trailLockPrice) {
           currentStop = trailLockPrice;
           tier2Locked = true;
         }
-        // Tier 3 (+25%): activate unlimited trailing — 2×ATR14 below running peak.
-        // Dynamic distance (locked at entry) tightens on low-volatility names,
-        // loosens on high-volatility names, giving each trade room proportional to its range.
+        // Tier 3 (+25%): activate unlimited trailing — 2.0× ATR14 below running peak.
+        // ATR is recalculated daily from the live 15-bar window (not locked at entry).
+        // This means the trail widens naturally during volatile breakout surges and
+        // tightens as price coils, locking gains more aggressively during calm periods.
+        // Floor: stop never set tighter than 3% below peak to prevent single-session
+        // squeeze-outs on abnormally low-ATR days (e.g. holiday-week compression).
         if (peakPrice >= entryPrice * (1 + TRAIL_UNLIMITED_TRIGGER)) {
           unlimitedTrailActive = true;
         }
         if (unlimitedTrailActive) {
-          const dynamicStop = peakPrice * (1 - trailStopAtrDist); // 2×ATR14% below peak
+          const liveAtr14  = calcATR14(prices.slice(Math.max(0, i - 15), i + 1));
+          const atrTrail   = peakPrice - (liveAtr14 * TRAIL_ATR_MULT); // dollar-based
+          const floorTrail = peakPrice * (1 - 0.03);                   // 3% floor
+          const dynamicStop = Math.min(atrTrail, floorTrail);           // wider of the two
           if (dynamicStop > currentStop) currentStop = dynamicStop;
         }
 
@@ -965,10 +1013,9 @@ async function runBacktest(): Promise<void> {
         : null;
       const above200   = sma200 !== null && last.close > sma200;
       const atr14      = calcATR14(prices);
-      const rawStop    = last.close - atr14 * ATR_STOP_MULT;
-      const minStop    = last.close * (1 - MAX_STOP_PCT);
-      const stopPrice  = parseFloat(Math.max(rawStop, minStop).toFixed(2));
-      const stopPct    = parseFloat(((last.close - stopPrice) / last.close * 100).toFixed(1));
+      const adaptStop  = calcAdaptiveStop(atr14, last.close);
+      const stopPrice  = adaptStop.stopPrice;
+      const stopPct    = parseFloat((adaptStop.stopPct * 100).toFixed(1));
 
       liveSignals.push({
         ticker,

@@ -598,6 +598,8 @@ export async function calculateConfidenceScore(
   const rs3m = calculate3MonthRelativeStrength(prices, spyPrices);
   const weeklyTrend = calculateWeeklyTrend(prices);
   const atrData = calculateATR(prices);
+  // Computed early so the 3M RS breakout exemption can reference it below.
+  const explosionSignal = detectExplosion(prices, vol);
   const warnings: string[] = [];
 
   // Volume: +15 if volume >= 1.5x the 20-day average
@@ -611,24 +613,32 @@ export async function calculateConfidenceScore(
     if (rs.relativeWeakness) relativeStrengthScore = -10;
   }
 
-  // 3-Month Relative Strength vs SPY: -20 if underperforming
+  // 3-Month Relative Strength vs SPY — tiered penalty (0 / -10 / -20).
+  // Breakout Exception: penalty waived when Explosion is confirmed AND price is
+  // within 3% of its 52-week high.  Base-building stocks (Minervini VCP /
+  // O'Neil Cup-and-Handle) spend months consolidating below SPY — that is
+  // by design, not chronic weakness.  Penalising them here would block the
+  // exact pattern the Explosion signal is built to detect.
   let threeMonthRSScore = 0;
   if (rs3m && rs3m.underperforming) {
-    threeMonthRSScore = -20;
+    const underperformMargin = rs3m.spyChange3M - rs3m.tickerChange3M; // pp behind SPY
+    const breakoutExempt     = explosionSignal.triggered && explosionSignal.nearHigh;
+    if (!breakoutExempt) {
+      if (underperformMargin > 15)     threeMonthRSScore = -20; // chronic laggard
+      else if (underperformMargin > 5) threeMonthRSScore = -10; // meaningful lag
+      // 0–5pp gap: noise — no penalty applied
+    }
   }
 
-  // Social Sentiment Spike: +5 if high interest and positive
-  // When social data is unavailable (Finnhub 403 / paid-only), redistribute
-  // the +5 weight to AI sentiment so tickers aren't penalized.
+  // Social Sentiment Spike: +5 if high interest and positive.
+  // When Finnhub data is unavailable the score is 0 — a missing data source
+  // must not award points.  Redistributing to AI sentiment inflated scores
+  // on tickers simply absent from Finnhub's coverage.
   let socialSpikeScore = 0;
   const socialUnavailable = socialSentiment === null;
   const highSocialInterest = socialSentiment?.highSocialInterest ?? false;
   const socialPositive = socialSentiment?.positiveOverall ?? false;
-  if (socialUnavailable) {
-    // Redistribute: +5 to AI sentiment if Bullish, +3 if Neutral
-    if (sentimentResult.sentiment === "Bullish") socialSpikeScore = 5;
-    else if (sentimentResult.sentiment === "Neutral") socialSpikeScore = 3;
-  } else if (highSocialInterest) {
+  if (!socialUnavailable && highSocialInterest) {
     if (socialPositive) socialSpikeScore = 5;
     warnings.push("Potential Meme-Stock Volatility");
   }
@@ -657,7 +667,7 @@ export async function calculateConfidenceScore(
   }
 
   // Explosion Detection: +25 if triggered (2 of 3: VCP, near 52w high, volume spark)
-  const explosionSignal = detectExplosion(prices, vol);
+  // (explosionSignal declared early above — reused here for scoring)
   let explosionScore = 0;
   if (explosionSignal.triggered) {
     explosionScore = 25;
@@ -707,15 +717,33 @@ export async function calculateConfidenceScore(
   const rs3mPct = rs3m?.tickerChange3M ?? 0;
   const goldenTrade = explosiveBuy && rs3mPct > 15 && institutionalIncrease;
 
-  // Catalyst Score (-20 to +20): major positive or negative news event
-  if (sentimentResult.catalystScore >= 15) {
-    warnings.push(`🚀 MAJOR POSITIVE CATALYST (+${sentimentResult.catalystScore}): ${sentimentResult.catalystSummary}`);
-  } else if (sentimentResult.catalystScore <= -10) {
+  // AI Sentiment — catalyst-gated quality multiplier.
+  // catalystScore is no longer additive; it is a quality gate on the Bullish label.
+  // Using both as independent addends allowed a single headline to swing the total
+  // by up to +50 (Bullish +30 AND catalyst +20 from the same LLM call).
+  //
+  //   Bullish + catalystScore ≥ 15 → full +30  (confirmed major catalyst)
+  //   Bullish + catalystScore < 15 → capped +15 (ambiguous headlines — treat as Neutral)
+  //   Neutral                      → +15  (unchanged)
+  //   Bearish                      → +0   (unchanged)
+  let aiSentimentScore: number;
+  if (sentimentResult.sentiment === "Bullish") {
+    aiSentimentScore = sentimentResult.catalystScore >= 15 ? 30 : 15;
+  } else {
+    aiSentimentScore = sentimentResult.score; // Neutral: 15, Bearish: 0
+  }
+
+  // Catalyst quality warnings — informational only, no longer changes the total.
+  if (sentimentResult.sentiment === "Bullish" && sentimentResult.catalystScore < 15) {
+    warnings.push(`⚠️ Bullish capped at +15 — weak catalyst (score ${sentimentResult.catalystScore}): ${sentimentResult.catalystSummary}`);
+  } else if (sentimentResult.catalystScore >= 15) {
+    warnings.push(`🚀 MAJOR CATALYST confirmed — Bullish at full +30 (score ${sentimentResult.catalystScore}): ${sentimentResult.catalystSummary}`);
+  }
+  if (sentimentResult.catalystScore <= -10) {
     warnings.push(`⚠️ NEGATIVE CATALYST (${sentimentResult.catalystScore}): ${sentimentResult.catalystSummary}`);
   }
 
-  let rawTotal = technical.score + institutional.score + sentimentResult.score
-    + sentimentResult.catalystScore
+  let rawTotal = technical.score + institutional.score + aiSentimentScore
     + volumeScore + relativeStrengthScore + threeMonthRSScore + socialSpikeScore
     + whaleScore + consensusMomentumScore + smartMoneyScore + explosionScore
     + fundamentalsScore;
@@ -763,9 +791,13 @@ export async function calculateConfidenceScore(
     warnings.push(`EARNINGS SOON (${earningsCheck.date}) - EXPECT HIGH VOLATILITY`);
   }
 
-  // 3-Month RS warning
+  // 3-Month RS warning — reflects tiered penalty and breakout exemption
   if (rs3m && rs3m.underperforming) {
-    warnings.push(`3M underperform: ${rs3m.tickerChange3M}% vs SPY ${rs3m.spyChange3M}% (-20)`);
+    if (threeMonthRSScore < 0) {
+      warnings.push(`3M underperform: ${rs3m.tickerChange3M}% vs SPY ${rs3m.spyChange3M}% (${threeMonthRSScore})`);
+    } else if (explosionSignal.triggered && explosionSignal.nearHigh) {
+      warnings.push(`3M underperform waived — breakout exemption (Explosion + within 3% of 52w High)`);
+    }
   }
 
   // Safety Checklist
@@ -779,7 +811,7 @@ export async function calculateConfidenceScore(
   return {
     technical: technical.score,
     institutional: institutional.score,
-    aiSentiment: sentimentResult.score,
+    aiSentiment: aiSentimentScore,
     volume: volumeScore,
     relativeStrength: relativeStrengthScore,
     threeMonthRS: threeMonthRSScore,
@@ -843,16 +875,39 @@ function deriveAction(score: number, buyThreshold = 70): "BUY" | "SELL" | "WATCH
   return "WATCH";
 }
 
+// ── Volatility-Adaptive ATR Multiplier ───────────────────────────────────────
+// A flat 2× ATR stop is too wide for high-beta names (MSTR, NVDA — ATR > 5%)
+// and too tight for low-vol orderly breakouts (ATR < 2%).  The multiplier
+// scales inversely with ATR% to keep expected dollar-risk proportional across
+// the volatility spectrum:
+//
+//   ATR% < 2%   (Low Vol)   → 2.5× ATR  — wider stop for orderly breakouts
+//   ATR% 2–5%  (Normal)     → 2.0× ATR  — baseline
+//   ATR% > 5%   (High Vol)  → 1.5× ATR  — tighter stop for high-beta names
+//
+// Hard floor: initial stop is never placed more than 12% below entry price.
+const STOP_HARD_FLOOR = 0.12;
+
+function atrVolMultiplier(atr: number, price: number): number {
+  const atrPct = (atr / price) * 100;
+  if (atrPct < 2)  return 2.5; // low-vol breakout
+  if (atrPct <= 5) return 2.0; // normal volatility
+  return 1.5;                   // high-beta / high-vol name
+}
+
 function calculateStopLoss(
   action: "BUY" | "SELL" | "WATCH",
   atrData: ATRResult | null,
   currentPrice: number
 ): number | null {
   if (action !== "BUY") return null;
-  // ATR-based stop-loss: Current Price - (2 * ATR)
-  if (atrData) return atrData.stopLoss;
-  // Fallback to 10% if no ATR data
-  return parseFloat((currentPrice * 0.9).toFixed(2));
+  if (!atrData) {
+    // No ATR data — default to the 12% hard floor
+    return parseFloat((currentPrice * (1 - STOP_HARD_FLOOR)).toFixed(2));
+  }
+  const mult    = atrVolMultiplier(atrData.atr, currentPrice);
+  const stopPct = Math.min((mult * atrData.atr) / currentPrice, STOP_HARD_FLOOR);
+  return parseFloat((currentPrice * (1 - stopPct)).toFixed(2));
 }
 
 // ── Build Reasoning String ───────────────────────────────────────────────────
@@ -979,7 +1034,37 @@ export async function analyzeMarket(
       ? snapshot.prices[snapshot.prices.length - 1].close
       : 0;
 
-  // Major negative catalyst: regardless of other signals, cap score and force SELL
+  // ── Layer 1: Hard Blocks — non-bypassable, no override allowed ─────────────
+  //
+  // Block A: VIX > 35 (market in free-fall, all trades off)
+  // Block B: Earnings within 3 days, UNLESS Certainty Index > 85
+  //          (high-certainty breakouts may be worth holding through earnings)
+
+  const vixKill      = snapshot.vix.level > 35;
+  const earningsSoon = breakdown.details.earningsSoon;
+  const earningsKill = earningsSoon && breakdown.certaintyIndex.total <= 85;
+
+  if (vixKill || earningsKill) {
+    const reason = vixKill
+      ? `VIX EXTREME (${snapshot.vix.level} > 35) — all trades blocked`
+      : `EARNINGS IMMINENT (${breakdown.details.earningsDate}) — trade blocked (Certainty ${breakdown.certaintyIndex.total}/100 ≤ 85)`;
+    return {
+      ticker: snapshot.symbol,
+      action: "WATCH",
+      score: breakdown.total,
+      breakdown,
+      reasoning: `🛑 HARD BLOCK: ${reason}`,
+      stopLoss: null,
+      volumeStatus: breakdown.details.volumeStatus,
+      riskLevel: "EXTREME",
+      warnings: [...breakdown.warnings, `🛑 HARD BLOCK: ${reason}`],
+      marketContext: breakdown.marketContext,
+    };
+  }
+
+  // ── Layer 2: Catalyst Check ────────────────────────────────────────────────
+  // Major negative catalyst → force SELL regardless of technical signals
+
   if (breakdown.details.catalystScore <= -15) {
     const penalizedTotal = Math.min(breakdown.total, 35);
     const warning = `⚠️ MAJOR NEGATIVE CATALYST: ${breakdown.details.catalystSummary}`;
@@ -997,16 +1082,31 @@ export async function analyzeMarket(
     };
   }
 
-  // GOLDEN TRADE: Explosive + RS > 15% (3M) + Institutional accumulation — top 1%
-  if (breakdown.goldenTrade) {
-    const es = breakdown.details.earningsSurprise;
-    const ex = breakdown.details.explosionSignal;
-    const vol = breakdown.details.volumeRatio;
+  // ── Layer 3: Regime Scaling ────────────────────────────────────────────────
+  // The 0.5x / 0.7x multiplier is already baked into breakdown.total by
+  // calculateConfidenceScore. Before evaluating overrides, also apply it to the
+  // raw Certainty Index so that high-volatility regimes can't sneak through
+  // EXPLOSIVE / GOLDEN promotions via a pre-multiplier certainty score.
+
+  const macroMultiplier  = breakdown.macroExtreme ? 0.5 : (breakdown.vixApplied ? 0.7 : 1.0);
+  const adjustedCertainty = Math.round(breakdown.certaintyIndex.total * macroMultiplier);
+  const canOverride       = adjustedCertainty > 85;
+
+  // ── Layer 4: Override Evaluation — only reachable after all hard checks pass ─
+
+  // GOLDEN TRADE: regime-adjusted Certainty > 85 + RS > 15% (3M) + Institutional
+  if (breakdown.goldenTrade && canOverride) {
+    const es   = breakdown.details.earningsSurprise;
+    const ex   = breakdown.details.explosionSignal;
+    const vol  = breakdown.details.volumeRatio;
     const rs3m = breakdown.details.threeMonthRSData;
-    const ci = breakdown.certaintyIndex;
-    const surpriseStr = es ? `+${es.surprisePercent}% Earnings beat + ` : "";
-    const rsStr = rs3m ? `${rs3m.tickerChange3M}% RS (3M) + ` : "";
-    const reasoning = `GOLDEN TRADE (Certainty ${ci.total}/100): ${surpriseStr}${rsStr}Institutional accumulation + Volume ${vol}x breakout${ex.vcpDetected ? " from VCP" : ""} near 52w High`;
+    const ci   = breakdown.certaintyIndex;
+    const surpriseStr = es   ? `+${es.surprisePercent}% Earnings beat + ` : "";
+    const rsStr       = rs3m ? `${rs3m.tickerChange3M}% RS (3M) + `      : "";
+    const reasoning   =
+      `GOLDEN TRADE (Certainty ${ci.total}/100, adj. ${adjustedCertainty}): ` +
+      `${surpriseStr}${rsStr}Institutional accumulation + Volume ${vol}x breakout` +
+      `${ex.vcpDetected ? " from VCP" : ""} near 52w High`;
 
     return {
       ticker: snapshot.symbol,
@@ -1022,14 +1122,19 @@ export async function analyzeMarket(
     };
   }
 
-  // EXPLOSIVE BUY override: Certainty Index > 85
-  if (breakdown.explosiveBuy) {
-    const ex = breakdown.details.explosionSignal;
+  // EXPLOSIVE BUY: regime-adjusted Certainty > 85
+  if (breakdown.explosiveBuy && canOverride) {
+    const ex  = breakdown.details.explosionSignal;
     const vol = breakdown.details.volumeRatio;
-    const ci = breakdown.certaintyIndex;
-    const es = breakdown.details.earningsSurprise;
-    const surpriseStr = es ? `${es.surprisePercent > 0 ? "+" : ""}${es.surprisePercent}% Earnings beat + ` : "";
-    const reasoning = `Certainty ${ci.total}/100 — ${surpriseStr}High Volume ${vol}x breakout${ex.vcpDetected ? " from VCP" : ""} near 52w High ($${ex.high52w}, ${ex.pctFromHigh}% away)`;
+    const ci  = breakdown.certaintyIndex;
+    const es  = breakdown.details.earningsSurprise;
+    const surpriseStr = es
+      ? `${es.surprisePercent > 0 ? "+" : ""}${es.surprisePercent}% Earnings beat + `
+      : "";
+    const reasoning =
+      `Certainty ${ci.total}/100 (adj. ${adjustedCertainty}) — ` +
+      `${surpriseStr}High Volume ${vol}x breakout` +
+      `${ex.vcpDetected ? " from VCP" : ""} near 52w High ($${ex.high52w}, ${ex.pctFromHigh}% away)`;
 
     return {
       ticker: snapshot.symbol,
@@ -1045,11 +1150,9 @@ export async function analyzeMarket(
     };
   }
 
-  // Macro Extreme: raise BUY threshold to 85 when VIX > 28
+  // ── Standard Scoring Path ──────────────────────────────────────────────────
   const buyThreshold = snapshot.vix.level > 28 ? 85 : 70;
-
-  // VIX > 35: force all actions to WATCH
-  const action = snapshot.vix.level > 35 ? "WATCH" : deriveAction(breakdown.total, buyThreshold);
+  const action = deriveAction(breakdown.total, buyThreshold);
 
   return {
     ticker: snapshot.symbol,
