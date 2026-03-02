@@ -12,8 +12,8 @@
   "sharpe_ratio": -0.18,
   "calmar_ratio": -0.13,
   "slippage_bps": 0.1,
-  "vix_at_run": 23.08,
-  "vix_regime": "23.08 — Normal",
+  "vix_at_run": 21.59,
+  "vix_regime": "21.59 — Normal",
   "rows": [
     {
       "ticker": "NVDA",
