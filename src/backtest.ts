@@ -2,7 +2,7 @@
  * WallStreet TS Backtester
  * ─────────────────────────────────────────────────────────────────────────────
  * Fetches 2 years of daily OHLCV from Polygon.io for all 50 tickers + SPY,
- * runs a simplified technical-only scoring pass over each historical window,
+ * runs a scoring pass (technicals + fundamentals) over each historical window,
  * simulates BUY→hold→EXIT trades, and writes logs/backtest_results.json with:
  *   total_return, spy_return, alpha_vs_spy, max_drawdown, win_rate,
  *   profit_factor, data_points, generated_at, rows (per-trade detail).
@@ -29,6 +29,11 @@ import {
   delay,
 } from "./fetchers/marketData";
 import { scoreTechnical, detectExplosion } from "./analyzers/engine";
+import {
+  fetchFundamentals,
+  fetchEarningsSurprise,
+  fetchInsiderTransactions,
+} from "./fetchers/socialData";
 import { sendLiveSignalsDigest, sendBreakevenAlert } from "./utils/telegram";
 
 // ── Config ───────────────────────────────────────────────────────────────────
@@ -61,7 +66,7 @@ const TICKERS_HARDCODED = [
 
 const HOLD_DAYS              = 21;   // standard hold window
 const MAX_HOLD_DAYS          = 63;   // absolute max hold for tier2-locked winners (~3 months)
-const BUY_THRESHOLD          = 65;   // effective elite floor — scorer caps at ~80; SMA200+wkly caps enforce quality
+const BUY_THRESHOLD          = 67;   // sweet spot — fundamentals lift quality names above 67; pure-technical noise stays below
 const LIVE_SIGNAL_THRESHOLD  = 75;   // score floor for today's live-signal export
 const STOP_HARD_FLOOR        = 0.12; // hard cap — initial stop never wider than 12% from entry
 const STOP_HALF_SIZE_PCT     = 0.08; // stop > 8% → halve position size to maintain constant $ risk
@@ -80,13 +85,20 @@ const MAX_CONCURRENT_TRADES    = 10;   // max open positions across all tickers 
 const MIN_HOLD_DAYS            = 2;    // volatility buffer: stop-loss deferred for first 2 days
 const CATASTROPHIC_STOP        = 0.10; // override MIN_HOLD_DAYS if price drops > 10% intraday
 const VOL_CONFIRM_MULT         = 1.20; // breakout volume must be ≥ 120% of 10-day avg
-const RS3M_LEAD_MIN            = -10;  // ticker must not underperform SPY by more than 10pp over 3 months
+const RS3M_LEAD_MIN            = -15;  // ticker must not underperform SPY by more than 15pp over 3 months
 const SECTOR_MAX_OPEN          = 2;    // max concurrent sector entries within a hold window
 const MIN_ADV_USD              = 50_000_000; // Gate 10: min avg daily dollar volume — $50 M
 const ADV_LOOKBACK             = 20;   // trading days used to compute ADV
+const EARLY_MOMENTUM_DAYS      = 10;   // Early Momentum Check: days before forcing break-even
+const EARLY_MOMENTUM_MIN_PCT   = 0.02; // minimum peak gain required within that window
+const PULLBACK_TIMEOUT         = 6;    // bars to wait for SMA10 pullback after breakout alert
+const PULLBACK_SMA_PCT         = 0.01; // pullback triggered when low touches within 1% above SMA10
+const CHASE_LIMIT_PCT          = 0.12; // cancel pending if price gaps >12% above the breakout close
 const DYNAMIC_TICKER_FETCH     = false; // true = fetch top-90 Nasdaq tickers from Polygon at runtime
-const STARTING_CASH = 100_000;
-const RATE_LIMIT_MS = 15000;   // ms between Polygon requests (free-tier safe)
+const STARTING_CASH            = 100_000;
+const RATE_LIMIT_MS            = 15000; // ms between Polygon requests (free-tier safe)
+const FINNHUB_RATE_LIMIT_MS    = 350;   // ms between Finnhub requests (free tier: 60 req/min)
+const FUND_CACHE_TTL_MS        = 7 * 24 * 60 * 60 * 1000; // 7-day fundamentals cache TTL
 
 // ── Friction & regime constants ───────────────────────────────────────────────
 // 10 basis points (0.10%) per side — simulates bid-ask spread + market-impact.
@@ -256,7 +268,55 @@ async function fetchTopNasdaqTickers(limit = 90): Promise<string[]> {
 // Reuses scoreTechnical + detectExplosion from engine.ts, plus helper functions
 // from marketData.ts. Max achievable score ≈ 80.
 
-function simplifiedScore(priceWindow: DailyPrice[], spyWindow: DailyPrice[]): number {
+// ── Per-ticker fundamental snapshot ──────────────────────────────────────────
+// Fetched once per ticker at startup, cached 7 days.  Passed into simplifiedScore
+// so the backtest discriminates quality names the same way the live engine does.
+// NOTE: uses current Finnhub data (TTM / most recent quarter), not point-in-time
+// historical fundamentals.  Acceptable for a 2-year backtest approximation.
+
+interface TickerFundamentals {
+  epsGrowthYoY:     number | null; // TTM EPS growth YoY %
+  hasPosEpsSurprise: boolean;       // most recent quarter beat estimates
+  epsSurprisePct:   number | null; // magnitude of the beat/miss
+  hasInsiderBuying: boolean;        // any insider purchase in the last 30 days
+  insiderBuyCount:  number;         // number of insider buy transactions
+}
+
+async function fetchFundamentalsForBacktest(ticker: string): Promise<TickerFundamentals> {
+  const cacheFile = path.join(CACHE_DIR, `fund_${ticker}.json`);
+
+  // Return cached value if fresh
+  try {
+    if (fs.existsSync(cacheFile)) {
+      const raw = JSON.parse(fs.readFileSync(cacheFile, "utf-8")) as { cachedAt: number; data: TickerFundamentals };
+      if (Date.now() - raw.cachedAt < FUND_CACHE_TTL_MS) {
+        return raw.data;
+      }
+    }
+  } catch { /* corrupt cache — fall through to refetch */ }
+
+  // Sequential Finnhub calls with small delays to respect the free-tier rate limit
+  const fund     = await fetchFundamentals(ticker);
+  await delay(FINNHUB_RATE_LIMIT_MS);
+  const earnings = await fetchEarningsSurprise(ticker);
+  await delay(FINNHUB_RATE_LIMIT_MS);
+  const insiders = await fetchInsiderTransactions(ticker);
+  await delay(FINNHUB_RATE_LIMIT_MS);
+
+  const data: TickerFundamentals = {
+    epsGrowthYoY:      fund?.epsGrowthYoY ?? null,
+    hasPosEpsSurprise: earnings !== null && earnings.surprisePercent > 0,
+    epsSurprisePct:    earnings?.surprisePercent ?? null,
+    hasInsiderBuying:  insiders.some(t => t.isBuy),
+    insiderBuyCount:   insiders.filter(t => t.isBuy).length,
+  };
+
+  fs.writeFileSync(cacheFile, JSON.stringify({ cachedAt: Date.now(), data }, null, 2));
+  console.log(`  [fund]    ${ticker.padEnd(5)} EPS_g=${data.epsGrowthYoY?.toFixed(1) ?? "n/a"}%  surprise=${data.hasPosEpsSurprise ? "+" : "-"}  insiders=${data.insiderBuyCount}`);
+  return data;
+}
+
+function simplifiedScore(priceWindow: DailyPrice[], spyWindow: DailyPrice[], fund?: TickerFundamentals): number {
   if (priceWindow.length < 30) return 0;
 
   const rsi  = calculateRSIFromPrices(priceWindow);
@@ -278,6 +338,24 @@ function simplifiedScore(priceWindow: DailyPrice[], spyWindow: DailyPrice[]): nu
   // Safety caps (mirrors engine.ts logic)
   if (vol?.status === "Low" && score > 60) score = 60;
   if (wt && !wt.bullish && score > 50)     score = 50;  // below 20-week SMA
+
+  // ── Fundamental overlay (max +25) ──────────────────────────────────────────
+  // Mirrors the live engine's fundamental buckets.  Only fires when Finnhub data
+  // is available — technical-only runs produce the same scores as before.
+  if (fund) {
+    // Insider Strength (+5 / +10)
+    // Any insider purchase → confirms management confidence.
+    // Three or more purchases → strong conviction signal.
+    if (fund.hasInsiderBuying) {
+      score += fund.insiderBuyCount >= 3 ? 10 : 5;
+    }
+
+    // Earnings Quality (+10 / +5 / combined +15)
+    // EPS growth >20% YoY: high-growth compounder.
+    // Positive EPS surprise: beat street estimates last quarter.
+    if (fund.epsGrowthYoY !== null && fund.epsGrowthYoY > 20) score += 10;
+    if (fund.hasPosEpsSurprise)                                score +=  5;
+  }
 
   return score;
 }
@@ -537,6 +615,13 @@ async function runBacktest(): Promise<void> {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   fs.mkdirSync(LOGS_DIR,  { recursive: true });
 
+  // Clear stale live_signals.json at startup so ghost signals from a prior run
+  // never bleed through if this run crashes or exits early.
+  const LIVE_SIGNALS_PATH_INIT = path.resolve(LOGS_DIR, "live_signals.json");
+  fs.writeFileSync(LIVE_SIGNALS_PATH_INIT, JSON.stringify({
+    generated_at: TODAY, count: 0, signals: [], status: "in_progress",
+  }, null, 2));
+
   // Resolve ticker universe
   const tickers = DYNAMIC_TICKER_FETCH
     ? await fetchTopNasdaqTickers(90)
@@ -550,10 +635,11 @@ async function runBacktest(): Promise<void> {
   console.log(`Stop-Loss : ATR14 adaptive (2.5×/<2% | 2.0×/2-5% | 1.5×/>5%), ${(STOP_HARD_FLOOR*100).toFixed(0)}% hard floor, >${(STOP_HALF_SIZE_PCT*100).toFixed(0)}% → half-size`);
   console.log(`Trailing  : +${(BREAKEVEN_TRIGGER*100).toFixed(0)}% → break-even  |  +${(TRAIL_LOCK_TRIGGER*100).toFixed(0)}% → lock +${(TRAIL_LOCK_FLOOR*100).toFixed(0)}%  |  +${(TRAIL_UNLIMITED_TRIGGER*100).toFixed(0)}% → ${TRAIL_ATR_MULT}×ATR14 daily-recalc (3% floor)`);
   console.log(`Re-entry  : Power Play after leader stop-out (RS3M ≥ ${POWER_PLAY_RS_MIN}pp) on SMA20 reclaim + vol`);
-  console.log(`Entry     : score ≥ ${BUY_THRESHOLD}  AND  close > prior-day high  AND  close > SMA10  AND  close > SMA200`);
-  console.log(`          : volume ≥ ${((VOL_CONFIRM_MULT - 1) * 100).toFixed(0)}% above 10-day avg  AND  SPY SMA10 > SPY SMA50 (timing)`);
-  console.log(`          : 3M RS ≥ SPY ${RS3M_LEAD_MIN}pp (OR breakout-exempt)  AND  sector heat < ${SECTOR_MAX_OPEN}  AND  open slots < ${MAX_CONCURRENT_TRADES}`);
-  console.log(`          : ADV ≥ $${(MIN_ADV_USD / 1_000_000).toFixed(0)}M avg dollar volume (liquidity gate)\n`);
+  console.log(`Entry     : BREAKOUT ALERT: score ≥ ${BUY_THRESHOLD}  AND  close > prior-day high  AND  above SMA200`);
+  console.log(`          : volume ≥ ${((VOL_CONFIRM_MULT - 1) * 100).toFixed(0)}% above 10-day avg  AND  SPY SMA10 > SPY SMA50  AND  RS3M ≥ SPY ${RS3M_LEAD_MIN}pp`);
+  console.log(`          : ADV ≥ $${(MIN_ADV_USD / 1_000_000).toFixed(0)}M (liquidity)`);
+  console.log(`          : PULLBACK ENTRY: wait up to ${PULLBACK_TIMEOUT} bars for low to touch SMA10 ±${(PULLBACK_SMA_PCT * 100).toFixed(0)}%`);
+  console.log(`          : sector heat < ${SECTOR_MAX_OPEN}  AND  open slots < ${MAX_CONCURRENT_TRADES}  AND  price < breakout +${(CHASE_LIMIT_PCT * 100).toFixed(0)}%\n`);
 
   // ── 1. Fetch all bars ───────────────────────────────────────────────────────
   console.log("── Fetching price data ──────────────────────────────────────");
@@ -562,7 +648,35 @@ async function runBacktest(): Promise<void> {
   priceMap.set("SPY", await fetchBars("SPY"));
 
   for (const ticker of tickers) {
-    priceMap.set(ticker, await fetchBars(ticker));
+    try {
+      priceMap.set(ticker, await fetchBars(ticker));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn(`  [skip]    ${ticker} — unexpected fetch error: ${msg}`);
+      priceMap.set(ticker, []); // treat as no data; simulation loop will skip it
+    }
+  }
+
+  // ── 1b. Fetch fundamentals (cached 7 days) ─────────────────────────────────
+  // EPS growth, earnings surprise, and insider transactions from Finnhub.
+  // Fetched once per ticker, applied as a static modifier to every scored bar.
+  // Skipped gracefully when FINNHUB_API_KEY is not set (scores fall back to
+  // technical-only, same as before).
+  console.log("\n── Fetching fundamentals (Finnhub, 7-day cache) ────────────");
+  const fundMap = new Map<string, TickerFundamentals>();
+
+  if (process.env.FINNHUB_API_KEY) {
+    for (const ticker of tickers) {
+      try {
+        const fund = await fetchFundamentalsForBacktest(ticker);
+        fundMap.set(ticker, fund);
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`  [skip]    ${ticker} fundamentals — ${msg}`);
+      }
+    }
+  } else {
+    console.log("  FINNHUB_API_KEY not set — running technical-only scores");
   }
 
   // ── 2. Current VIX regime (applies to live sizing + entry gating) ─────────
@@ -616,6 +730,7 @@ async function runBacktest(): Promise<void> {
     let entryIdx             = 0;
     let entryPrice           = 0;
     let currentStop          = 0;     // trailing stop level
+    let breathingStopFloor   = 0;     // 2.0× ATR floor — active for first 3 bars of each trade
     let peakPrice            = 0;     // highest price seen during the trade
     let unlimitedTrailActive = false; // true once +25% is reached
     let tier2Locked          = false; // true once +15% is reached (extends hold, locks +10%)
@@ -623,154 +738,176 @@ async function runBacktest(): Promise<void> {
     let entryRs3mMargin      = 0;     // RS3M advantage at entry (for power play check)
     let tradePositionSize    = STARTING_CASH * POSITION_SIZE; // per-trade capital
     let count                = 0;
+    // Pullback-entry state machine
+    let pendingEntry  = false; // breakout detected — waiting for SMA10 pullback
+    let breakoutBar   = 0;     // bar index of the qualifying breakout
+    let breakoutPrice = 0;     // closing price on breakout bar (for chase-limit check)
+    let breakoutScore = 0;     // score at breakout (drives position-size tier at pullback)
+    let breakoutRs3m  = 0;     // RS3M margin at breakout (passed to entryRs3mMargin)
 
     for (let i = 200; i < prices.length - 1; i++) {
       if (!inTrade) {
-        // Build aligned SPY window (same relative length)
-        const spyWindow = spyAll.slice(0, Math.min(i + 1, spyAll.length));
-        const score     = simplifiedScore(prices.slice(0, i + 1), spyWindow);
+        // ── Phase 1: Breakout detection → set pending entry ─────────────────
+        // We score the bar and check all quality gates. If they pass we mark
+        // a PENDING entry — we do NOT enter immediately. Instead we wait for
+        // the price to pull back and touch the 10-day SMA before committing
+        // capital. This avoids buying the exhausted top of the breakout spike.
+        if (!pendingEntry) {
+          const spyWindow = spyAll.slice(0, Math.min(i + 1, spyAll.length));
+          const score     = simplifiedScore(prices.slice(0, i + 1), spyWindow, fundMap.get(ticker));
 
-        if (score >= BUY_THRESHOLD) {
-          // ── Entry filter 1: Breakout confirmation ────────────────────────
-          // Current close must exceed the prior day's high — confirms breakout,
-          // avoids entering on a mid-pullback score spike.
-          const breakoutConfirmed = prices[i].close > prices[i - 1].high;
+          if (score >= BUY_THRESHOLD) {
+            // Breakout bar: close must exceed prior day's high on high volume.
+            const breakoutConfirmed = prices[i].close > prices[i - 1].high;
 
-          // ── Entry filter 2: 10-day SMA filter ────────────────────────────
-          // Price must be above the 10-day SMA — avoids buying falling knives.
-          const sma10      = calc10DaySMA(prices.slice(0, i + 1));
-          const aboveSma10 = sma10 !== null && prices[i].close > sma10;
+            // Long-term uptrend: must be above 200-day SMA (no bear-phase entries).
+            const priceWindow200 = prices.slice(0, i + 1);
+            const aboveSma200    = priceWindow200.length >= 200 &&
+              prices[i].close > (priceWindow200.slice(-200).reduce((s, p) => s + p.close, 0) / 200);
 
-          // ── Entry filter 2b: 200-day SMA — laggard screen ────────────────
-          // We only want stocks in a long-term structural uptrend.
-          // A close below SMA200 means the stock is still in a bear phase — skip it.
-          const priceWindow200 = prices.slice(0, i + 1);
-          const aboveSma200    = priceWindow200.length >= 200 &&
-            prices[i].close > (priceWindow200.slice(-200).reduce((s, p) => s + p.close, 0) / 200);
+            // Volume surge: breakout bar must trade ≥ 120% of 10-day avg volume.
+            const volLookback     = prices.slice(Math.max(0, i - 10), i);
+            const avgVol10        = volLookback.length > 0
+              ? volLookback.reduce((sum, p) => sum + p.volume, 0) / volLookback.length
+              : 0;
+            const volumeConfirmed = avgVol10 > 0 && prices[i].volume >= avgVol10 * VOL_CONFIRM_MULT;
 
-          // ── Entry filter 3: Volume confirmation ──────────────────────────
-          // Breakout day volume must be ≥ 120% of the prior 10-day avg volume.
-          // No "low volume" breakouts — they fail to follow through.
-          const volLookback     = prices.slice(Math.max(0, i - 10), i);
-          const avgVol10        = volLookback.length > 0
-            ? volLookback.reduce((sum, p) => sum + p.volume, 0) / volLookback.length
+            // Macro timing: SPY short-term momentum must lead long-term baseline.
+            const spySMA50Confirmed = (() => {
+              if (spyWindow.length < 50) return false;
+              const spySma10 = spyWindow.slice(-10).reduce((s, p) => s + p.close, 0) / 10;
+              const spySma50 = spyWindow.slice(-50).reduce((s, p) => s + p.close, 0) / 50;
+              return spySma10 >= spySma50;
+            })();
+
+            // 3M relative strength: ticker must not underperform SPY by >15pp
+            // (or be breakout-exempt if VCP + near 52w high).
+            const rs3mEntry      = calculate3MonthRelativeStrength(prices.slice(0, i + 1), spyWindow);
+            const rs3mMargin     = rs3mEntry !== null
+              ? rs3mEntry.tickerChange3M - rs3mEntry.spyChange3M
+              : 0;
+            const volForExpl     = analyzeVolume(prices.slice(0, i + 1));
+            const expl           = detectExplosion(prices.slice(0, i + 1), volForExpl);
+            const breakoutExempt = expl.triggered && expl.nearHigh;
+            const leadsMarket    = breakoutExempt || (rs3mEntry !== null && rs3mMargin >= RS3M_LEAD_MIN);
+
+            // Liquidity gate: ADV ≥ $50 M — flat slippage model only holds on liquid names.
+            const advWindow   = prices.slice(Math.max(0, i - ADV_LOOKBACK), i + 1);
+            const avgDolVol   = advWindow.reduce((s, p) => s + p.volume * p.close, 0) / advWindow.length;
+            const liquidityOk = avgDolVol >= MIN_ADV_USD;
+
+            if (!vixBlockAllNew &&
+                breakoutConfirmed && aboveSma200 && volumeConfirmed &&
+                spySMA50Confirmed && leadsMarket && liquidityOk) {
+              pendingEntry  = true;
+              breakoutBar   = i;
+              breakoutPrice = prices[i].close;
+              breakoutScore = score;
+              breakoutRs3m  = rs3mMargin;
+            }
+          }
+        } else {
+          // ── Phase 2: Pullback entry ───────────────────────────────────────
+          // We have an active breakout alert. Each bar we check:
+          //   (a) Cancel: timed out, or stock gapped far away without pulling back.
+          //   (b) Entry: intraday low touches within PULLBACK_SMA_PCT of SMA10.
+          // Sector heat and portfolio capacity are evaluated at actual entry time,
+          // not at detection time — they may change over the waiting period.
+          const barsWaited = i - breakoutBar;
+          const chased     = prices[i].close > breakoutPrice * (1 + CHASE_LIMIT_PCT);
+
+          if (barsWaited > PULLBACK_TIMEOUT || chased) {
+            pendingEntry = false; // missed the window — reset and wait for next setup
+          } else {
+            const sma10pb = calc10DaySMA(prices.slice(0, i + 1));
+            const pullbackMet = sma10pb !== null &&
+              prices[i].low  <= sma10pb * (1 + PULLBACK_SMA_PCT) && // low tested SMA10
+              prices[i].close >  sma10pb &&                          // closed above it (bounce, not break)
+              prices[i].close <  breakoutPrice;                      // price actually retreated from breakout
+
+            // Re-confirm structural uptrend at entry time (not just at detection time).
+            const priceWin200pb = prices.slice(0, i + 1);
+            const aboveSma200pb = priceWin200pb.length >= 200 &&
+              prices[i].close > (priceWin200pb.slice(-200).reduce((s, p) => s + p.close, 0) / 200);
+
+            // Sector heat and capacity re-checked at the actual entry date.
+            const sectorPb      = SECTOR_GROUPS[ticker] ?? `SOLO_${ticker}`;
+            const sectorDatesPb = sectorEntryDates.get(sectorPb) ?? [];
+            const signalDatePb  = prices[i].date;
+            const signalMsPb    = new Date(signalDatePb).getTime();
+            const recentCountPb = sectorDatesPb.filter(d => {
+              const diffDays = (signalMsPb - new Date(d).getTime()) / 86_400_000;
+              return diffDays >= 0 && diffDays <= HOLD_DAYS * 1.5;
+            }).length;
+            const sectorCoolPb  = recentCountPb < SECTOR_MAX_OPEN;
+            const openCountPb   = allTrades.filter(t => t.date <= signalDatePb && t.exitDate >= signalDatePb).length;
+            const capacityOkPb  = openCountPb < MAX_CONCURRENT_TRADES;
+
+            if (!vixBlockAllNew && pullbackMet && aboveSma200pb && sectorCoolPb && capacityOkPb) {
+              // Enter at the next bar's open (pullback confirmed at today's close).
+              entryIdx             = i + 1;
+              entryPrice           = prices[entryIdx].open * (1 + SLIPPAGE_MULT);
+              peakPrice            = entryPrice;
+              tier2Locked          = false;
+              unlimitedTrailActive = false;
+              pendingEntry         = false;
+
+              // ── Volatility-adaptive stop (2.5×/2.0×/1.5× ATR, 12% hard floor) ──
+              const atr14      = calcATR14(prices.slice(0, i + 1));
+              const adaptStop  = calcAdaptiveStop(atr14, entryPrice);
+              currentStop      = adaptStop.stopPrice;
+
+              // ── Breathing room floor: 2.0× ATR minimum for first 3 bars ─────
+              const breathingRaw = entryPrice - (2.0 * atr14);
+              breathingStopFloor = Math.max(breathingRaw, entryPrice * (1 - STOP_HARD_FLOOR));
+
+              // ── Position sizing: use the breakout score tier × VIX × stop mult ─
+              const baseSizing  = breakoutScore >= AGGRESSIVE_SCORE_THRESHOLD
+                ? STARTING_CASH * AGGRESSIVE_POSITION_SIZE   // 10%
+                : breakoutScore >= POWER_SCORE_THRESHOLD
+                  ? STARTING_CASH * POWER_POSITION_SIZE      // 7.5%
+                  : STARTING_CASH * POSITION_SIZE;           // 5%
+              const stopMult    = adaptStop.halfSizeNeeded ? 0.5 : 1.0;
+              tradePositionSize = baseSizing * vixPositionMult * stopMult;
+
+              entryRs3mMargin = breakoutRs3m;
+              sectorEntryDates.set(sectorPb, [...sectorDatesPb, signalDatePb]);
+              inTrade = true;
+            }
+          }
+        }
+
+        // ── Power Play re-entry ───────────────────────────────────────────────
+        // After a strong leader (RS3M > 10pp) is stopped out, watch for a
+        // single re-entry when price reclaims the 20-day SMA on high volume.
+        // Runs independently of the pending-entry state machine.
+        if (!inTrade && powerPlayEligible) {
+          const sma20      = calc20DaySMA(prices.slice(0, i + 1));
+          const aboveSma20 = sma20 !== null && prices[i].close > sma20;
+          const ppLookback = prices.slice(Math.max(0, i - 10), i);
+          const ppAvgVol   = ppLookback.length > 0
+            ? ppLookback.reduce((s, p) => s + p.volume, 0) / ppLookback.length
             : 0;
-          const volumeConfirmed = avgVol10 > 0 && prices[i].volume >= avgVol10 * VOL_CONFIRM_MULT;
+          const ppVolOk    = ppAvgVol > 0 && prices[i].volume >= ppAvgVol * VOL_CONFIRM_MULT;
 
-          // ── Entry filter 4: Market timing — SPY SMA10 > SMA50 ───────────────
-          // Short-term SPY momentum must be leading the long-term baseline.
-          // Stronger than "SPY above SMA50": filters out exhaustion phases
-          // where SPY is still above its long-term MA but already rolling over.
-          const spySMA50Confirmed = (() => {
-            if (spyWindow.length < 50) return false;
-            const spySma10 = spyWindow.slice(-10).reduce((s, p) => s + p.close, 0) / 10;
-            const spySma50 = spyWindow.slice(-50).reduce((s, p) => s + p.close, 0) / 50;
-            return spySma10 >= spySma50;
-          })();
-
-          // ── Entry filter 5: 3M RS gate — relaxed to allow base-building stocks ──
-          // Ticker must not underperform SPY by more than 10pp over 3 months.
-          // Breakout Exception: gate is waived entirely when Explosion fires
-          // (VCP confirmed + within 3% of 52w high).  Minervini/O'Neil base-
-          // building patterns inherently lag SPY during consolidation — that is
-          // the setup, not a disqualifying weakness signal.
-          const rs3mEntry      = calculate3MonthRelativeStrength(prices.slice(0, i + 1), spyWindow);
-          const rs3mMargin     = rs3mEntry !== null
-            ? rs3mEntry.tickerChange3M - rs3mEntry.spyChange3M  // positive = outperforming
-            : 0;
-          const volForExpl     = analyzeVolume(prices.slice(0, i + 1));
-          const expl           = detectExplosion(prices.slice(0, i + 1), volForExpl);
-          const breakoutExempt = expl.triggered && expl.nearHigh;
-          const leadsMarket    = breakoutExempt || (rs3mEntry !== null && rs3mMargin >= RS3M_LEAD_MIN);
-
-          // ── Entry filter 6: Sector heat — no more than SECTOR_MAX_OPEN ────
-          // Prevents over-clustering in the same theme in the same window.
-          const sector      = SECTOR_GROUPS[ticker] ?? `SOLO_${ticker}`;
-          const sectorDates = sectorEntryDates.get(sector) ?? [];
-          const signalDate  = prices[i].date;
-          const signalMs    = new Date(signalDate).getTime();
-          const recentCount = sectorDates.filter(d => {
-            const diffDays = (signalMs - new Date(d).getTime()) / 86_400_000;
-            return diffDays >= 0 && diffDays <= HOLD_DAYS * 1.5; // ~30 calendar days
-          }).length;
-          const sectorCool  = recentCount < SECTOR_MAX_OPEN;
-
-          // ── Entry filter 7: Portfolio capacity ───────────────────────────────
-          // Count open concurrent trades across all already-simulated tickers.
-          // If ≥ MAX_CONCURRENT_TRADES are open on this date, skip — no capital.
-          const openCount  = allTrades.filter(t => t.date <= signalDate && t.exitDate >= signalDate).length;
-          const capacityOk = openCount < MAX_CONCURRENT_TRADES;
-
-          // ── Entry filter Gate 10: Minimum Average Daily Volume ≥ $50 M ─────
-          // The flat 10bps slippage model is only realistic on liquid names.
-          // Low-ADV stocks have wide spreads and market-impact on breakout days
-          // that would make the modelled friction optimistic by 3–5×.
-          const advWindow   = prices.slice(Math.max(0, i - ADV_LOOKBACK), i + 1);
-          const avgDolVol   = advWindow.reduce((s, p) => s + p.volume * p.close, 0) / advWindow.length;
-          const liquidityOk = avgDolVol >= MIN_ADV_USD;
-
-          if (!vixBlockAllNew &&
-              breakoutConfirmed && aboveSma10 && aboveSma200 && volumeConfirmed &&
-              spySMA50Confirmed && leadsMarket && sectorCool && capacityOk && liquidityOk) {
-            // Enter at next-day open + slippage (pays the ask side of the spread)
+          if (aboveSma20 && ppVolOk) {
             entryIdx             = i + 1;
             entryPrice           = prices[entryIdx].open * (1 + SLIPPAGE_MULT);
             peakPrice            = entryPrice;
             tier2Locked          = false;
             unlimitedTrailActive = false;
 
-            // ── Volatility-adaptive stop (2.5×/2.0×/1.5× ATR, 12% hard floor) ──
             const atr14      = calcATR14(prices.slice(0, i + 1));
             const adaptStop  = calcAdaptiveStop(atr14, entryPrice);
             currentStop      = adaptStop.stopPrice;
+            const breathingRaw = entryPrice - (2.0 * atr14);
+            breathingStopFloor = Math.max(breathingRaw, entryPrice * (1 - STOP_HARD_FLOOR));
 
-            // ── Three-tier sizing × VIX multiplier × wide-stop halving ───────
-            // VIX > 28        → 0.5× all sizes (Macro Extreme regime)
-            // stop% > 8%      → additional 0.5× to maintain constant dollar-risk
-            const baseSizing  = score >= AGGRESSIVE_SCORE_THRESHOLD
-              ? STARTING_CASH * AGGRESSIVE_POSITION_SIZE   // 10%
-              : score >= POWER_SCORE_THRESHOLD
-                ? STARTING_CASH * POWER_POSITION_SIZE      // 7.5%
-                : STARTING_CASH * POSITION_SIZE;           // 5%
-            const stopMult    = adaptStop.halfSizeNeeded ? 0.5 : 1.0;
-            tradePositionSize = baseSizing * vixPositionMult * stopMult;
-
-            // Store RS3M margin so exit logic can decide on power play eligibility
-            entryRs3mMargin = rs3mMargin;
-
-            // Register this sector entry so future tickers see it
-            sectorEntryDates.set(sector, [...sectorDates, signalDate]);
-            inTrade = true;
-          }
-
-          // ── Power Play re-entry ─────────────────────────────────────────────
-          // After a strong leader (RS3M > 10pp) is stopped out, watch for a
-          // single re-entry when price reclaims the 20-day SMA on high volume.
-          if (!inTrade && powerPlayEligible) {
-            const sma20      = calc20DaySMA(prices.slice(0, i + 1));
-            const aboveSma20 = sma20 !== null && prices[i].close > sma20;
-            const ppLookback = prices.slice(Math.max(0, i - 10), i);
-            const ppAvgVol   = ppLookback.length > 0
-              ? ppLookback.reduce((s, p) => s + p.volume, 0) / ppLookback.length
-              : 0;
-            const ppVolOk    = ppAvgVol > 0 && prices[i].volume >= ppAvgVol * VOL_CONFIRM_MULT;
-
-            if (aboveSma20 && ppVolOk) {
-              entryIdx             = i + 1;
-              entryPrice           = prices[entryIdx].open * (1 + SLIPPAGE_MULT);
-              peakPrice            = entryPrice;
-              tier2Locked          = false;
-              unlimitedTrailActive = false;
-
-              const atr14      = calcATR14(prices.slice(0, i + 1));
-              const adaptStop  = calcAdaptiveStop(atr14, entryPrice);
-              currentStop      = adaptStop.stopPrice;
-              const ppStopMult = adaptStop.halfSizeNeeded ? 0.5 : 1.0;
-              tradePositionSize = STARTING_CASH * POSITION_SIZE * vixPositionMult * ppStopMult;
-              entryRs3mMargin   = 0;       // no chained power plays
-              powerPlayEligible = false;   // one-time use consumed
-              inTrade           = true;
-            }
+            const ppStopMult  = adaptStop.halfSizeNeeded ? 0.5 : 1.0;
+            tradePositionSize = STARTING_CASH * POSITION_SIZE * vixPositionMult * ppStopMult;
+            entryRs3mMargin   = 0;       // no chained power plays
+            powerPlayEligible = false;   // one-time use consumed
+            inTrade           = true;
           }
         }
       } else {
@@ -779,11 +916,24 @@ async function runBacktest(): Promise<void> {
         // ── Track intra-trade peak price ──────────────────────────────────────
         if (bar.high > peakPrice) peakPrice = bar.high;
 
+        // ── Days held (needed by trailing stop logic below) ───────────────────
+        const daysHeld = i - entryIdx;
+
         // ── Three-tier trailing stop system ───────────────────────────────────
         // Tier 1 (+8%): raise stop to break-even — can't lose money.
         // Raised from +5% to give high-ATR momentum names room to breathe
         // without being shaken out by normal intraday noise on day 2–3.
         if (bar.high >= entryPrice * (1 + BREAKEVEN_TRIGGER) && currentStop < entryPrice) {
+          currentStop = entryPrice;
+        }
+        // ── Early Momentum Check ───────────────────────────────────────────────
+        // If the trade has been held for EARLY_MOMENTUM_DAYS without the peak
+        // price ever reaching +EARLY_MOMENTUM_MIN_PCT above entry, force the
+        // stop to break-even. Lazy/flat trades occupy capital and skew the
+        // loss distribution — this exits them at zero rather than at -5%.
+        if (daysHeld >= EARLY_MOMENTUM_DAYS &&
+            peakPrice < entryPrice * (1 + EARLY_MOMENTUM_MIN_PCT) &&
+            currentStop < entryPrice) {
           currentStop = entryPrice;
         }
         // Tier 2 (+18%): lock in +12% floor, unlock extended hold to MAX_HOLD_DAYS.
@@ -810,9 +960,12 @@ async function runBacktest(): Promise<void> {
         }
 
         // ── Exit conditions ────────────────────────────────────────────────────
-        const daysHeld         = i - entryIdx;
         const catastrophicDrop = bar.low <= entryPrice * (1 - CATASTROPHIC_STOP);
-        const stopHit          = bar.low <= currentStop && (daysHeld >= MIN_HOLD_DAYS || catastrophicDrop);
+        // For the first 3 bars, use the wider 2.0× ATR breathing floor so normal
+        // post-breakout chop in high-vol names doesn't trigger an early stop-out.
+        // From bar 3 onward, the fully adaptive stop (1.5–2.5× ATR) takes over.
+        const effectiveStop    = daysHeld < 3 ? Math.min(currentStop, breathingStopFloor) : currentStop;
+        const stopHit          = bar.low <= effectiveStop && (daysHeld >= MIN_HOLD_DAYS || catastrophicDrop);
         // Time exit: 21-day window normally; extended to MAX_HOLD_DAYS once tier-2 fires.
         const timeExit         = daysHeld >= (tier2Locked ? MAX_HOLD_DAYS : HOLD_DAYS);
 
@@ -822,8 +975,8 @@ async function runBacktest(): Promise<void> {
         let exitReason: ExitReason;
 
         if (stopHit) {
-          // Exit at stop level minus slippage (selling into a fast market costs extra)
-          exitPrice  = parseFloat((currentStop * (1 - SLIPPAGE_MULT)).toFixed(2));
+          // Exit at effective stop level minus slippage (selling into a fast market costs extra)
+          exitPrice  = parseFloat((effectiveStop * (1 - SLIPPAGE_MULT)).toFixed(2));
           exitReason = exitPrice > entryPrice ? "TRAIL_STOP" : "STOP_LOSS";
         } else {
           // Time exit at close minus slippage (bid side of spread)
@@ -1004,7 +1157,7 @@ async function runBacktest(): Promise<void> {
     if (prices.length < 220) continue;
 
     const spyFull = spyAll.slice(0, Math.min(prices.length, spyAll.length));
-    const score   = simplifiedScore(prices, spyFull);
+    const score   = simplifiedScore(prices, spyFull, fundMap.get(ticker));
 
     if (score >= LIVE_SIGNAL_THRESHOLD) {
       const last       = prices[prices.length - 1];

@@ -141,6 +141,7 @@ export interface TodoAction {
   breakdown: ScoreBreakdown;
   reasoning: string;
   stopLoss: number | null;
+  sma10EntryPrice?: number;
   volumeStatus: "High" | "Normal" | "Low" | "N/A";
   riskLevel: "NORMAL" | "EXTREME";
   warnings: string[];
@@ -869,7 +870,7 @@ export async function calculateConfidenceScore(
 
 // ── Action + Stop-Loss ───────────────────────────────────────────────────────
 
-function deriveAction(score: number, buyThreshold = 70): "BUY" | "SELL" | "WATCH" {
+function deriveAction(score: number, buyThreshold = 65): "BUY" | "SELL" | "WATCH" {
   if (score > buyThreshold) return "BUY";
   if (score < 30) return "SELL";
   return "WATCH";
@@ -1034,6 +1035,11 @@ export async function analyzeMarket(
       ? snapshot.prices[snapshot.prices.length - 1].close
       : 0;
 
+  // SMA10 — used for pullback entry filter and Telegram entry price
+  const sma10 = snapshot.prices.length >= 10
+    ? snapshot.prices.slice(-10).reduce((sum, p) => sum + p.close, 0) / 10
+    : null;
+
   // ── Layer 1: Hard Blocks — non-bypassable, no override allowed ─────────────
   //
   // Block A: VIX > 35 (market in free-fall, all trades off)
@@ -1115,6 +1121,7 @@ export async function analyzeMarket(
       breakdown: { ...breakdown, total: 99 },
       reasoning,
       stopLoss: calculateStopLoss("BUY", breakdown.details.atrData, currentPrice),
+      sma10EntryPrice: sma10 ?? undefined,
       volumeStatus: breakdown.details.volumeStatus,
       riskLevel: breakdown.riskLevel,
       warnings: [...breakdown.warnings, reasoning],
@@ -1143,6 +1150,7 @@ export async function analyzeMarket(
       breakdown: { ...breakdown, total: 95 },
       reasoning,
       stopLoss: calculateStopLoss("BUY", breakdown.details.atrData, currentPrice),
+      sma10EntryPrice: sma10 ?? undefined,
       volumeStatus: breakdown.details.volumeStatus,
       riskLevel: breakdown.riskLevel,
       warnings: [...breakdown.warnings, `EXPLOSIVE BUY: ${reasoning}`],
@@ -1151,8 +1159,35 @@ export async function analyzeMarket(
   }
 
   // ── Standard Scoring Path ──────────────────────────────────────────────────
-  const buyThreshold = snapshot.vix.level > 28 ? 85 : 70;
+  const buyThreshold = snapshot.vix.level > 28 ? 85 : 65;
   const action = deriveAction(breakdown.total, buyThreshold);
+
+  // Pullback entry filter: only upgrade to BUY if price has pulled back to
+  // within 1% of SMA10 AND today is a green candle.  Stocks that broke out
+  // but haven't pulled back are marked WATCHLIST instead.
+  if (action === "BUY" && sma10 !== null) {
+    const prevClose  = snapshot.prices.length >= 2
+      ? snapshot.prices[snapshot.prices.length - 2].close
+      : currentPrice;
+    const nearSma10  = currentPrice <= sma10 * 1.01;
+    const isGreenDay = currentPrice >= prevClose;
+
+    if (!nearSma10 || !isGreenDay) {
+      return {
+        ticker: snapshot.symbol,
+        action: "WATCH",
+        score: breakdown.total,
+        breakdown,
+        reasoning: `WATCHLIST — breakout detected (score ${breakdown.total}), awaiting SMA10 pullback entry ($${sma10.toFixed(2)})`,
+        stopLoss: null,
+        sma10EntryPrice: sma10,
+        volumeStatus: breakdown.details.volumeStatus,
+        riskLevel: breakdown.riskLevel,
+        warnings: breakdown.warnings,
+        marketContext: breakdown.marketContext,
+      };
+    }
+  }
 
   return {
     ticker: snapshot.symbol,
@@ -1161,6 +1196,7 @@ export async function analyzeMarket(
     breakdown,
     reasoning: buildReasoning(breakdown),
     stopLoss: calculateStopLoss(action, breakdown.details.atrData, currentPrice),
+    sma10EntryPrice: sma10 ?? undefined,
     volumeStatus: breakdown.details.volumeStatus,
     riskLevel: breakdown.riskLevel,
     warnings: breakdown.warnings,

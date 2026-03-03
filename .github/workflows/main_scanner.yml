@@ -63,7 +63,7 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "chore: fast scan $(date -u +'%Y-%m-%d %H:%M')"
-            git pull --rebase origin main
+            git pull --rebase -X ours origin main
             git push
           fi
 
@@ -110,7 +110,7 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "chore: full scan $(date -u +'%Y-%m-%d')"
-            git pull --rebase origin main
+            git pull --rebase -X ours origin main
             git push
           fi
 
@@ -157,7 +157,7 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "chore: monitor scan $(date -u +'%Y-%m-%d %H:%M')"
-            git pull --rebase origin main
+            git pull --rebase -X ours origin main
             git push
           fi
 

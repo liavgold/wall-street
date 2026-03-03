@@ -120,22 +120,39 @@ function formatStandardAlert(r: TodoAction): string {
   const vol       = r.breakdown.details.volumeRatio;
   const volLabel  = r.breakdown.details.volumeStatus;
   const footer    = dashboardFooter();
-  const pos       = price > 0 ? calculatePositionSize(price) : null;
+  const entryPrice = r.sma10EntryPrice ?? price;
+  const pos       = entryPrice > 0 ? calculatePositionSize(entryPrice) : null;
   const summary   = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
   const qualLine  = formatQualityLine(r);
   const sectorETF = r.breakdown.details.sectorETFData;
   const sectorStr = sectorETF
     ? `${sectorETF.etf} ${sectorETF.changePercent > 0 ? "+" : ""}${sectorETF.changePercent}%`
     : null;
-  const breakEven = price > 0 ? `$${(price * 1.05).toFixed(2)}` : "—";
+  const breakEven = entryPrice > 0 ? `$${(entryPrice * 1.05).toFixed(2)}` : "—";
+
+  // Score breakdown: Tech (RSI/SMA/Vol/RS) vs Fund (fundamentals/consensus/AI)
+  const techScore = r.breakdown.technical + r.breakdown.volume
+    + r.breakdown.relativeStrength + r.breakdown.threeMonthRS;
+  const fundScore = r.breakdown.fundamentals + r.breakdown.institutional
+    + r.breakdown.aiSentiment;
+
+  // Adaptive ATR stop label
+  const atrData = r.breakdown.details.atrData;
+  const atrMultLabel = (() => {
+    if (!atrData || price <= 0) return "ATR";
+    const atrPct = (atrData.atr / price) * 100;
+    if (atrPct < 2)  return "2.5×ATR";
+    if (atrPct <= 5) return "2.0×ATR";
+    return "1.5×ATR";
+  })();
 
   const lines: (string | null)[] = [
     `⭐ *Strong Setup: ${r.ticker}*`,
     ``,
     `💰 *Price:* $${price.toFixed(2)}`,
     sectorStr ? `📊 *Sector:* ${sectorStr}` : null,
-    `📊 *Score:* ${r.score}  |  *Certainty:* ${ci.total}/100`,
-    `⚡ *Confidence:* ${confidenceMeter(ci.total)}`,
+    `📊 *Score:* ${r.score}  ·  Tech: ${techScore} | Fund: ${fundScore}`,
+    `🎯 *Certainty:* ${ci.total}/100  ${confidenceMeter(ci.total)}`,
     ``,
     `📈 *RS (1d):* ${rsStr}`,
     `📦 *Volume:* ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
@@ -145,9 +162,9 @@ function formatStandardAlert(r: TodoAction): string {
     `_${summary}_`,
     ``,
     pos && pos.shares > 0
-      ? `📏 *Entry:* Buy ${pos.shares} shares at $${price.toFixed(2)}`
-      : `📏 *Entry:* $${price.toFixed(2)}`,
-    `🛡️ *Stop Loss:* ${stopLoss} (1.5×ATR)`,
+      ? `📏 *Entry (SMA10 limit):* Buy ${pos.shares} shares @ $${entryPrice.toFixed(2)}`
+      : `📏 *Entry (SMA10 limit):* $${entryPrice.toFixed(2)}`,
+    `🛡️ *Initial Stop:* ${stopLoss} (${atrMultLabel})`,
     `📈 *Break-even:* ${breakEven} (+5%)`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
@@ -172,14 +189,31 @@ function formatGoldenAlert(r: TodoAction): string {
   const volLabel  = r.breakdown.details.volumeStatus;
   const es        = r.breakdown.details.earningsSurprise;
   const footer    = dashboardFooter();
-  const pos       = price > 0 ? calculatePositionSize(price) : null;
+  const entryPrice = r.sma10EntryPrice ?? price;
+  const pos       = entryPrice > 0 ? calculatePositionSize(entryPrice) : null;
   const summary   = escapeMd(r.breakdown.details.catalystSummary || r.breakdown.details.sentimentReasoning);
   const qualLine  = formatQualityLine(r);
   const sectorETF = r.breakdown.details.sectorETFData;
   const sectorStr = sectorETF
     ? `${sectorETF.etf} ${sectorETF.changePercent > 0 ? "+" : ""}${sectorETF.changePercent}%`
     : null;
-  const breakEven = price > 0 ? `$${(price * 1.05).toFixed(2)}` : "—";
+  const breakEven = entryPrice > 0 ? `$${(entryPrice * 1.05).toFixed(2)}` : "—";
+
+  // Score breakdown: Tech (RSI/SMA/Vol/RS) vs Fund (fundamentals/consensus/AI)
+  const techScore = r.breakdown.technical + r.breakdown.volume
+    + r.breakdown.relativeStrength + r.breakdown.threeMonthRS;
+  const fundScore = r.breakdown.fundamentals + r.breakdown.institutional
+    + r.breakdown.aiSentiment;
+
+  // Adaptive ATR stop label
+  const atrData = r.breakdown.details.atrData;
+  const atrMultLabel = (() => {
+    if (!atrData || price <= 0) return "ATR";
+    const atrPct = (atrData.atr / price) * 100;
+    if (atrPct < 2)  return "2.5×ATR";
+    if (atrPct <= 5) return "2.0×ATR";
+    return "1.5×ATR";
+  })();
 
   const header = isGolden
     ? `🏆🏆🏆 *GOLDEN TRADE: ${r.ticker}* 🏆🏆🏆`
@@ -191,8 +225,8 @@ function formatGoldenAlert(r: TodoAction): string {
     ``,
     `💰 *Price:* $${price.toFixed(2)}`,
     sectorStr ? `📊 *Sector:* ${sectorStr}` : null,
-    `📊 *Score:* ${r.score}  |  *Certainty:* ${ci.total}/100`,
-    `⚡ *Confidence:* ${confidenceMeter(ci.total)}`,
+    `📊 *Score:* ${r.score}  ·  Tech: ${techScore} | Fund: ${fundScore}`,
+    `🎯 *Certainty:* ${ci.total}/100  ${confidenceMeter(ci.total)}`,
     ``,
     `📈 *RS (1d):* ${rsStr}`,
     `📦 *Volume:* ${volLabel}${vol > 0 ? ` (${vol.toFixed(1)}x)` : ""}`,
@@ -203,9 +237,9 @@ function formatGoldenAlert(r: TodoAction): string {
     `_${summary}_`,
     ``,
     pos && pos.shares > 0
-      ? `📏 *Entry:* Buy ${pos.shares} shares at $${price.toFixed(2)}`
-      : `📏 *Entry:* $${price.toFixed(2)}`,
-    `🛡️ *Stop Loss:* ${stopLoss} (1.5×ATR)`,
+      ? `📏 *Entry (SMA10 limit):* Buy ${pos.shares} shares @ $${entryPrice.toFixed(2)}`
+      : `📏 *Entry (SMA10 limit):* $${entryPrice.toFixed(2)}`,
+    `🛡️ *Initial Stop:* ${stopLoss} (${atrMultLabel})`,
     `📈 *Break-even:* ${breakEven} (+5%)`,
     ``,
     `🔗 [TradingView: ${r.ticker}](${tradingViewUrl(r.ticker)})`,
