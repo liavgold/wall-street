@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-02",
-  "start_date": "2024-03-02",
-  "end_date": "2026-03-02",
+  "generated_at": "2026-03-03",
+  "start_date": "2024-03-03",
+  "end_date": "2026-03-03",
   "data_points": 61,
   "win_rate": 29.51,
   "profit_factor": 0.87,
@@ -12,8 +12,8 @@
   "sharpe_ratio": -0.18,
   "calmar_ratio": -0.13,
   "slippage_bps": 0.1,
-  "vix_at_run": 21.03,
-  "vix_regime": "21.03 — Normal",
+  "vix_at_run": 26.52,
+  "vix_regime": "26.52 — Normal",
   "rows": [
     {
       "ticker": "NVDA",
