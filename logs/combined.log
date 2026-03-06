@@ -1613,3 +1613,132 @@
 [2026-03-06 11:23:55] [INFO] Telegram alert sent successfully
 [2026-03-06 11:23:58] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-03-06 11:23:58] [INFO] Telegram alert sent successfully
+[2026-03-06 16:00:02] [INFO] WallStreet Scanner — Mode: FULL | Session: Intraday (11:00:02 AM ET) | Tickers: 50
+[2026-03-06 16:00:02] [INFO] VIX: 25.95 [HIGH] (rising) | SPY: 252 days | Yield Curve: +0.57% (normal)
+[2026-03-06 16:00:02] [INFO] Fetching 7 sector ETFs...
+[2026-03-06 16:00:02] [INFO] Sector ETFs: SMH: -1.2%  XLY: -1.53%  XLK: -0.62%  HACK: +0.43%  SKYY: +0.14%  BITO: -3.82%  ARKF: -1.42%
+[2026-03-06 16:00:02] [INFO] NVDA prices: Yahoo Finance — 252 days
+[2026-03-06 16:00:17] [WARN] Earnings calendar unavailable for NVDA: timeout of 15000ms exceeded
+[2026-03-06 16:00:17] [WARN] Earnings surprise unavailable: timeout of 15000ms exceeded
+[2026-03-06 16:00:22] [INFO] 1/50 NVDA — WATCH (35)
+[2026-03-06 16:00:25] [INFO] TSLA prices: Yahoo Finance — 252 days
+[2026-03-06 16:00:40] [WARN] Earnings surprise unavailable: timeout of 15000ms exceeded
+[2026-03-06 16:00:45] [INFO] 2/50 TSLA — SELL (14)
+[2026-03-06 16:00:48] [INFO] AMD prices: Yahoo Finance — 252 days
+[2026-03-06 16:01:03] [INFO] 3/50 AMD — WATCH (35)
+[2026-03-06 16:01:06] [INFO] PLTR prices: Yahoo Finance — 252 days
+[2026-03-06 16:01:22] [INFO] 4/50 PLTR — WATCH (35)
+[2026-03-06 16:01:25] [INFO] MSTR prices: Yahoo Finance — 252 days
+[2026-03-06 16:01:44] [INFO] 5/50 MSTR — SELL (11)
+[2026-03-06 16:01:47] [INFO] SMCI prices: Yahoo Finance — 252 days
+[2026-03-06 16:01:51] [INFO] 6/50 SMCI — SELL (25)
+[2026-03-06 16:01:54] [INFO] PANW prices: Yahoo Finance — 252 days
+[2026-03-06 16:02:04] [INFO] 7/50 PANW — SELL (28)
+[2026-03-06 16:02:07] [INFO] ELF prices: Yahoo Finance — 252 days
+[2026-03-06 16:02:12] [INFO] 8/50 ELF — WATCH (35)
+[2026-03-06 16:02:15] [INFO] CRWD prices: Yahoo Finance — 252 days
+[2026-03-06 16:02:24] [INFO] 9/50 CRWD — SELL (25)
+[2026-03-06 16:02:27] [INFO] SNOW prices: Yahoo Finance — 252 days
+[2026-03-06 16:02:43] [WARN] Recommendation trends unavailable for SNOW: timeout of 15000ms exceeded
+[2026-03-06 16:02:43] [WARN] Earnings calendar unavailable for SNOW: timeout of 15000ms exceeded
+[2026-03-06 16:02:43] [WARN] Earnings surprise unavailable: timeout of 15000ms exceeded
+[2026-03-06 16:02:46] [INFO] 10/50 SNOW — SELL (28)
+[2026-03-06 16:02:49] [INFO] NET prices: Yahoo Finance — 252 days
+[2026-03-06 16:02:59] [INFO] 11/50 NET — SELL (14)
+[2026-03-06 16:03:02] [INFO] DDOG prices: Yahoo Finance — 252 days
+[2026-03-06 16:03:15] [INFO] 12/50 DDOG — SELL (28)
+[2026-03-06 16:03:19] [INFO] COIN prices: Yahoo Finance — 252 days
+[2026-03-06 16:03:28] [INFO] 13/50 COIN — SELL (11)
+[2026-03-06 16:03:31] [INFO] MELI prices: Yahoo Finance — 252 days
+[2026-03-06 16:03:39] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 500 (line 6 column 1)
+[2026-03-06 16:03:39] [INFO] Defaulting to Neutral sentiment
+[2026-03-06 16:03:39] [INFO] 14/50 MELI — WATCH (35)
+[2026-03-06 16:03:42] [INFO] TTD prices: Yahoo Finance — 252 days
+[2026-03-06 16:03:50] [INFO] 15/50 TTD — WATCH (35)
+[2026-03-06 16:03:53] [INFO] SHOP prices: Yahoo Finance — 252 days
+[2026-03-06 16:03:58] [INFO] 16/50 SHOP — SELL (18)
+[2026-03-06 16:04:01] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-03-06 16:04:01] [ERROR] 17/50 SQ — FAILED
+[2026-03-06 16:04:04] [INFO] AFRM prices: Yahoo Finance — 252 days
+[2026-03-06 16:04:12] [INFO] 18/50 AFRM — WATCH (31)
+[2026-03-06 16:04:15] [INFO] HOOD prices: Yahoo Finance — 252 days
+[2026-03-06 16:04:30] [WARN] Recommendation trends unavailable for HOOD: timeout of 15000ms exceeded
+[2026-03-06 16:04:30] [WARN] Earnings calendar unavailable for HOOD: timeout of 15000ms exceeded
+[2026-03-06 16:04:30] [WARN] Social sentiment unavailable: timeout of 15000ms exceeded
+[2026-03-06 16:04:30] [WARN] Earnings surprise unavailable: timeout of 15000ms exceeded
+[2026-03-06 16:04:34] [INFO] 19/50 HOOD — WATCH (31)
+[2026-03-06 16:04:37] [INFO] RBLX prices: Yahoo Finance — 252 days
+[2026-03-06 16:04:45] [INFO] 20/50 RBLX — SELL (21)
+[2026-03-06 16:04:48] [INFO] UBER prices: Yahoo Finance — 252 days
+[2026-03-06 16:04:52] [INFO] 21/50 UBER — SELL (28)
+[2026-03-06 16:04:55] [INFO] ABNB prices: Yahoo Finance — 252 days
+[2026-03-06 16:05:02] [INFO] 22/50 ABNB — WATCH (35)
+[2026-03-06 16:05:05] [INFO] DASH prices: Yahoo Finance — 252 days
+[2026-03-06 16:05:14] [INFO] 23/50 DASH — SELL (21)
+[2026-03-06 16:05:17] [INFO] DUOL prices: Yahoo Finance — 252 days
+[2026-03-06 16:05:21] [INFO] 24/50 DUOL — WATCH (35)
+[2026-03-06 16:05:24] [INFO] MNDY prices: Yahoo Finance — 252 days
+[2026-03-06 16:05:29] [INFO] 25/50 MNDY — WATCH (35)
+[2026-03-06 16:05:32] [INFO] ZS prices: Yahoo Finance — 252 days
+[2026-03-06 16:05:35] [INFO] 26/50 ZS — WATCH (35)
+[2026-03-06 16:05:38] [INFO] OKTA prices: Yahoo Finance — 252 days
+[2026-03-06 16:05:46] [INFO] 27/50 OKTA — WATCH (35)
+[2026-03-06 16:05:49] [INFO] BILL prices: Yahoo Finance — 252 days
+[2026-03-06 16:05:52] [INFO] 28/50 BILL — SELL (18)
+[2026-03-06 16:05:56] [INFO] HUBS prices: Yahoo Finance — 252 days
+[2026-03-06 16:06:05] [INFO] 29/50 HUBS — WATCH (35)
+[2026-03-06 16:06:09] [INFO] GDDY prices: Yahoo Finance — 252 days
+[2026-03-06 16:06:21] [INFO] 30/50 GDDY — SELL (4)
+[2026-03-06 16:06:24] [INFO] TEAM prices: Yahoo Finance — 252 days
+[2026-03-06 16:06:35] [INFO] 31/50 TEAM — SELL (28)
+[2026-03-06 16:06:38] [INFO] MDB prices: Yahoo Finance — 252 days
+[2026-03-06 16:06:45] [INFO] 32/50 MDB — SELL (28)
+[2026-03-06 16:06:48] [INFO] ESTC prices: Yahoo Finance — 252 days
+[2026-03-06 16:06:57] [INFO] 33/50 ESTC — SELL (28)
+[2026-03-06 16:07:00] [INFO] IOT prices: Yahoo Finance — 252 days
+[2026-03-06 16:07:10] [INFO] 34/50 IOT — WATCH (35)
+[2026-03-06 16:07:13] [INFO] CFLT prices: Yahoo Finance — 252 days
+[2026-03-06 16:07:22] [INFO] 35/50 CFLT — WATCH (42)
+[2026-03-06 16:07:25] [INFO] TOST prices: Yahoo Finance — 252 days
+[2026-03-06 16:07:38] [INFO] 36/50 TOST — WATCH (35)
+[2026-03-06 16:07:41] [INFO] APP prices: Yahoo Finance — 252 days
+[2026-03-06 16:07:50] [INFO] 37/50 APP — SELL (21)
+[2026-03-06 16:07:53] [INFO] CELH prices: Yahoo Finance — 252 days
+[2026-03-06 16:08:03] [INFO] 38/50 CELH — WATCH (35)
+[2026-03-06 16:08:06] [INFO] ONON prices: Yahoo Finance — 252 days
+[2026-03-06 16:08:18] [INFO] 39/50 ONON — WATCH (35)
+[2026-03-06 16:08:21] [INFO] DECK prices: Yahoo Finance — 252 days
+[2026-03-06 16:08:34] [INFO] 40/50 DECK — WATCH (42)
+[2026-03-06 16:08:37] [INFO] AXON prices: Yahoo Finance — 252 days
+[2026-03-06 16:08:44] [INFO] 41/50 AXON — WATCH (42)
+[2026-03-06 16:08:48] [INFO] TW prices: Yahoo Finance — 252 days
+[2026-03-06 16:08:53] [INFO] 42/50 TW — WATCH (42)
+[2026-03-06 16:08:56] [INFO] FICO prices: Yahoo Finance — 252 days
+[2026-03-06 16:09:01] [INFO] 43/50 FICO — SELL (25)
+[2026-03-06 16:09:04] [INFO] LULU prices: Yahoo Finance — 252 days
+[2026-03-06 16:09:11] [INFO] 44/50 LULU — SELL (18)
+[2026-03-06 16:09:14] [INFO] WDAY prices: Yahoo Finance — 252 days
+[2026-03-06 16:09:19] [INFO] 45/50 WDAY — WATCH (35)
+[2026-03-06 16:09:22] [INFO] ADSK prices: Yahoo Finance — 252 days
+[2026-03-06 16:09:33] [INFO] 46/50 ADSK — SELL (28)
+[2026-03-06 16:09:36] [INFO] FTNT prices: Yahoo Finance — 252 days
+[2026-03-06 16:09:42] [INFO] 47/50 FTNT — WATCH (31)
+[2026-03-06 16:09:45] [INFO] ARM prices: Yahoo Finance — 252 days
+[2026-03-06 16:09:53] [INFO] 48/50 ARM — WATCH (35)
+[2026-03-06 16:09:56] [INFO] AAPL prices: Yahoo Finance — 252 days
+[2026-03-06 16:10:02] [INFO] 49/50 AAPL — WATCH (35)
+[2026-03-06 16:10:05] [INFO] MSFT prices: Yahoo Finance — 252 days
+[2026-03-06 16:10:21] [INFO] 50/50 MSFT — WATCH (35)
+[2026-03-06 16:10:21] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-03-06 16:10:21] [INFO]   SCAN COMPLETE — FULL | Intraday (11:00:02 AM ET)
+[2026-03-06 16:10:21] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-03-06 16:10:21] [INFO]   Tickers scanned:    50
+[2026-03-06 16:10:21] [INFO]   Successful:         49
+[2026-03-06 16:10:21] [INFO]   Failed:             1
+[2026-03-06 16:10:21] [INFO]   Passed all filters: 0
+[2026-03-06 16:10:21] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-03-06 16:10:21] [INFO] Results saved to OPPORTUNITIES.md
+[2026-03-06 16:10:21] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-03-06 16:10:22] [INFO] Telegram alert sent successfully
+[2026-03-06 16:23:37] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-03-06 16:23:37] [INFO] Telegram alert sent successfully
