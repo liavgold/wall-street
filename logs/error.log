@@ -164,3 +164,13 @@
 [2026-03-06 16:04:01] [ERROR] 17/50 SQ — FAILED
 [2026-03-06 17:38:05] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
 [2026-03-06 17:38:05] [ERROR] 1/1 VIX — FAILED
+[2026-03-06 20:55:43] [ERROR] Claude sentiment failed: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "catalystSummary"
+    ],
+    "message": "Invalid input: expected string, received undefined"
+  }
+]
