@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-03-06",
-  "start_date": "2024-03-06",
-  "end_date": "2026-03-06",
-  "data_points": 43,
-  "win_rate": 20.93,
-  "profit_factor": 0.97,
-  "alpha_vs_spy": -33.8,
-  "total_return": -0.14,
-  "spy_return": 33.66,
+  "generated_at": "2026-03-09",
+  "start_date": "2024-03-09",
+  "end_date": "2026-03-09",
+  "data_points": 39,
+  "win_rate": 20.51,
+  "profit_factor": 0.8,
+  "alpha_vs_spy": -32.27,
+  "total_return": -0.76,
+  "spy_return": 31.51,
   "max_drawdown": -1.37,
-  "sharpe_ratio": -0.13,
-  "calmar_ratio": -0.05,
+  "sharpe_ratio": -0.18,
+  "calmar_ratio": -0.28,
   "slippage_bps": 0.1,
-  "vix_at_run": 28.27,
-  "vix_regime": "28.27 — RISK-OFF (0.5x sizing)",
+  "vix_at_run": 32.36,
+  "vix_regime": "32.36 — RISK-OFF (0.5x sizing)",
   "rows": [
     {
       "ticker": "AMD",
@@ -269,28 +269,6 @@
       "exitReason": "STOP_LOSS"
     },
     {
-      "ticker": "DECK",
-      "date": "2024-12-24",
-      "action": "BUY",
-      "pct_change": -5.92,
-      "win": false,
-      "entryPrice": 208.26,
-      "exitPrice": 195.93,
-      "exitDate": "2025-01-13",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "DECK",
-      "date": "2025-01-24",
-      "action": "BUY",
-      "pct_change": -5.79,
-      "win": false,
-      "entryPrice": 218.77,
-      "exitPrice": 206.1,
-      "exitDate": "2025-01-31",
-      "exitReason": "STOP_LOSS"
-    },
-    {
       "ticker": "UBER",
       "date": "2025-09-25",
       "action": "BUY",
@@ -333,28 +311,6 @@
       "exitPrice": 276.99,
       "exitDate": "2025-11-14",
       "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "PLTR",
-      "date": "2024-12-30",
-      "action": "BUY",
-      "pct_change": -10.4,
-      "win": false,
-      "entryPrice": 77.12,
-      "exitPrice": 69.1,
-      "exitDate": "2025-01-08",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "PLTR",
-      "date": "2025-01-27",
-      "action": "BUY",
-      "pct_change": 49.9,
-      "win": true,
-      "entryPrice": 74.14,
-      "exitPrice": 111.14,
-      "exitDate": "2025-02-19",
-      "exitReason": "TRAIL_STOP"
     },
     {
       "ticker": "PLTR",

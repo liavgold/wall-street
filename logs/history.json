@@ -2843,5 +2843,95 @@
     "price": 133.72000122070312,
     "score": 8,
     "action": "SELL"
+  },
+  {
+    "ticker": "NVDA",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 177.82000732421875,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "TSLA",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 396.7300109863281,
+    "score": 18,
+    "action": "SELL"
+  },
+  {
+    "ticker": "PLTR",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 157.16000366210938,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "AMD",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 192.42999267578125,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "MSFT",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 408.9599914550781,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "AAPL",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 257.4599914550781,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "AMZN",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 213.2100067138672,
+    "score": 20,
+    "action": "SELL"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 644.8599853515625,
+    "score": 18,
+    "action": "SELL"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 298.5199890136719,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "MSTR",
+    "date": "2026-03-09",
+    "time": "07:30:06 AM",
+    "session": "Pre-market",
+    "price": 133.52999877929688,
+    "score": 8,
+    "action": "SELL"
   }
 ]
