@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-03-09",
-  "start_date": "2024-03-09",
-  "end_date": "2026-03-09",
-  "data_points": 39,
-  "win_rate": 20.51,
-  "profit_factor": 0.8,
-  "alpha_vs_spy": -33.03,
-  "total_return": -1.52,
+  "generated_at": "2026-03-10",
+  "start_date": "2024-03-10",
+  "end_date": "2026-03-10",
+  "data_points": 34,
+  "win_rate": 23.53,
+  "profit_factor": 0.89,
+  "alpha_vs_spy": -32.24,
+  "total_return": -0.73,
   "spy_return": 31.51,
-  "max_drawdown": -2.73,
-  "sharpe_ratio": -0.2,
-  "calmar_ratio": -0.28,
+  "max_drawdown": -2.72,
+  "sharpe_ratio": -0.17,
+  "calmar_ratio": -0.13,
   "slippage_bps": 0.1,
-  "vix_at_run": 25.5,
-  "vix_regime": "25.5 — Normal",
+  "vix_at_run": 24.54,
+  "vix_regime": "24.54 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -35,50 +35,6 @@
       "entryPrice": 198.02,
       "exitPrice": 187.31,
       "exitDate": "2025-07-30",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "CRWD",
-      "date": "2025-02-04",
-      "action": "BUY",
-      "pct_change": -0.1,
-      "win": false,
-      "entryPrice": 396.92,
-      "exitPrice": 396.52,
-      "exitDate": "2025-02-24",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "CRWD",
-      "date": "2025-04-10",
-      "action": "BUY",
-      "pct_change": -0.1,
-      "win": false,
-      "entryPrice": 369.37,
-      "exitPrice": 369,
-      "exitDate": "2025-04-21",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "CRWD",
-      "date": "2025-06-12",
-      "action": "BUY",
-      "pct_change": -0.1,
-      "win": false,
-      "entryPrice": 474.49,
-      "exitPrice": 474.02,
-      "exitDate": "2025-07-14",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "CRWD",
-      "date": "2025-08-29",
-      "action": "BUY",
-      "pct_change": -5.75,
-      "win": false,
-      "entryPrice": 445.31,
-      "exitPrice": 419.71,
-      "exitDate": "2025-09-03",
       "exitReason": "STOP_LOSS"
     },
     {
@@ -256,17 +212,6 @@
       "exitPrice": 139.08,
       "exitDate": "2025-10-10",
       "exitReason": "TRAIL_STOP"
-    },
-    {
-      "ticker": "ONON",
-      "date": "2025-07-02",
-      "action": "BUY",
-      "pct_change": -6.55,
-      "win": false,
-      "entryPrice": 52.23,
-      "exitPrice": 48.81,
-      "exitDate": "2025-07-31",
-      "exitReason": "STOP_LOSS"
     },
     {
       "ticker": "UBER",
