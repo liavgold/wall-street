@@ -3340,15 +3340,6 @@
     "action": "WATCH"
   },
   {
-    "ticker": "AMD",
-    "date": "2026-03-10",
-    "time": "07:27:30 AM",
-    "session": "Pre-market",
-    "price": 202.67999267578125,
-    "score": 95,
-    "action": "EXPLOSIVE BUY"
-  },
-  {
     "ticker": "MSFT",
     "date": "2026-03-10",
     "time": "07:27:30 AM",
@@ -3400,6 +3391,15 @@
     "session": "Pre-market",
     "price": 138.9499969482422,
     "score": 40,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AMD",
+    "date": "2026-03-10",
+    "time": "01:49:20 PM",
+    "session": "Intraday",
+    "price": 205.4300994873047,
+    "score": 50,
     "action": "WATCH"
   }
 ]
