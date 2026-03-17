@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-16",
-  "start_date": "2024-03-16",
-  "end_date": "2026-03-16",
+  "generated_at": "2026-03-17",
+  "start_date": "2024-03-17",
+  "end_date": "2026-03-17",
   "data_points": 34,
   "win_rate": 23.53,
   "profit_factor": 0.89,
@@ -12,8 +12,8 @@
   "sharpe_ratio": -0.17,
   "calmar_ratio": -0.13,
   "slippage_bps": 0.1,
-  "vix_at_run": 25.32,
-  "vix_regime": "25.32 — Normal",
+  "vix_at_run": 23.36,
+  "vix_regime": "23.36 — Normal",
   "rows": [
     {
       "ticker": "AMD",
