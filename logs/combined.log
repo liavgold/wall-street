@@ -2740,3 +2740,43 @@
 [2026-03-26 11:44:44] [INFO] Telegram alert sent successfully
 [2026-03-26 11:57:45] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-03-26 11:57:45] [INFO] Telegram alert sent successfully
+[2026-03-27 11:36:44] [INFO] WallStreet Scanner — Mode: FAST | Session: Pre-market (07:36:44 AM ET) | Tickers: 10
+[2026-03-27 11:36:44] [INFO] Fast mode: scanning top 10 priority tickers with auto-retry on failure
+[2026-03-27 11:36:44] [INFO] VIX: 29.65 [HIGH] (rising) | SPY: 251 days | Yield Curve: +0.80% (normal)
+[2026-03-27 11:36:44] [INFO] Fetching 3 sector ETFs...
+[2026-03-27 11:36:44] [INFO] Sector ETFs: SMH: -4.56%  XLY: -1.72%  XLK: -3.11%
+[2026-03-27 11:36:44] [INFO] NVDA prices: Yahoo Finance — 251 days
+[2026-03-27 11:36:48] [INFO] 1/10 NVDA — SELL (25)
+[2026-03-27 11:36:51] [INFO] TSLA prices: Yahoo Finance — 251 days
+[2026-03-27 11:36:54] [INFO] 2/10 TSLA — SELL (-2)
+[2026-03-27 11:36:57] [INFO] PLTR prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:01] [INFO] 3/10 PLTR — SELL (25)
+[2026-03-27 11:37:04] [INFO] AMD prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:08] [INFO] 4/10 AMD — SELL (25)
+[2026-03-27 11:37:11] [INFO] MSFT prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:14] [INFO] 5/10 MSFT — SELL (13)
+[2026-03-27 11:37:18] [INFO] AAPL prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:20] [INFO] 6/10 AAPL — SELL (25)
+[2026-03-27 11:37:23] [INFO] AMZN prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:28] [INFO] 7/10 AMZN — SELL (25)
+[2026-03-27 11:37:31] [INFO] META prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:34] [INFO] 8/10 META — SELL (13)
+[2026-03-27 11:37:38] [INFO] GOOGL prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:41] [INFO] 9/10 GOOGL — SELL (25)
+[2026-03-27 11:37:44] [INFO] MSTR prices: Yahoo Finance — 251 days
+[2026-03-27 11:37:51] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 602 (line 6 column 1)
+[2026-03-27 11:37:51] [INFO] Defaulting to Neutral sentiment
+[2026-03-27 11:37:51] [INFO] 10/10 MSTR — SELL (23)
+[2026-03-27 11:37:51] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-03-27 11:37:51] [INFO]   SCAN COMPLETE — FAST | Pre-market (07:36:44 AM ET)
+[2026-03-27 11:37:51] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-03-27 11:37:51] [INFO]   Tickers scanned:    10
+[2026-03-27 11:37:51] [INFO]   Successful:         10
+[2026-03-27 11:37:51] [INFO]   Failed:             0
+[2026-03-27 11:37:51] [INFO]   Passed all filters: 0
+[2026-03-27 11:37:51] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-03-27 11:37:51] [INFO] Results saved to OPPORTUNITIES.md
+[2026-03-27 11:37:51] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-03-27 11:37:51] [INFO] Telegram alert sent successfully
+[2026-03-27 11:37:54] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-03-27 11:37:55] [INFO] Telegram alert sent successfully
