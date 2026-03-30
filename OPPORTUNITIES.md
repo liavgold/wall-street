@@ -1,14 +1,14 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-03-30 | **Time:** 12:33:08 PM | **Session:** Intraday | **Mode:** FULL | **Tickers Scanned:** 49
+> **Scan Date:** 2026-03-30 | **Time:** 01:55:14 PM | **Session:** Intraday | **Mode:** MONITOR | **Tickers Scanned:** 0
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 30.14 (HIGH) — **0.5x macro multiplier** |
-| Sector Health | Market Flat (SPY 0.23%) |
-| General Sentiment | Extreme Risk-Off — Macro Regime active (0.5x, BUY ≥ 85) |
+| VIX | 30.71 (HIGH) — **0.7x macro multiplier** |
+| Sector Health | N/A |
+| General Sentiment | N/A |
 
 > **Filters:** (Score > 75 OR Explosive Buy) AND Earnings Surprise > 0% AND Relative Strength > 0
 
@@ -18,7 +18,7 @@
 
 ## Scan Summary
 
-- **Total scanned:** 49
+- **Total scanned:** 0
 - **Passed filters:** 0
 - **Golden Trades (top 1%):** 0
 - **Explosive signals:** 0
