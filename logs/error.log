@@ -206,3 +206,5 @@
 [2026-03-27 16:15:03] [ERROR] 17/50 SQ — FAILED
 [2026-03-27 17:52:02] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
 [2026-03-27 17:52:02] [ERROR] 1/1 VIX — FAILED
+[2026-03-30 16:35:02] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-03-30 16:35:02] [ERROR] 17/50 SQ — FAILED
