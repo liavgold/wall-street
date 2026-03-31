@@ -1,12 +1,12 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-03-30 | **Time:** 05:07:11 PM | **Session:** Post-market | **Mode:** FAST | **Tickers Scanned:** 10
+> **Scan Date:** 2026-03-31 | **Time:** 07:42:36 AM | **Session:** Pre-market | **Mode:** FAST | **Tickers Scanned:** 10
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 30.61 (HIGH) — **0.5x macro multiplier** |
+| VIX | 28.55 (HIGH) — **0.5x macro multiplier** |
 | Sector Health | Market Flat (SPY -0.33%) |
 | General Sentiment | Extreme Risk-Off — Macro Regime active (0.5x, BUY ≥ 85) |
 
