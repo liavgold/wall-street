@@ -5599,78 +5599,6 @@
     "action": "SELL"
   },
   {
-    "ticker": "AMZN",
-    "date": "2026-04-03",
-    "time": "07:32:55 AM",
-    "session": "Pre-market",
-    "price": 209.77000427246094,
-    "score": 10,
-    "action": "SELL"
-  },
-  {
-    "ticker": "META",
-    "date": "2026-04-03",
-    "time": "07:32:55 AM",
-    "session": "Pre-market",
-    "price": 574.4600219726562,
-    "score": 30,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "GOOGL",
-    "date": "2026-04-03",
-    "time": "07:32:55 AM",
-    "session": "Pre-market",
-    "price": 295.7699890136719,
-    "score": 50,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "NVDA",
-    "date": "2026-04-03",
-    "time": "12:01:06 PM",
-    "session": "Intraday",
-    "price": 177.38999938964844,
-    "score": 50,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "TSLA",
-    "date": "2026-04-03",
-    "time": "12:01:06 PM",
-    "session": "Intraday",
-    "price": 360.5899963378906,
-    "score": -5,
-    "action": "SELL"
-  },
-  {
-    "ticker": "AMD",
-    "date": "2026-04-03",
-    "time": "12:01:06 PM",
-    "session": "Intraday",
-    "price": 217.5,
-    "score": 75,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "PLTR",
-    "date": "2026-04-03",
-    "time": "12:01:06 PM",
-    "session": "Intraday",
-    "price": 148.4600067138672,
-    "score": 50,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "MSTR",
-    "date": "2026-04-03",
-    "time": "12:01:06 PM",
-    "session": "Intraday",
-    "price": 119.83000183105469,
-    "score": 25,
-    "action": "SELL"
-  },
-  {
     "ticker": "SMCI",
     "date": "2026-04-03",
     "time": "12:01:06 PM",
@@ -6049,21 +5977,93 @@
     "action": "WATCH"
   },
   {
-    "ticker": "AAPL",
+    "ticker": "NVDA",
     "date": "2026-04-03",
-    "time": "12:01:06 PM",
-    "session": "Intraday",
-    "price": 255.9199981689453,
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 177.38999938964844,
     "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TSLA",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 360.5899963378906,
+    "score": -5,
+    "action": "SELL"
+  },
+  {
+    "ticker": "PLTR",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 148.4600067138672,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AMD",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 217.5,
+    "score": 75,
     "action": "WATCH"
   },
   {
     "ticker": "MSFT",
     "date": "2026-04-03",
-    "time": "12:01:06 PM",
-    "session": "Intraday",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
     "price": 373.4599914550781,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "AAPL",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 255.9199981689453,
+    "score": 45,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AMZN",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 209.77000427246094,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 574.4600219726562,
+    "score": 30,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 295.7699890136719,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSTR",
+    "date": "2026-04-03",
+    "time": "05:00:55 PM",
+    "session": "Post-market",
+    "price": 119.83000183105469,
+    "score": 25,
+    "action": "SELL"
   }
 ]
