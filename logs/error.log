@@ -217,3 +217,5 @@
 [2026-04-02 11:40:45] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 536 (line 6 column 1)
 [2026-04-02 17:52:37] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
 [2026-04-02 17:52:37] [ERROR] 1/1 VIX — FAILED
+[2026-04-03 16:04:01] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-04-03 16:04:01] [ERROR] 17/50 SQ — FAILED
