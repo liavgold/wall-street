@@ -235,3 +235,5 @@
     "message": "Invalid input: expected string, received undefined"
   }
 ]
+[2026-04-07 17:59:18] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-04-07 17:59:18] [ERROR] 1/1 VIX — FAILED
