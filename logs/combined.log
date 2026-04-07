@@ -4092,3 +4092,59 @@
 [2026-04-06 21:03:04] [INFO] Telegram alert sent successfully
 [2026-04-06 21:03:07] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-04-06 21:03:08] [INFO] Telegram alert sent successfully
+[2026-04-07 11:47:15] [INFO] WallStreet Scanner — Mode: FAST | Session: Pre-market (07:47:15 AM ET) | Tickers: 10
+[2026-04-07 11:47:15] [INFO] Fast mode: scanning top 10 priority tickers with auto-retry on failure
+[2026-04-07 11:47:15] [INFO] VIX: 25.53 [HIGH] (rising) | SPY: 250 days | Yield Curve: +0.71% (normal)
+[2026-04-07 11:47:15] [INFO] Fetching 3 sector ETFs...
+[2026-04-07 11:47:15] [INFO] Sector ETFs: SMH: +0.93%  XLY: +0.82%  XLK: +0.58%
+[2026-04-07 11:47:15] [INFO] NVDA prices: Yahoo Finance — 250 days
+[2026-04-07 11:47:19] [INFO] 1/10 NVDA — SELL (25) Certainty 40/100 🚀
+[2026-04-07 11:47:19] [INFO] Sending Telegram for: NVDA (HIGH CONVICTION)
+[2026-04-07 11:47:19] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 11:47:20] [INFO] Telegram alert sent successfully
+[2026-04-07 11:47:23] [INFO] TSLA prices: Yahoo Finance — 250 days
+[2026-04-07 11:47:27] [INFO] 2/10 TSLA — SELL (-10)
+[2026-04-07 11:47:30] [INFO] PLTR prices: Yahoo Finance — 250 days
+[2026-04-07 11:47:35] [INFO] 3/10 PLTR — SELL (21)
+[2026-04-07 11:47:38] [INFO] AMD prices: Yahoo Finance — 250 days
+[2026-04-07 11:47:43] [INFO] 4/10 AMD — WATCH (42) Certainty 50/100 🚀
+[2026-04-07 11:47:43] [INFO] Sending Telegram for: AMD (HIGH CONVICTION)
+[2026-04-07 11:47:43] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 11:47:43] [INFO] Telegram alert sent successfully
+[2026-04-07 11:47:47] [INFO] MSFT prices: Yahoo Finance — 250 days
+[2026-04-07 11:47:51] [INFO] 5/10 MSFT — SELL (14)
+[2026-04-07 11:47:54] [INFO] AAPL prices: Yahoo Finance — 250 days
+[2026-04-07 11:47:58] [INFO] 6/10 AAPL — WATCH (35) Certainty 70/100 🚀
+[2026-04-07 11:47:58] [INFO] Sending Telegram for: AAPL (HIGH CONVICTION)
+[2026-04-07 11:47:58] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 11:47:58] [INFO] Telegram alert sent successfully
+[2026-04-07 11:48:01] [INFO] AMZN prices: Yahoo Finance — 250 days
+[2026-04-07 11:48:06] [INFO] 7/10 AMZN — WATCH (31) Certainty 70/100 🚀
+[2026-04-07 11:48:06] [INFO] Sending Telegram for: AMZN (HIGH CONVICTION)
+[2026-04-07 11:48:06] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 11:48:07] [INFO] Telegram alert sent successfully
+[2026-04-07 11:48:10] [INFO] META prices: Yahoo Finance — 250 days
+[2026-04-07 11:48:16] [INFO] 8/10 META — SELL (21)
+[2026-04-07 11:48:19] [INFO] GOOGL prices: Yahoo Finance — 250 days
+[2026-04-07 11:48:23] [INFO] 9/10 GOOGL — WATCH (35) Certainty 40/100 🚀
+[2026-04-07 11:48:23] [INFO] Sending Telegram for: GOOGL (HIGH CONVICTION)
+[2026-04-07 11:48:23] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 11:48:24] [INFO] Telegram alert sent successfully
+[2026-04-07 11:48:27] [INFO] MSTR prices: Yahoo Finance — 250 days
+[2026-04-07 11:48:31] [INFO] 10/10 MSTR — WATCH (31) Certainty 70/100 🚀
+[2026-04-07 11:48:31] [INFO] Sending Telegram for: MSTR (HIGH CONVICTION)
+[2026-04-07 11:48:31] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 11:48:31] [INFO] Telegram alert sent successfully
+[2026-04-07 11:48:31] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-04-07 11:48:31] [INFO]   SCAN COMPLETE — FAST | Pre-market (07:47:15 AM ET)
+[2026-04-07 11:48:31] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-04-07 11:48:31] [INFO]   Tickers scanned:    10
+[2026-04-07 11:48:31] [INFO]   Successful:         10
+[2026-04-07 11:48:31] [INFO]   Failed:             0
+[2026-04-07 11:48:31] [INFO]   Passed all filters: 0
+[2026-04-07 11:48:31] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-04-07 11:48:31] [INFO] Results saved to OPPORTUNITIES.md
+[2026-04-07 11:48:31] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 11:48:31] [INFO] Telegram alert sent successfully
+[2026-04-07 12:01:36] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-04-07 12:01:37] [INFO] Telegram alert sent successfully
