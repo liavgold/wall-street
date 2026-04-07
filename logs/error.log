@@ -237,3 +237,4 @@
 ]
 [2026-04-07 17:59:18] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
 [2026-04-07 17:59:18] [ERROR] 1/1 VIX — FAILED
+[2026-04-07 21:09:47] [ERROR] Claude sentiment failed: Expected double-quoted property name in JSON at position 526 (line 6 column 1)
