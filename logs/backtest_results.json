@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-04-10",
-  "start_date": "2024-04-10",
-  "end_date": "2026-04-10",
-  "data_points": 33,
-  "win_rate": 24.24,
-  "profit_factor": 0.91,
-  "alpha_vs_spy": -30.77,
-  "total_return": -0.6,
-  "spy_return": 30.17,
-  "max_drawdown": -2.73,
-  "sharpe_ratio": -0.17,
-  "calmar_ratio": -0.11,
+  "generated_at": "2026-04-13",
+  "start_date": "2024-04-13",
+  "end_date": "2026-04-13",
+  "data_points": 28,
+  "win_rate": 21.43,
+  "profit_factor": 0.81,
+  "alpha_vs_spy": -35.73,
+  "total_return": -1.04,
+  "spy_return": 34.69,
+  "max_drawdown": -3.46,
+  "sharpe_ratio": -0.21,
+  "calmar_ratio": -0.15,
   "slippage_bps": 0.1,
-  "vix_at_run": 19.23,
-  "vix_regime": "19.23 — Normal",
+  "vix_at_run": 21.44,
+  "vix_regime": "21.44 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -36,17 +36,6 @@
       "exitPrice": 187.31,
       "exitDate": "2025-07-30",
       "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "NET",
-      "date": "2025-02-04",
-      "action": "BUY",
-      "pct_change": 11.89,
-      "win": true,
-      "entryPrice": 139.66,
-      "exitPrice": 156.26,
-      "exitDate": "2025-02-07",
-      "exitReason": "TRAIL_STOP"
     },
     {
       "ticker": "NET",
@@ -124,28 +113,6 @@
       "exitPrice": 51.7,
       "exitDate": "2026-01-02",
       "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "SNOW",
-      "date": "2025-01-31",
-      "action": "BUY",
-      "pct_change": -7.29,
-      "win": false,
-      "entryPrice": 183.48,
-      "exitPrice": 170.1,
-      "exitDate": "2025-02-24",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "SNOW",
-      "date": "2025-04-10",
-      "action": "BUY",
-      "pct_change": 29.29,
-      "win": true,
-      "entryPrice": 148.4,
-      "exitPrice": 191.86,
-      "exitDate": "2025-05-22",
-      "exitReason": "TRAIL_STOP"
     },
     {
       "ticker": "MDB",
@@ -353,28 +320,6 @@
       "win": false,
       "entryPrice": 330.96,
       "exitPrice": 300.77,
-      "exitDate": "2025-04-04",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "GDDY",
-      "date": "2025-02-04",
-      "action": "BUY",
-      "pct_change": -4.92,
-      "win": false,
-      "entryPrice": 214.58,
-      "exitPrice": 204.02,
-      "exitDate": "2025-02-12",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "GDDY",
-      "date": "2025-03-24",
-      "action": "BUY",
-      "pct_change": -5.32,
-      "win": false,
-      "entryPrice": 183.86,
-      "exitPrice": 174.09,
       "exitDate": "2025-04-04",
       "exitReason": "STOP_LOSS"
     }
