@@ -1,33 +1,25 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-04-17 | **Time:** 12:29:13 PM | **Session:** Intraday | **Mode:** FULL | **Tickers Scanned:** 21
+> **Scan Date:** 2026-04-17 | **Time:** 01:52:24 PM | **Session:** Intraday | **Mode:** MONITOR | **Tickers Scanned:** 0
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 17.4 (LOW) |
-| Sector Health | Market Rising (SPY +1.39%) |
-| General Sentiment | Calm — risk-on environment |
+| VIX | 17.5 (LOW) |
+| Sector Health | N/A |
+| General Sentiment | N/A |
 
 > **Filters:** (Score > 75 OR Explosive Buy) AND Earnings Surprise > 0% AND Relative Strength > 0
 
-| Ticker | Sector ETF | Action | Score | Certainty | Earnings Surprise | RS (1d) | Explosion Factor | Reasoning | Stop-Loss |
-| ------ | ---------- | ------ | ----- | --------- | ----------------- | ------- | ---------------- | --------- | --------- |
-| AFRM | ARKF +2.8% | **EXPLOSIVE BUY** | 95 | 90/100 🔥 🚀 | +39.1% (Q2) | +8.29% vs SPY +1.39% | Surprise +39.1% \| 34.72% from 52w High \| VCP pattern | Certainty 90/100 (adj. 90) — +39.1% Earnings beat + High Volume 0.99x breakout from VCP near 52w High ($100, 34.72% away) | $60.28 (ATR $3.33 x 2) |
-
-**Safety Checklist — AFRM:**
-- [x] Market Trend Alignment?
-- [x] No Earnings within 3 days?
-- [x] Institutional Accumulation?
-- [ ] Volume Confirmation?
+**No opportunities found in this scan.**
 
 ---
 
 ## Scan Summary
 
-- **Total scanned:** 21
-- **Passed filters:** 1
+- **Total scanned:** 0
+- **Passed filters:** 0
 - **Golden Trades (top 1%):** 0
-- **Explosive signals:** 1
+- **Explosive signals:** 0
 - **High-confidence buys (>75):** 0
