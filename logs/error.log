@@ -858,3 +858,34 @@
 [2026-04-24 21:12:24] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-04-24 21:12:27] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-04-24 21:12:27] [ERROR] 10/10 MSTR — FAILED (after retry)
+[2026-04-27 12:17:37] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:17:40] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:17:40] [ERROR] 1/10 NVDA — FAILED (after retry)
+[2026-04-27 12:17:43] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:17:46] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:17:46] [ERROR] 2/10 TSLA — FAILED (after retry)
+[2026-04-27 12:17:50] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:17:53] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:17:53] [ERROR] 3/10 PLTR — FAILED (after retry)
+[2026-04-27 12:17:56] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:00] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:00] [ERROR] 4/10 AMD — FAILED (after retry)
+[2026-04-27 12:18:03] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:07] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:07] [ERROR] 5/10 MSFT — FAILED (after retry)
+[2026-04-27 12:18:10] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:13] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:13] [ERROR] 6/10 AAPL — FAILED (after retry)
+[2026-04-27 12:18:17] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:20] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:20] [ERROR] 7/10 AMZN — FAILED (after retry)
+[2026-04-27 12:18:24] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:27] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:27] [ERROR] 8/10 META — FAILED (after retry)
+[2026-04-27 12:18:30] [ERROR] GOOGL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:34] [ERROR] GOOGL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:34] [ERROR] 9/10 GOOGL — FAILED (after retry)
+[2026-04-27 12:18:37] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:40] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-04-27 12:18:40] [ERROR] 10/10 MSTR — FAILED (after retry)
+[2026-04-27 12:31:42] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 259
