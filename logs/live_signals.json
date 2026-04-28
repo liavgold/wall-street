@@ -1,18 +1,6 @@
 {
-  "generated_at": "2026-04-27",
+  "generated_at": "2026-04-28",
   "threshold": 75,
-  "count": 1,
-  "signals": [
-    {
-      "ticker": "AMD",
-      "score": 80,
-      "close": 347.81,
-      "date": "2026-04-24",
-      "aboveSma200": true,
-      "atr14": 13.76,
-      "stopPrice": 320.3,
-      "stopPct": 7.9,
-      "sector": "AI_SEMI"
-    }
-  ]
+  "count": 0,
+  "signals": []
 }
