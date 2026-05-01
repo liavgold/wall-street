@@ -8270,5 +8270,23 @@
     "price": 30.989999771118164,
     "score": 60,
     "action": "WATCH"
+  },
+  {
+    "ticker": "HUBS",
+    "date": "2026-05-01",
+    "time": "12:30:57 PM",
+    "session": "Intraday",
+    "price": 238.08999633789062,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "CFLT",
+    "date": "2026-05-01",
+    "time": "12:30:57 PM",
+    "session": "Intraday",
+    "price": 30.989999771118164,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
