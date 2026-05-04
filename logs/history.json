@@ -8288,5 +8288,104 @@
     "price": 30.989999771118164,
     "score": 60,
     "action": "WATCH"
+  },
+  {
+    "ticker": "NVDA",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 197.22999572753906,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TSLA",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 392.0199890136719,
+    "score": 15,
+    "action": "SELL"
+  },
+  {
+    "ticker": "AMD",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 342.7572937011719,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "PLTR",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 146.9199981689453,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSTR",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 184.8800048828125,
+    "score": 45,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "SMCI",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 27.88010025024414,
+    "score": 45,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "PANW",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 185.91000366210938,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ELF",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 62.09000015258789,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "CRWD",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 468.8999938964844,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ESTC",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 50.290000915527344,
+    "score": 40,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "CFLT",
+    "date": "2026-05-04",
+    "time": "01:10:42 PM",
+    "session": "Intraday",
+    "price": 30.989999771118164,
+    "score": 60,
+    "action": "WATCH"
   }
 ]

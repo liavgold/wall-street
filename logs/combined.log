@@ -8198,3 +8198,202 @@
 [2026-05-04 12:33:09] [INFO] Sending 1 live signal alert(s)...
 [2026-05-04 12:33:09] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-05-04 12:33:09] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
+[2026-05-04 17:10:42] [INFO] WallStreet Scanner — Mode: FULL | Session: Intraday (01:10:42 PM ET) | Tickers: 50
+[2026-05-04 17:10:42] [INFO] VIX: 18.85 [ELEVATED] (rising) | SPY: 251 days | Yield Curve: +0.86% (normal)
+[2026-05-04 17:10:42] [INFO] Fetching 7 sector ETFs...
+[2026-05-04 17:10:42] [INFO] Sector ETFs: SMH: -0.75%  XLY: -0.86%  XLK: +0.1%  HACK: +1.12%  SKYY: +1.73%  BITO: +2.59%  ARKF: +2.24%
+[2026-05-04 17:10:42] [INFO] NVDA prices: Yahoo Finance — 251 days
+[2026-05-04 17:10:57] [WARN] Insider sentiment unavailable for NVDA: timeout of 15000ms exceeded
+[2026-05-04 17:10:57] [WARN] Company news unavailable for NVDA: timeout of 15000ms exceeded
+[2026-05-04 17:10:57] [WARN] Insider transactions unavailable for NVDA: timeout of 15000ms exceeded
+[2026-05-04 17:10:57] [INFO] 1/50 NVDA — WATCH (60)
+[2026-05-04 17:11:00] [INFO] TSLA prices: Yahoo Finance — 251 days
+[2026-05-04 17:11:16] [WARN] Insider sentiment unavailable for TSLA: timeout of 15000ms exceeded
+[2026-05-04 17:11:16] [WARN] Company news unavailable for TSLA: timeout of 15000ms exceeded
+[2026-05-04 17:11:16] [WARN] Insider transactions unavailable for TSLA: timeout of 15000ms exceeded
+[2026-05-04 17:11:16] [INFO] 2/50 TSLA — SELL (15)
+[2026-05-04 17:11:19] [INFO] AMD prices: Yahoo Finance — 251 days
+[2026-05-04 17:11:34] [WARN] Insider sentiment unavailable for AMD: timeout of 15000ms exceeded
+[2026-05-04 17:11:34] [WARN] Company news unavailable for AMD: timeout of 15000ms exceeded
+[2026-05-04 17:11:34] [WARN] Insider transactions unavailable for AMD: timeout of 15000ms exceeded
+[2026-05-04 17:11:34] [INFO] 3/50 AMD — WATCH (60)
+[2026-05-04 17:11:37] [INFO] PLTR prices: Yahoo Finance — 251 days
+[2026-05-04 17:11:52] [WARN] Insider sentiment unavailable for PLTR: timeout of 15000ms exceeded
+[2026-05-04 17:11:52] [WARN] Company news unavailable for PLTR: timeout of 15000ms exceeded
+[2026-05-04 17:11:52] [WARN] Insider transactions unavailable for PLTR: timeout of 15000ms exceeded
+[2026-05-04 17:11:52] [INFO] 4/50 PLTR — WATCH (50)
+[2026-05-04 17:11:55] [INFO] MSTR prices: Yahoo Finance — 251 days
+[2026-05-04 17:12:10] [WARN] Insider sentiment unavailable for MSTR: timeout of 15000ms exceeded
+[2026-05-04 17:12:10] [WARN] Company news unavailable for MSTR: timeout of 15000ms exceeded
+[2026-05-04 17:12:10] [WARN] Earnings calendar unavailable for MSTR: timeout of 15000ms exceeded
+[2026-05-04 17:12:10] [WARN] Insider transactions unavailable for MSTR: timeout of 15000ms exceeded
+[2026-05-04 17:12:10] [WARN] Earnings surprise unavailable: timeout of 15000ms exceeded
+[2026-05-04 17:12:10] [INFO] 5/50 MSTR — WATCH (45)
+[2026-05-04 17:12:13] [INFO] SMCI prices: Yahoo Finance — 251 days
+[2026-05-04 17:12:28] [WARN] Insider sentiment unavailable for SMCI: timeout of 15000ms exceeded
+[2026-05-04 17:12:28] [WARN] Company news unavailable for SMCI: timeout of 15000ms exceeded
+[2026-05-04 17:12:28] [WARN] Earnings calendar unavailable for SMCI: timeout of 15000ms exceeded
+[2026-05-04 17:12:28] [WARN] Insider transactions unavailable for SMCI: timeout of 15000ms exceeded
+[2026-05-04 17:12:28] [WARN] Earnings surprise unavailable: timeout of 15000ms exceeded
+[2026-05-04 17:12:28] [INFO] 6/50 SMCI — WATCH (45)
+[2026-05-04 17:12:32] [INFO] PANW prices: Yahoo Finance — 251 days
+[2026-05-04 17:12:47] [WARN] Insider sentiment unavailable for PANW: timeout of 15000ms exceeded
+[2026-05-04 17:12:47] [WARN] Company news unavailable for PANW: timeout of 15000ms exceeded
+[2026-05-04 17:12:47] [WARN] Insider transactions unavailable for PANW: timeout of 15000ms exceeded
+[2026-05-04 17:12:47] [INFO] 7/50 PANW — WATCH (60) Certainty 40/100 🚀
+[2026-05-04 17:12:47] [INFO] Sending Telegram for: PANW (HIGH CONVICTION)
+[2026-05-04 17:12:47] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-04 17:12:47] [INFO] Telegram alert sent successfully
+[2026-05-04 17:12:50] [INFO] ELF prices: Yahoo Finance — 251 days
+[2026-05-04 17:13:05] [WARN] Insider sentiment unavailable for ELF: timeout of 15000ms exceeded
+[2026-05-04 17:13:05] [WARN] Company news unavailable for ELF: timeout of 15000ms exceeded
+[2026-05-04 17:13:05] [WARN] Insider transactions unavailable for ELF: timeout of 15000ms exceeded
+[2026-05-04 17:13:05] [INFO] 8/50 ELF — WATCH (50)
+[2026-05-04 17:13:08] [INFO] CRWD prices: Yahoo Finance — 251 days
+[2026-05-04 17:13:23] [WARN] Insider sentiment unavailable for CRWD: timeout of 15000ms exceeded
+[2026-05-04 17:13:23] [WARN] Company news unavailable for CRWD: timeout of 15000ms exceeded
+[2026-05-04 17:13:23] [WARN] Insider transactions unavailable for CRWD: timeout of 15000ms exceeded
+[2026-05-04 17:13:23] [INFO] 9/50 CRWD — WATCH (60) Certainty 70/100 🚀
+[2026-05-04 17:13:23] [INFO] Sending Telegram for: CRWD (HIGH CONVICTION)
+[2026-05-04 17:13:23] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-04 17:13:23] [INFO] Telegram alert sent successfully
+[2026-05-04 17:13:27] [INFO] SNOW prices: Yahoo Finance — 251 days
+[2026-05-04 17:13:41] [ERROR] SNOW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:13:41] [ERROR] 10/50 SNOW — FAILED
+[2026-05-04 17:13:44] [INFO] NET prices: Yahoo Finance — 251 days
+[2026-05-04 17:13:48] [ERROR] NET analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:13:48] [ERROR] 11/50 NET — FAILED
+[2026-05-04 17:13:51] [INFO] DDOG prices: Yahoo Finance — 251 days
+[2026-05-04 17:13:52] [ERROR] DDOG analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:13:52] [ERROR] 12/50 DDOG — FAILED
+[2026-05-04 17:13:55] [INFO] COIN prices: Yahoo Finance — 251 days
+[2026-05-04 17:13:57] [ERROR] COIN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:13:57] [ERROR] 13/50 COIN — FAILED
+[2026-05-04 17:14:00] [INFO] MELI prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:02] [ERROR] MELI analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:02] [ERROR] 14/50 MELI — FAILED
+[2026-05-04 17:14:05] [INFO] TTD prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:06] [ERROR] TTD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:06] [ERROR] 15/50 TTD — FAILED
+[2026-05-04 17:14:09] [INFO] SHOP prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:11] [ERROR] SHOP analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:11] [ERROR] 16/50 SHOP — FAILED
+[2026-05-04 17:14:14] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-05-04 17:14:14] [ERROR] 17/50 SQ — FAILED
+[2026-05-04 17:14:17] [INFO] AFRM prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:18] [ERROR] AFRM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:18] [ERROR] 18/50 AFRM — FAILED
+[2026-05-04 17:14:21] [INFO] HOOD prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:22] [ERROR] HOOD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:22] [ERROR] 19/50 HOOD — FAILED
+[2026-05-04 17:14:25] [INFO] RBLX prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:26] [ERROR] RBLX analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:26] [ERROR] 20/50 RBLX — FAILED
+[2026-05-04 17:14:29] [INFO] UBER prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:29] [ERROR] UBER analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:29] [ERROR] 21/50 UBER — FAILED
+[2026-05-04 17:14:32] [INFO] ABNB prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:33] [ERROR] ABNB analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:33] [ERROR] 22/50 ABNB — FAILED
+[2026-05-04 17:14:36] [INFO] DASH prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:36] [ERROR] DASH analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:36] [ERROR] 23/50 DASH — FAILED
+[2026-05-04 17:14:39] [INFO] DUOL prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:40] [ERROR] DUOL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:40] [ERROR] 24/50 DUOL — FAILED
+[2026-05-04 17:14:43] [INFO] MNDY prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:43] [ERROR] MNDY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:43] [ERROR] 25/50 MNDY — FAILED
+[2026-05-04 17:14:46] [INFO] ZS prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:46] [ERROR] ZS analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:46] [ERROR] 26/50 ZS — FAILED
+[2026-05-04 17:14:49] [INFO] OKTA prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:50] [ERROR] OKTA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:50] [ERROR] 27/50 OKTA — FAILED
+[2026-05-04 17:14:53] [INFO] BILL prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:53] [ERROR] BILL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:53] [ERROR] 28/50 BILL — FAILED
+[2026-05-04 17:14:56] [INFO] HUBS prices: Yahoo Finance — 251 days
+[2026-05-04 17:14:57] [ERROR] HUBS analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:14:57] [ERROR] 29/50 HUBS — FAILED
+[2026-05-04 17:15:00] [INFO] GDDY prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:01] [ERROR] GDDY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:01] [ERROR] 30/50 GDDY — FAILED
+[2026-05-04 17:15:04] [INFO] TEAM prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:06] [ERROR] TEAM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:06] [ERROR] 31/50 TEAM — FAILED
+[2026-05-04 17:15:09] [INFO] MDB prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:11] [ERROR] MDB analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:11] [ERROR] 32/50 MDB — FAILED
+[2026-05-04 17:15:14] [INFO] ESTC prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:15] [INFO] 33/50 ESTC — WATCH (40) Certainty 50/100 🚀
+[2026-05-04 17:15:15] [INFO] Sending Telegram for: ESTC (HIGH CONVICTION)
+[2026-05-04 17:15:15] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-04 17:15:15] [INFO] Telegram alert sent successfully
+[2026-05-04 17:15:18] [INFO] IOT prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:19] [ERROR] IOT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:19] [ERROR] 34/50 IOT — FAILED
+[2026-05-04 17:15:22] [INFO] CFLT prices: Yahoo Finance — 218 days
+[2026-05-04 17:15:23] [INFO] 35/50 CFLT — WATCH (60) Certainty 50/100 🚀
+[2026-05-04 17:15:23] [INFO] Sending Telegram for: CFLT (HIGH CONVICTION)
+[2026-05-04 17:15:23] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-04 17:15:23] [INFO] Telegram alert sent successfully
+[2026-05-04 17:15:26] [INFO] TOST prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:26] [ERROR] TOST analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:26] [ERROR] 36/50 TOST — FAILED
+[2026-05-04 17:15:29] [INFO] APP prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:30] [ERROR] APP analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:30] [ERROR] 37/50 APP — FAILED
+[2026-05-04 17:15:33] [INFO] CELH prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:33] [ERROR] CELH analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:33] [ERROR] 38/50 CELH — FAILED
+[2026-05-04 17:15:36] [INFO] ONON prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:36] [ERROR] ONON analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:36] [ERROR] 39/50 ONON — FAILED
+[2026-05-04 17:15:40] [INFO] DECK prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:40] [ERROR] DECK analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:40] [ERROR] 40/50 DECK — FAILED
+[2026-05-04 17:15:43] [INFO] AXON prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:43] [ERROR] AXON analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:43] [ERROR] 41/50 AXON — FAILED
+[2026-05-04 17:15:47] [INFO] TW prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:47] [ERROR] TW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:47] [ERROR] 42/50 TW — FAILED
+[2026-05-04 17:15:50] [INFO] FICO prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:50] [ERROR] FICO analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:50] [ERROR] 43/50 FICO — FAILED
+[2026-05-04 17:15:53] [INFO] LULU prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:54] [ERROR] LULU analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:54] [ERROR] 44/50 LULU — FAILED
+[2026-05-04 17:15:57] [INFO] WDAY prices: Yahoo Finance — 251 days
+[2026-05-04 17:15:57] [ERROR] WDAY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:15:57] [ERROR] 45/50 WDAY — FAILED
+[2026-05-04 17:16:00] [INFO] ADSK prices: Yahoo Finance — 251 days
+[2026-05-04 17:16:00] [ERROR] ADSK analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:16:00] [ERROR] 46/50 ADSK — FAILED
+[2026-05-04 17:16:03] [INFO] FTNT prices: Yahoo Finance — 251 days
+[2026-05-04 17:16:04] [ERROR] FTNT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:16:04] [ERROR] 47/50 FTNT — FAILED
+[2026-05-04 17:16:07] [INFO] ARM prices: Yahoo Finance — 251 days
+[2026-05-04 17:16:07] [ERROR] ARM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:16:07] [ERROR] 48/50 ARM — FAILED
+[2026-05-04 17:16:10] [INFO] AAPL prices: Yahoo Finance — 251 days
+[2026-05-04 17:16:11] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:16:11] [ERROR] 49/50 AAPL — FAILED
+[2026-05-04 17:16:14] [INFO] MSFT prices: Yahoo Finance — 251 days
+[2026-05-04 17:16:14] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-04 17:16:14] [ERROR] 50/50 MSFT — FAILED
+[2026-05-04 17:16:14] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-05-04 17:16:14] [INFO]   SCAN COMPLETE — FULL | Intraday (01:10:42 PM ET)
+[2026-05-04 17:16:14] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-05-04 17:16:14] [INFO]   Tickers scanned:    50
+[2026-05-04 17:16:14] [INFO]   Successful:         11
+[2026-05-04 17:16:14] [INFO]   Failed:             39
+[2026-05-04 17:16:14] [INFO]   Passed all filters: 0
+[2026-05-04 17:16:14] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-05-04 17:16:14] [INFO] Results saved to OPPORTUNITIES.md
+[2026-05-04 17:16:14] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-04 17:16:14] [INFO] Telegram alert sent successfully
+[2026-05-04 17:16:17] [INFO] Sending 1 live signal alert(s)...
+[2026-05-04 17:16:17] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-04 17:16:17] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
