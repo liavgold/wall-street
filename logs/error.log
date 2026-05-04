@@ -1476,3 +1476,6 @@
 [2026-05-04 17:16:14] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-05-04 17:16:14] [ERROR] 50/50 MSFT — FAILED
 [2026-05-04 17:16:17] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
+[2026-05-04 18:17:10] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-05-04 18:17:10] [ERROR] 1/1 VIX — FAILED
+[2026-05-04 18:17:14] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
