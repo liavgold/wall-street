@@ -1,6 +1,18 @@
 {
-  "generated_at": "2026-05-01",
+  "generated_at": "2026-05-04",
   "threshold": 75,
-  "count": 0,
-  "signals": []
+  "count": 1,
+  "signals": [
+    {
+      "ticker": "AAPL",
+      "score": 80,
+      "close": 280.14,
+      "date": "2026-05-01",
+      "aboveSma200": true,
+      "atr14": 6.77,
+      "stopPrice": 266.6,
+      "stopPct": 4.8,
+      "sector": "BIG_TECH"
+    }
+  ]
 }
