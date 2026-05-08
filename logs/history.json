@@ -8387,5 +8387,32 @@
     "price": 30.989999771118164,
     "score": 60,
     "action": "WATCH"
+  },
+  {
+    "ticker": "ESTC",
+    "date": "2026-05-08",
+    "time": "12:50:58 PM",
+    "session": "Intraday",
+    "price": 51.68000030517578,
+    "score": 30,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "CFLT",
+    "date": "2026-05-08",
+    "time": "12:50:58 PM",
+    "session": "Intraday",
+    "price": 30.989999771118164,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ONON",
+    "date": "2026-05-08",
+    "time": "12:50:58 PM",
+    "session": "Intraday",
+    "price": 35.15999984741211,
+    "score": 20,
+    "action": "WATCH"
   }
 ]
