@@ -8414,5 +8414,14 @@
     "price": 35.15999984741211,
     "score": 20,
     "action": "WATCH"
+  },
+  {
+    "ticker": "CFLT",
+    "date": "2026-05-11",
+    "time": "01:32:58 PM",
+    "session": "Intraday",
+    "price": 30.989999771118164,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
