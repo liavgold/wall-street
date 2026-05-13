@@ -2113,3 +2113,5 @@
 [2026-05-13 13:07:38] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-05-13 13:07:41] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-05-13 13:07:41] [ERROR] 10/10 MSTR — FAILED (after retry)
+[2026-05-13 18:57:42] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-05-13 18:57:42] [ERROR] 1/1 VIX — FAILED
