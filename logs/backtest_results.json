@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-12",
-  "start_date": "2024-05-12",
-  "end_date": "2026-05-12",
-  "data_points": 28,
+  "generated_at": "2026-05-13",
+  "start_date": "2024-05-13",
+  "end_date": "2026-05-13",
+  "data_points": 24,
   "win_rate": 25,
-  "profit_factor": 0.98,
-  "alpha_vs_spy": -42.01,
-  "total_return": -0.09,
+  "profit_factor": 1.08,
+  "alpha_vs_spy": -41.52,
+  "total_return": 0.4,
   "spy_return": 41.92,
   "max_drawdown": -3.31,
-  "sharpe_ratio": -0.18,
-  "calmar_ratio": -0.01,
+  "sharpe_ratio": -0.17,
+  "calmar_ratio": 0.06,
   "slippage_bps": 0.1,
-  "vix_at_run": 17.99,
-  "vix_regime": "17.99 — Normal",
+  "vix_at_run": 18.15,
+  "vix_regime": "18.15 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -148,17 +148,6 @@
       "exitReason": "TIME"
     },
     {
-      "ticker": "HOOD",
-      "date": "2025-09-26",
-      "action": "BUY",
-      "pct_change": 11.89,
-      "win": true,
-      "entryPrice": 124.3,
-      "exitPrice": 139.08,
-      "exitDate": "2025-10-10",
-      "exitReason": "TRAIL_STOP"
-    },
-    {
       "ticker": "SHOP",
       "date": "2025-07-24",
       "action": "BUY",
@@ -190,17 +179,6 @@
       "exitPrice": 152.52,
       "exitDate": "2025-10-10",
       "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "UBER",
-      "date": "2025-09-25",
-      "action": "BUY",
-      "pct_change": -3.51,
-      "win": false,
-      "entryPrice": 97.4,
-      "exitPrice": 93.98,
-      "exitDate": "2025-10-24",
-      "exitReason": "TIME"
     },
     {
       "ticker": "DASH",
@@ -288,28 +266,6 @@
       "entryPrice": 652.12,
       "exitPrice": 595.42,
       "exitDate": "2025-11-07",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "AXON",
-      "date": "2025-07-07",
-      "action": "BUY",
-      "pct_change": -6.07,
-      "win": false,
-      "entryPrice": 796.82,
-      "exitPrice": 748.41,
-      "exitDate": "2025-07-10",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "AXON",
-      "date": "2025-08-06",
-      "action": "BUY",
-      "pct_change": -7.29,
-      "win": false,
-      "entryPrice": 860.62,
-      "exitPrice": 797.84,
-      "exitDate": "2025-08-12",
       "exitReason": "STOP_LOSS"
     },
     {
