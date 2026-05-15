@@ -10508,3 +10508,81 @@
 [2026-05-15 18:23:47] [INFO] Telegram alert sent successfully
 [2026-05-15 18:23:50] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-05-15 18:23:50] [INFO] Telegram alert sent successfully
+[2026-05-15 21:33:04] [INFO] WallStreet Scanner — Mode: FAST | Session: Post-market (05:33:04 PM ET) | Tickers: 10
+[2026-05-15 21:33:04] [INFO] Fast mode: scanning top 10 priority tickers with auto-retry on failure
+[2026-05-15 21:33:04] [INFO] VIX: 18.43 [ELEVATED] (rising) | SPY: 252 days | Yield Curve: +1.01% (normal)
+[2026-05-15 21:33:04] [INFO] Fetching 3 sector ETFs...
+[2026-05-15 21:33:04] [INFO] Sector ETFs: SMH: -3.8%  XLY: -1.8%  XLK: -1.81%
+[2026-05-15 21:33:04] [INFO] NVDA prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:05] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:05] [WARN] NVDA — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:08] [INFO] NVDA prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:08] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:08] [ERROR] 1/10 NVDA — FAILED (after retry)
+[2026-05-15 21:33:11] [INFO] TSLA prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:11] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:11] [WARN] TSLA — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:14] [INFO] TSLA prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:15] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:15] [ERROR] 2/10 TSLA — FAILED (after retry)
+[2026-05-15 21:33:18] [INFO] PLTR prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:18] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:18] [WARN] PLTR — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:21] [INFO] PLTR prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:22] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:22] [ERROR] 3/10 PLTR — FAILED (after retry)
+[2026-05-15 21:33:25] [INFO] AMD prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:25] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:25] [WARN] AMD — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:28] [INFO] AMD prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:29] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:29] [ERROR] 4/10 AMD — FAILED (after retry)
+[2026-05-15 21:33:32] [INFO] MSFT prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:32] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:32] [WARN] MSFT — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:36] [INFO] MSFT prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:36] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:36] [ERROR] 5/10 MSFT — FAILED (after retry)
+[2026-05-15 21:33:39] [INFO] AAPL prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:39] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:39] [WARN] AAPL — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:42] [INFO] AAPL prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:43] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:43] [ERROR] 6/10 AAPL — FAILED (after retry)
+[2026-05-15 21:33:46] [INFO] AMZN prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:46] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:46] [WARN] AMZN — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:49] [INFO] AMZN prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:49] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:49] [ERROR] 7/10 AMZN — FAILED (after retry)
+[2026-05-15 21:33:52] [INFO] META prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:53] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:53] [WARN] META — Retrying (fast mode auto-retry)...
+[2026-05-15 21:33:56] [INFO] META prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:56] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:56] [ERROR] 8/10 META — FAILED (after retry)
+[2026-05-15 21:33:59] [INFO] GOOGL prices: Yahoo Finance — 252 days
+[2026-05-15 21:33:59] [ERROR] GOOGL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:33:59] [WARN] GOOGL — Retrying (fast mode auto-retry)...
+[2026-05-15 21:34:03] [INFO] GOOGL prices: Yahoo Finance — 252 days
+[2026-05-15 21:34:03] [ERROR] GOOGL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:34:03] [ERROR] 9/10 GOOGL — FAILED (after retry)
+[2026-05-15 21:34:06] [INFO] MSTR prices: Yahoo Finance — 252 days
+[2026-05-15 21:34:06] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:34:06] [WARN] MSTR — Retrying (fast mode auto-retry)...
+[2026-05-15 21:34:09] [INFO] MSTR prices: Yahoo Finance — 252 days
+[2026-05-15 21:34:10] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-15 21:34:10] [ERROR] 10/10 MSTR — FAILED (after retry)
+[2026-05-15 21:34:10] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-05-15 21:34:10] [INFO]   SCAN COMPLETE — FAST | Post-market (05:33:04 PM ET)
+[2026-05-15 21:34:10] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-05-15 21:34:10] [INFO]   Tickers scanned:    10
+[2026-05-15 21:34:10] [INFO]   Successful:         0
+[2026-05-15 21:34:10] [INFO]   Failed:             10
+[2026-05-15 21:34:10] [INFO]   Passed all filters: 0
+[2026-05-15 21:34:10] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-05-15 21:34:10] [INFO] Results saved to OPPORTUNITIES.md
+[2026-05-15 21:34:10] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-15 21:34:10] [INFO] Telegram alert sent successfully
+[2026-05-15 21:34:13] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-05-15 21:34:13] [INFO] Telegram alert sent successfully
