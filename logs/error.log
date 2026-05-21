@@ -2651,3 +2651,6 @@
 [2026-05-20 22:09:46] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-05-20 22:09:50] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-05-20 22:09:50] [ERROR] 10/10 MSTR — FAILED (after retry)
+[2026-05-21 14:01:06] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-21 14:01:18] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-05-21 14:01:18] [ERROR] 2/10 TSLA — FAILED (after retry)
