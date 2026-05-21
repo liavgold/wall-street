@@ -2654,3 +2654,5 @@
 [2026-05-21 14:01:06] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-05-21 14:01:18] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-05-21 14:01:18] [ERROR] 2/10 TSLA — FAILED (after retry)
+[2026-05-21 18:58:52] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-05-21 18:58:52] [ERROR] 1/1 VIX — FAILED
