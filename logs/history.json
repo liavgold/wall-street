@@ -8524,21 +8524,21 @@
     "action": "WATCH"
   },
   {
-    "ticker": "IOT",
-    "date": "2026-05-25",
-    "time": "01:18:38 PM",
-    "session": "Intraday",
-    "price": 31.149999618530273,
-    "score": 99,
-    "action": "GOLDEN TRADE"
-  },
-  {
     "ticker": "TW",
     "date": "2026-05-25",
     "time": "01:18:38 PM",
     "session": "Intraday",
     "price": 106.19999694824219,
     "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-05-25",
+    "time": "02:26:09 PM",
+    "session": "Intraday",
+    "price": 31.149999618530273,
+    "score": 99,
     "action": "WATCH"
   }
 ]
