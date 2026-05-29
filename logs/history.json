@@ -8540,5 +8540,14 @@
     "price": 31.149999618530273,
     "score": 99,
     "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-05-29",
+    "time": "02:18:24 PM",
+    "session": "Intraday",
+    "price": 34.04999923706055,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
