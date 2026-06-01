@@ -14,5 +14,13 @@
     "stopPrice": 266.6,
     "breakevenNotified": true,
     "expiresAfter": "2026-08-02"
+  },
+  {
+    "ticker": "OKTA",
+    "entryDate": "2026-06-01",
+    "entryPrice": 123.27,
+    "stopPrice": 113.88,
+    "breakevenNotified": false,
+    "expiresAfter": "2026-08-30"
   }
 ]
