@@ -1,20 +1,20 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-06-01 | **Time:** 04:00:13 PM | **Session:** Post-market | **Mode:** FULL | **Tickers Scanned:** 1
+> **Scan Date:** 2026-06-01 | **Time:** 04:55:50 PM | **Session:** Post-market | **Mode:** MONITOR | **Tickers Scanned:** 1
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 15.98 (LOW) |
-| Sector Health | Market Flat (SPY 0.25%) |
+| VIX | 16.05 (LOW) |
+| Sector Health | Market Flat (SPY 0.27%) |
 | General Sentiment | Calm — risk-on environment |
 
 > **Filters:** (Score > 75 OR Explosive Buy) AND Earnings Surprise > 0% AND Relative Strength > 0
 
 | Ticker | Sector ETF | Action | Score | Certainty | Earnings Surprise | RS (1d) | Explosion Factor | Reasoning | Stop-Loss |
 | ------ | ---------- | ------ | ----- | --------- | ----------------- | ------- | ---------------- | --------- | --------- |
-| IOT | SKYY +7.39% | **WATCH** | 90 | 80/100 ⚠️ 🚀 | +38.78% (Q4) | +10.26% vs SPY +0.25% | Surprise +38.78% \| 20.3% from 52w High \| Vol 1.9x spark | 🛑 HARD BLOCK: EARNINGS IMMINENT (2026-06-04) — trade blocked (Certainty 80/100 ≤ 85) | — |
+| IOT | SKYY +7.33% | **WATCH** | 90 | 80/100 ⚠️ 🚀 | +38.78% (Q4) | +10.17% vs SPY +0.27% | Surprise +38.78% \| 20.36% from 52w High \| Vol 1.9x spark | 🛑 HARD BLOCK: EARNINGS IMMINENT (2026-06-04) — trade blocked (Certainty 80/100 ≤ 85) | — |
 
 **Safety Checklist — IOT:**
 - [x] Market Trend Alignment?

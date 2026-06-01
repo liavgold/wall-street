@@ -13266,3 +13266,31 @@
 [2026-06-01 20:04:18] [INFO] Sending 1 live signal alert(s)...
 [2026-06-01 20:04:18] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-06-01 20:04:19] [INFO] Telegram alert sent successfully
+[2026-06-01 20:55:50] [INFO] WallStreet Scanner — Mode: MONITOR | Session: Post-market (04:55:50 PM ET) | Tickers: 2
+[2026-06-01 20:55:50] [INFO] Monitor mode: updating status for 2 tickers from OPPORTUNITIES.md
+[2026-06-01 20:55:50] [INFO] VIX: 16.05 [LOW] (rising) | SPY: 251 days | Yield Curve: +0.85% (normal)
+[2026-06-01 20:55:50] [INFO] Fetching 2 sector ETFs...
+[2026-06-01 20:55:50] [INFO] Sector ETFs: SPY: +0.27%  SKYY: +7.33%
+[2026-06-01 20:55:50] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-06-01 20:55:50] [ERROR] 1/2 VIX — FAILED
+[2026-06-01 20:55:53] [INFO] IOT prices: Yahoo Finance — 251 days
+[2026-06-01 20:55:53] [INFO] 2/2 IOT — WATCH (90) Certainty 80/100 🚀
+[2026-06-01 20:55:53] [INFO] Sending Telegram for: IOT (HIGH CONVICTION)
+[2026-06-01 20:55:53] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-06-01 20:55:54] [INFO] Telegram alert sent successfully
+[2026-06-01 20:55:54] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-06-01 20:55:54] [INFO]   SCAN COMPLETE — MONITOR | Post-market (04:55:50 PM ET)
+[2026-06-01 20:55:54] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-06-01 20:55:54] [INFO]   Tickers scanned:    2
+[2026-06-01 20:55:54] [INFO]   Successful:         1
+[2026-06-01 20:55:54] [INFO]   Failed:             1
+[2026-06-01 20:55:54] [INFO]   Passed all filters: 1
+[2026-06-01 20:55:54] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-06-01 20:55:54] [INFO]   IOT    | WATCH           | Score: 90   | EPS: +38.78%
+[2026-06-01 20:55:54] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-06-01 20:55:54] [INFO] Results saved to OPPORTUNITIES.md
+[2026-06-01 20:55:54] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-06-01 20:55:54] [INFO] Telegram alert sent successfully
+[2026-06-01 20:55:57] [INFO] Sending 1 live signal alert(s)...
+[2026-06-01 20:55:57] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-06-01 20:55:57] [INFO] Telegram alert sent successfully
