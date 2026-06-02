@@ -1,12 +1,12 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-06-02 | **Time:** 10:45:39 AM | **Session:** Intraday | **Mode:** FAST | **Tickers Scanned:** 0
+> **Scan Date:** 2026-06-02 | **Time:** 04:07:34 PM | **Session:** Post-market | **Mode:** MONITOR | **Tickers Scanned:** 0
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 16.11 (LOW) |
+| VIX | 15.79 (LOW) |
 | Sector Health | N/A |
 | General Sentiment | N/A |
 

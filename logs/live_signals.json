@@ -1,18 +1,29 @@
 {
   "generated_at": "2026-06-02",
   "threshold": 75,
-  "count": 1,
+  "count": 2,
   "signals": [
     {
       "ticker": "OKTA",
       "score": 80,
-      "close": 123.27,
-      "date": "2026-05-29",
+      "close": 139.79,
+      "date": "2026-06-01",
       "aboveSma200": true,
-      "atr14": 6.26,
-      "stopPrice": 113.88,
-      "stopPct": 7.6,
+      "atr14": 7.37,
+      "stopPrice": 128.74,
+      "stopPct": 7.9,
       "sector": "CYBER"
+    },
+    {
+      "ticker": "MSFT",
+      "score": 80,
+      "close": 460.52,
+      "date": "2026-06-01",
+      "aboveSma200": true,
+      "atr14": 12.14,
+      "stopPrice": 436.24,
+      "stopPct": 5.3,
+      "sector": "BIG_TECH"
     }
   ]
 }
