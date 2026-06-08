@@ -8576,5 +8576,23 @@
     "price": 37.03030014038086,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "TOST",
+    "date": "2026-06-08",
+    "time": "02:10:41 PM",
+    "session": "Intraday",
+    "price": 24.375,
+    "score": 45,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ONON",
+    "date": "2026-06-08",
+    "time": "02:10:41 PM",
+    "session": "Intraday",
+    "price": 36.720001220703125,
+    "score": 40,
+    "action": "WATCH"
   }
 ]
