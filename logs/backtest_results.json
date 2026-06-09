@@ -2,18 +2,18 @@
   "generated_at": "2026-06-09",
   "start_date": "2024-06-09",
   "end_date": "2026-06-09",
-  "data_points": 28,
-  "win_rate": 25,
-  "profit_factor": 1,
-  "alpha_vs_spy": -37.71,
-  "total_return": -0.02,
-  "spy_return": 37.69,
-  "max_drawdown": -3.68,
-  "sharpe_ratio": -0.17,
-  "calmar_ratio": 0,
+  "data_points": 30,
+  "win_rate": 23.33,
+  "profit_factor": 0.94,
+  "alpha_vs_spy": -38.36,
+  "total_return": -0.36,
+  "spy_return": 38,
+  "max_drawdown": -4.02,
+  "sharpe_ratio": -0.19,
+  "calmar_ratio": -0.04,
   "slippage_bps": 0.1,
-  "vix_at_run": 18.06,
-  "vix_regime": "18.06 — Normal",
+  "vix_at_run": 19.85,
+  "vix_regime": "19.85 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -41,12 +41,12 @@
       "ticker": "ARM",
       "date": "2026-06-02",
       "action": "BUY",
-      "pct_change": -14.68,
+      "pct_change": -10.44,
       "win": false,
       "entryPrice": 401.53,
-      "exitPrice": 342.59,
+      "exitPrice": 359.6,
       "exitDate": "2026-06-05",
-      "exitReason": "TIME"
+      "exitReason": "STOP_LOSS"
     },
     {
       "ticker": "PANW",
@@ -58,6 +58,17 @@
       "exitPrice": 187.31,
       "exitDate": "2025-07-30",
       "exitReason": "STOP_LOSS"
+    },
+    {
+      "ticker": "PANW",
+      "date": "2026-06-05",
+      "action": "BUY",
+      "pct_change": -4.73,
+      "win": false,
+      "entryPrice": 279.27,
+      "exitPrice": 266.06,
+      "exitDate": "2026-06-08",
+      "exitReason": "TIME"
     },
     {
       "ticker": "NET",
@@ -157,6 +168,17 @@
       "exitPrice": 132.16,
       "exitDate": "2026-01-09",
       "exitReason": "STOP_LOSS"
+    },
+    {
+      "ticker": "DDOG",
+      "date": "2026-06-05",
+      "action": "BUY",
+      "pct_change": -2.6,
+      "win": false,
+      "entryPrice": 237.64,
+      "exitPrice": 231.45,
+      "exitDate": "2026-06-08",
+      "exitReason": "TIME"
     },
     {
       "ticker": "TOST",
