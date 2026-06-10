@@ -1,12 +1,12 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-06-10 | **Time:** 10:18:43 AM | **Session:** Intraday | **Mode:** FAST | **Tickers Scanned:** 0
+> **Scan Date:** 2026-06-10 | **Time:** 03:35:15 PM | **Session:** Intraday | **Mode:** MONITOR | **Tickers Scanned:** 0
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 20.14 (ELEVATED) |
+| VIX | 22.1 (ELEVATED) |
 | Sector Health | N/A |
 | General Sentiment | N/A |
 
