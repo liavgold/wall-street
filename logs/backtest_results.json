@@ -5,15 +5,15 @@
   "data_points": 33,
   "win_rate": 21.21,
   "profit_factor": 0.85,
-  "alpha_vs_spy": -38.62,
-  "total_return": -1.02,
-  "spy_return": 37.6,
-  "max_drawdown": -4.82,
+  "alpha_vs_spy": -36.17,
+  "total_return": -1.07,
+  "spy_return": 35.1,
+  "max_drawdown": -4.87,
   "sharpe_ratio": -0.2,
   "calmar_ratio": -0.11,
   "slippage_bps": 0.1,
-  "vix_at_run": 21.49,
-  "vix_regime": "21.49 — Normal",
+  "vix_at_run": 19.39,
+  "vix_regime": "19.39 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -63,11 +63,11 @@
       "ticker": "PANW",
       "date": "2026-06-05",
       "action": "BUY",
-      "pct_change": -6.81,
+      "pct_change": -5.84,
       "win": false,
       "entryPrice": 279.27,
-      "exitPrice": 260.26,
-      "exitDate": "2026-06-09",
+      "exitPrice": 262.96,
+      "exitDate": "2026-06-10",
       "exitReason": "TIME"
     },
     {
@@ -96,12 +96,12 @@
       "ticker": "CRWD",
       "date": "2026-06-05",
       "action": "BUY",
-      "pct_change": -7.62,
+      "pct_change": -11,
       "win": false,
       "entryPrice": 697.44,
-      "exitPrice": 644.29,
+      "exitPrice": 620.75,
       "exitDate": "2026-06-09",
-      "exitReason": "TIME"
+      "exitReason": "STOP_LOSS"
     },
     {
       "ticker": "NET",
@@ -206,11 +206,11 @@
       "ticker": "DDOG",
       "date": "2026-06-05",
       "action": "BUY",
-      "pct_change": -4.43,
+      "pct_change": -4.31,
       "win": false,
       "entryPrice": 237.64,
-      "exitPrice": 227.11,
-      "exitDate": "2026-06-09",
+      "exitPrice": 227.4,
+      "exitDate": "2026-06-10",
       "exitReason": "TIME"
     },
     {
