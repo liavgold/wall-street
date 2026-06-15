@@ -4385,3 +4385,93 @@
 [2026-06-15 16:13:49] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-06-15 16:13:49] [ERROR] 7/10 AMZN — FAILED (after retry)
 [2026-06-15 16:13:52] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:29] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:29] [ERROR] 1/50 NVDA — FAILED
+[2026-06-15 19:11:32] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:32] [ERROR] 2/50 TSLA — FAILED
+[2026-06-15 19:11:35] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:35] [ERROR] 3/50 AMD — FAILED
+[2026-06-15 19:11:39] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:39] [ERROR] 4/50 PLTR — FAILED
+[2026-06-15 19:11:42] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:42] [ERROR] 5/50 MSTR — FAILED
+[2026-06-15 19:11:46] [ERROR] SMCI analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:46] [ERROR] 6/50 SMCI — FAILED
+[2026-06-15 19:11:49] [ERROR] PANW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:49] [ERROR] 7/50 PANW — FAILED
+[2026-06-15 19:11:52] [ERROR] ELF analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:52] [ERROR] 8/50 ELF — FAILED
+[2026-06-15 19:11:55] [ERROR] CRWD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:55] [ERROR] 9/50 CRWD — FAILED
+[2026-06-15 19:11:59] [ERROR] SNOW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:11:59] [ERROR] 10/50 SNOW — FAILED
+[2026-06-15 19:12:02] [ERROR] NET analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:02] [ERROR] 11/50 NET — FAILED
+[2026-06-15 19:12:05] [ERROR] DDOG analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:05] [ERROR] 12/50 DDOG — FAILED
+[2026-06-15 19:12:09] [ERROR] COIN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:09] [ERROR] 13/50 COIN — FAILED
+[2026-06-15 19:12:12] [ERROR] MELI analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:12] [ERROR] 14/50 MELI — FAILED
+[2026-06-15 19:12:15] [ERROR] TTD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:15] [ERROR] 15/50 TTD — FAILED
+[2026-06-15 19:12:22] [ERROR] SQ analysis failed: No data found, symbol may be delisted
+[2026-06-15 19:12:22] [ERROR] 17/50 SQ — FAILED
+[2026-06-15 19:12:29] [ERROR] HOOD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:29] [ERROR] 19/50 HOOD — FAILED
+[2026-06-15 19:12:32] [ERROR] RBLX analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:32] [ERROR] 20/50 RBLX — FAILED
+[2026-06-15 19:12:35] [ERROR] UBER analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:35] [ERROR] 21/50 UBER — FAILED
+[2026-06-15 19:12:39] [ERROR] ABNB analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:39] [ERROR] 22/50 ABNB — FAILED
+[2026-06-15 19:12:42] [ERROR] DASH analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:42] [ERROR] 23/50 DASH — FAILED
+[2026-06-15 19:12:45] [ERROR] DUOL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:45] [ERROR] 24/50 DUOL — FAILED
+[2026-06-15 19:12:49] [ERROR] MNDY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:49] [ERROR] 25/50 MNDY — FAILED
+[2026-06-15 19:12:52] [ERROR] ZS analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:52] [ERROR] 26/50 ZS — FAILED
+[2026-06-15 19:12:56] [ERROR] OKTA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:56] [ERROR] 27/50 OKTA — FAILED
+[2026-06-15 19:12:59] [ERROR] BILL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:12:59] [ERROR] 28/50 BILL — FAILED
+[2026-06-15 19:13:02] [ERROR] HUBS analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:02] [ERROR] 29/50 HUBS — FAILED
+[2026-06-15 19:13:05] [ERROR] GDDY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:05] [ERROR] 30/50 GDDY — FAILED
+[2026-06-15 19:13:09] [ERROR] TEAM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:09] [ERROR] 31/50 TEAM — FAILED
+[2026-06-15 19:13:12] [ERROR] MDB analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:12] [ERROR] 32/50 MDB — FAILED
+[2026-06-15 19:13:16] [ERROR] ESTC analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:16] [ERROR] 33/50 ESTC — FAILED
+[2026-06-15 19:13:22] [ERROR] CFLT analysis failed: No data found, symbol may be delisted
+[2026-06-15 19:13:22] [ERROR] 35/50 CFLT — FAILED
+[2026-06-15 19:13:32] [ERROR] CELH analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:32] [ERROR] 38/50 CELH — FAILED
+[2026-06-15 19:13:35] [ERROR] ONON analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:35] [ERROR] 39/50 ONON — FAILED
+[2026-06-15 19:13:38] [ERROR] DECK analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:38] [ERROR] 40/50 DECK — FAILED
+[2026-06-15 19:13:43] [ERROR] AXON analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:43] [ERROR] 41/50 AXON — FAILED
+[2026-06-15 19:13:46] [ERROR] TW analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:46] [ERROR] 42/50 TW — FAILED
+[2026-06-15 19:13:50] [ERROR] FICO analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:50] [ERROR] 43/50 FICO — FAILED
+[2026-06-15 19:13:53] [ERROR] LULU analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:53] [ERROR] 44/50 LULU — FAILED
+[2026-06-15 19:13:56] [ERROR] WDAY analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:56] [ERROR] 45/50 WDAY — FAILED
+[2026-06-15 19:13:59] [ERROR] ADSK analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:13:59] [ERROR] 46/50 ADSK — FAILED
+[2026-06-15 19:14:03] [ERROR] FTNT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:14:03] [ERROR] 47/50 FTNT — FAILED
+[2026-06-15 19:14:06] [ERROR] ARM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:14:06] [ERROR] 48/50 ARM — FAILED
+[2026-06-15 19:14:09] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:14:09] [ERROR] 49/50 AAPL — FAILED
+[2026-06-15 19:14:13] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-06-15 19:14:13] [ERROR] 50/50 MSFT — FAILED
