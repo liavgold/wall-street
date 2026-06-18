@@ -8731,24 +8731,6 @@
     "action": "WATCH"
   },
   {
-    "ticker": "META",
-    "date": "2026-06-18",
-    "time": "09:57:59 AM",
-    "session": "Intraday",
-    "price": 564.4299926757812,
-    "score": 35,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "GOOGL",
-    "date": "2026-06-18",
-    "time": "09:57:59 AM",
-    "session": "Intraday",
-    "price": 360.32000732421875,
-    "score": 60,
-    "action": "WATCH"
-  },
-  {
     "ticker": "MSTR",
     "date": "2026-06-18",
     "time": "09:57:59 AM",
@@ -8756,5 +8738,23 @@
     "price": 112.79000091552734,
     "score": 20,
     "action": "SELL"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-06-18",
+    "time": "06:29:12 PM",
+    "session": "Post-market",
+    "price": 577.219970703125,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-06-18",
+    "time": "06:29:12 PM",
+    "session": "Post-market",
+    "price": 368.0299987792969,
+    "score": 100,
+    "action": "BUY"
   }
 ]
