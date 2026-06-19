@@ -12,8 +12,8 @@
   "sharpe_ratio": -0.19,
   "calmar_ratio": -0.08,
   "slippage_bps": 0.1,
-  "vix_at_run": 16.86,
-  "vix_regime": "16.86 — Normal",
+  "vix_at_run": 16.78,
+  "vix_regime": "16.78 — Normal",
   "rows": [
     {
       "ticker": "AMD",
