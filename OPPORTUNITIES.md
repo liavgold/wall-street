@@ -1,13 +1,13 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-06-22 | **Time:** 11:47:20 AM | **Session:** Intraday | **Mode:** FAST | **Tickers Scanned:** 3
+> **Scan Date:** 2026-06-22 | **Time:** 02:55:56 PM | **Session:** Intraday | **Mode:** FULL | **Tickers Scanned:** 6
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 17.59 (LOW) |
-| Sector Health | Market Flat (SPY -0.15%) |
+| VIX | 17.21 (LOW) |
+| Sector Health | Market Flat (SPY -0.38%) |
 | General Sentiment | Calm — risk-on environment |
 
 > **Filters:** (Score > 75 OR Explosive Buy) AND Earnings Surprise > 0% AND Relative Strength > 0
@@ -18,7 +18,7 @@
 
 ## Scan Summary
 
-- **Total scanned:** 3
+- **Total scanned:** 6
 - **Passed filters:** 0
 - **Golden Trades (top 1%):** 0
 - **Explosive signals:** 0
