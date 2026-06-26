@@ -8945,5 +8945,32 @@
     "price": 85.33000183105469,
     "score": 40,
     "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-06-26",
+    "time": "09:04:50 AM",
+    "session": "Pre-market",
+    "price": 542.8699951171875,
+    "score": 45,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-06-26",
+    "time": "09:04:50 AM",
+    "session": "Pre-market",
+    "price": 343.7099914550781,
+    "score": 95,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSTR",
+    "date": "2026-06-26",
+    "time": "09:04:50 AM",
+    "session": "Pre-market",
+    "price": 85.33000183105469,
+    "score": 40,
+    "action": "WATCH"
   }
 ]
