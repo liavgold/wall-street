@@ -8972,5 +8972,41 @@
     "price": 85.33000183105469,
     "score": 40,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-06-26",
+    "time": "01:15:28 PM",
+    "session": "Intraday",
+    "price": 116.95999908447266,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AFRM",
+    "date": "2026-06-26",
+    "time": "01:15:28 PM",
+    "session": "Intraday",
+    "price": 79.83499908447266,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-06-26",
+    "time": "01:15:28 PM",
+    "session": "Intraday",
+    "price": 30.959999084472656,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TOST",
+    "date": "2026-06-26",
+    "time": "01:15:28 PM",
+    "session": "Intraday",
+    "price": 26.895000457763672,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
