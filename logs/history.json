@@ -9233,5 +9233,50 @@
     "price": 99.2802963256836,
     "score": 40,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-07-06",
+    "time": "01:56:47 PM",
+    "session": "Intraday",
+    "price": 120.03500366210938,
+    "score": 40,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MNDY",
+    "date": "2026-07-06",
+    "time": "01:56:47 PM",
+    "session": "Intraday",
+    "price": 81.77999877929688,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TEAM",
+    "date": "2026-07-06",
+    "time": "01:56:47 PM",
+    "session": "Intraday",
+    "price": 85.08999633789062,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ESTC",
+    "date": "2026-07-06",
+    "time": "01:56:47 PM",
+    "session": "Intraday",
+    "price": 58.099998474121094,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-07-06",
+    "time": "01:56:47 PM",
+    "session": "Intraday",
+    "price": 37.290000915527344,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
