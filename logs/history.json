@@ -9442,24 +9442,6 @@
     "action": "WATCH"
   },
   {
-    "ticker": "META",
-    "date": "2026-07-13",
-    "time": "09:12:36 AM",
-    "session": "Pre-market",
-    "price": 669.2100219726562,
-    "score": 115,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "GOOGL",
-    "date": "2026-07-13",
-    "time": "09:12:36 AM",
-    "session": "Pre-market",
-    "price": 357.17999267578125,
-    "score": 60,
-    "action": "WATCH"
-  },
-  {
     "ticker": "MNDY",
     "date": "2026-07-13",
     "time": "01:29:29 PM",
@@ -9510,6 +9492,33 @@
     "time": "01:29:29 PM",
     "session": "Intraday",
     "price": 392.53009033203125,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-07-13",
+    "time": "05:27:05 PM",
+    "session": "Post-market",
+    "price": 656.72998046875,
+    "score": 55,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-07-13",
+    "time": "05:27:05 PM",
+    "session": "Post-market",
+    "price": 352.510009765625,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSTR",
+    "date": "2026-07-13",
+    "time": "05:27:05 PM",
+    "session": "Post-market",
+    "price": 92.0999984741211,
     "score": 50,
     "action": "WATCH"
   }
