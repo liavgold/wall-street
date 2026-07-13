@@ -9440,5 +9440,23 @@
     "price": 94.63999938964844,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-07-13",
+    "time": "09:12:36 AM",
+    "session": "Pre-market",
+    "price": 669.2100219726562,
+    "score": 115,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-07-13",
+    "time": "09:12:36 AM",
+    "session": "Pre-market",
+    "price": 357.17999267578125,
+    "score": 60,
+    "action": "WATCH"
   }
 ]

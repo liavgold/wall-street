@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-10",
-  "start_date": "2024-07-10",
-  "end_date": "2026-07-10",
-  "data_points": 33,
-  "win_rate": 24.24,
+  "generated_at": "2026-07-13",
+  "start_date": "2024-07-13",
+  "end_date": "2026-07-13",
+  "data_points": 34,
+  "win_rate": 26.47,
   "profit_factor": 0.86,
-  "alpha_vs_spy": -35.07,
-  "total_return": -0.96,
-  "spy_return": 34.11,
-  "max_drawdown": -4.66,
+  "alpha_vs_spy": -35.42,
+  "total_return": -0.97,
+  "spy_return": 34.45,
+  "max_drawdown": -4.71,
   "sharpe_ratio": -0.19,
   "calmar_ratio": -0.1,
   "slippage_bps": 0.1,
-  "vix_at_run": 15.03,
-  "vix_regime": "15.03 — Normal",
+  "vix_at_run": 16.37,
+  "vix_regime": "16.37 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -118,11 +118,11 @@
       "ticker": "CRWD",
       "date": "2026-06-30",
       "action": "BUY",
-      "pct_change": 3.59,
+      "pct_change": 1.45,
       "win": true,
       "entryPrice": 184.31,
-      "exitPrice": 190.93,
-      "exitDate": "2026-07-08",
+      "exitPrice": 186.99,
+      "exitDate": "2026-07-10",
       "exitReason": "TIME"
     },
     {
@@ -234,6 +234,17 @@
       "exitPrice": 217.16,
       "exitDate": "2026-06-18",
       "exitReason": "STOP_LOSS"
+    },
+    {
+      "ticker": "DDOG",
+      "date": "2026-07-08",
+      "action": "BUY",
+      "pct_change": 1.79,
+      "win": true,
+      "entryPrice": 252.75,
+      "exitPrice": 257.28,
+      "exitDate": "2026-07-10",
+      "exitReason": "TIME"
     },
     {
       "ticker": "TOST",
