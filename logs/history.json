@@ -9458,5 +9458,59 @@
     "price": 357.17999267578125,
     "score": 60,
     "action": "WATCH"
+  },
+  {
+    "ticker": "MNDY",
+    "date": "2026-07-13",
+    "time": "01:29:29 PM",
+    "session": "Intraday",
+    "price": 86.84500122070312,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "HUBS",
+    "date": "2026-07-13",
+    "time": "01:29:29 PM",
+    "session": "Intraday",
+    "price": 221.96499633789062,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MDB",
+    "date": "2026-07-13",
+    "time": "01:29:29 PM",
+    "session": "Intraday",
+    "price": 346.92999267578125,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ONON",
+    "date": "2026-07-13",
+    "time": "01:29:29 PM",
+    "session": "Intraday",
+    "price": 37.953399658203125,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AAPL",
+    "date": "2026-07-13",
+    "time": "01:29:29 PM",
+    "session": "Intraday",
+    "price": 316.3999938964844,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSFT",
+    "date": "2026-07-13",
+    "time": "01:29:29 PM",
+    "session": "Intraday",
+    "price": 392.53009033203125,
+    "score": 50,
+    "action": "WATCH"
   }
 ]
