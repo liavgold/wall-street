@@ -6059,3 +6059,5 @@
 [2026-07-13 17:32:20] [ERROR] 47/50 FTNT — FAILED
 [2026-07-13 17:32:24] [ERROR] ARM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-07-13 17:32:24] [ERROR] 48/50 ARM — FAILED
+[2026-07-13 18:45:03] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-07-13 18:45:03] [ERROR] 1/1 VIX — FAILED
