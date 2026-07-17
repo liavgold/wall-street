@@ -1,13 +1,5 @@
 [
   {
-    "ticker": "AMD",
-    "entryDate": "2026-04-17",
-    "entryPrice": 278.26,
-    "stopPrice": 257.27,
-    "breakevenNotified": true,
-    "expiresAfter": "2026-07-16"
-  },
-  {
     "ticker": "AAPL",
     "entryDate": "2026-05-04",
     "entryPrice": 280.14,
