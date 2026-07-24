@@ -9845,5 +9845,41 @@
     "price": 317.69000244140625,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-07-24",
+    "time": "01:04:15 PM",
+    "session": "Intraday",
+    "price": 113.4800033569336,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MDB",
+    "date": "2026-07-24",
+    "time": "01:04:15 PM",
+    "session": "Intraday",
+    "price": 297.59600830078125,
+    "score": 55,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ESTC",
+    "date": "2026-07-24",
+    "time": "01:04:15 PM",
+    "session": "Intraday",
+    "price": 58.400001525878906,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-07-24",
+    "time": "01:04:15 PM",
+    "session": "Intraday",
+    "price": 32.54999923706055,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
