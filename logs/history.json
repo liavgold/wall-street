@@ -9892,15 +9892,6 @@
     "action": "SELL"
   },
   {
-    "ticker": "META",
-    "date": "2026-07-27",
-    "time": "09:33:21 AM",
-    "session": "Intraday",
-    "price": 601.6799926757812,
-    "score": 40,
-    "action": "WATCH"
-  },
-  {
     "ticker": "SHOP",
     "date": "2026-07-27",
     "time": "01:17:22 PM",
@@ -9943,6 +9934,24 @@
     "session": "Intraday",
     "price": 30.479999542236328,
     "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-07-27",
+    "time": "05:36:16 PM",
+    "session": "Post-market",
+    "price": 593.8699951171875,
+    "score": 35,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-07-27",
+    "time": "05:36:16 PM",
+    "session": "Post-market",
+    "price": 326.55999755859375,
+    "score": 50,
     "action": "WATCH"
   }
 ]
