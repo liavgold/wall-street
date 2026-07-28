@@ -9957,28 +9957,28 @@
   {
     "ticker": "META",
     "date": "2026-07-28",
-    "time": "08:48:49 AM",
-    "session": "Pre-market",
-    "price": 593.8699951171875,
+    "time": "05:36:36 PM",
+    "session": "Post-market",
+    "price": 593.4099731445312,
     "score": 35,
     "action": "WATCH"
   },
   {
     "ticker": "GOOGL",
     "date": "2026-07-28",
-    "time": "08:48:49 AM",
-    "session": "Pre-market",
-    "price": 326.55999755859375,
+    "time": "05:36:36 PM",
+    "session": "Post-market",
+    "price": 333.7099914550781,
     "score": 50,
     "action": "WATCH"
   },
   {
     "ticker": "MSTR",
     "date": "2026-07-28",
-    "time": "08:48:49 AM",
-    "session": "Pre-market",
-    "price": 98.6500015258789,
-    "score": 25,
+    "time": "05:36:36 PM",
+    "session": "Post-market",
+    "price": 96.16000366210938,
+    "score": 20,
     "action": "SELL"
   }
 ]
