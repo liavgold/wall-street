@@ -10002,28 +10002,28 @@
   {
     "ticker": "META",
     "date": "2026-07-30",
-    "time": "08:24:46 AM",
-    "session": "Pre-market",
-    "price": 585.6099853515625,
+    "time": "05:40:09 PM",
+    "session": "Post-market",
+    "price": 539.030029296875,
     "score": 50,
     "action": "WATCH"
   },
   {
     "ticker": "GOOGL",
     "date": "2026-07-30",
-    "time": "08:24:46 AM",
-    "session": "Pre-market",
-    "price": 336.7099914550781,
+    "time": "05:40:09 PM",
+    "session": "Post-market",
+    "price": 333.6600036621094,
     "score": 50,
     "action": "WATCH"
   },
   {
     "ticker": "MSTR",
     "date": "2026-07-30",
-    "time": "08:24:46 AM",
-    "session": "Pre-market",
-    "price": 93.33000183105469,
-    "score": 30,
-    "action": "WATCH"
+    "time": "05:40:09 PM",
+    "session": "Post-market",
+    "price": 97.73999786376953,
+    "score": 25,
+    "action": "SELL"
   }
 ]
