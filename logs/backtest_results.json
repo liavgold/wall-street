@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-30",
-  "start_date": "2024-07-30",
-  "end_date": "2026-07-30",
-  "data_points": 34,
-  "win_rate": 20.59,
-  "profit_factor": 0.84,
-  "alpha_vs_spy": -35.64,
-  "total_return": -1.05,
+  "generated_at": "2026-07-31",
+  "start_date": "2024-07-31",
+  "end_date": "2026-07-31",
+  "data_points": 33,
+  "win_rate": 24.24,
+  "profit_factor": 0.95,
+  "alpha_vs_spy": -34.92,
+  "total_return": -0.33,
   "spy_return": 34.59,
-  "max_drawdown": -4.75,
-  "sharpe_ratio": -0.19,
-  "calmar_ratio": -0.11,
+  "max_drawdown": -4.47,
+  "sharpe_ratio": -0.17,
+  "calmar_ratio": -0.04,
   "slippage_bps": 0.1,
-  "vix_at_run": 17.09,
-  "vix_regime": "17.09 — Normal",
+  "vix_at_run": 17.22,
+  "vix_regime": "17.22 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -82,50 +82,6 @@
       "exitReason": "TRAIL_STOP"
     },
     {
-      "ticker": "CRWD",
-      "date": "2025-06-12",
-      "action": "BUY",
-      "pct_change": -0.1,
-      "win": false,
-      "entryPrice": 118.62,
-      "exitPrice": 118.5,
-      "exitDate": "2025-07-14",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "CRWD",
-      "date": "2025-08-29",
-      "action": "BUY",
-      "pct_change": -5.76,
-      "win": false,
-      "entryPrice": 111.33,
-      "exitPrice": 104.92,
-      "exitDate": "2025-09-03",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "CRWD",
-      "date": "2026-06-05",
-      "action": "BUY",
-      "pct_change": -10.99,
-      "win": false,
-      "entryPrice": 174.36,
-      "exitPrice": 155.19,
-      "exitDate": "2026-06-09",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "CRWD",
-      "date": "2026-06-30",
-      "action": "BUY",
-      "pct_change": -0.1,
-      "win": false,
-      "entryPrice": 184.31,
-      "exitPrice": 184.12,
-      "exitDate": "2026-07-13",
-      "exitReason": "STOP_LOSS"
-    },
-    {
       "ticker": "NET",
       "date": "2025-08-04",
       "action": "BUY",
@@ -167,6 +123,28 @@
       "entryPrice": 211.23,
       "exitPrice": 195.29,
       "exitDate": "2025-12-16",
+      "exitReason": "STOP_LOSS"
+    },
+    {
+      "ticker": "NET",
+      "date": "2026-06-09",
+      "action": "BUY",
+      "pct_change": -11.32,
+      "win": false,
+      "entryPrice": 246.14,
+      "exitPrice": 218.27,
+      "exitDate": "2026-06-11",
+      "exitReason": "STOP_LOSS"
+    },
+    {
+      "ticker": "NET",
+      "date": "2026-07-08",
+      "action": "BUY",
+      "pct_change": -0.1,
+      "win": false,
+      "entryPrice": 268.16,
+      "exitPrice": 267.89,
+      "exitDate": "2026-07-16",
       "exitReason": "STOP_LOSS"
     },
     {
@@ -256,6 +234,17 @@
       "exitPrice": 48.56,
       "exitDate": "2025-07-30",
       "exitReason": "TIME"
+    },
+    {
+      "ticker": "HOOD",
+      "date": "2025-09-26",
+      "action": "BUY",
+      "pct_change": 11.89,
+      "win": true,
+      "entryPrice": 124.3,
+      "exitPrice": 139.08,
+      "exitDate": "2025-10-10",
+      "exitReason": "TRAIL_STOP"
     },
     {
       "ticker": "SHOP",
