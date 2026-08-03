@@ -10088,5 +10088,14 @@
     "price": 356.1300048828125,
     "score": 105,
     "action": "WATCH"
+  },
+  {
+    "ticker": "ONON",
+    "date": "2026-08-03",
+    "time": "01:24:35 PM",
+    "session": "Intraday",
+    "price": 37.845001220703125,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
