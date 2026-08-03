@@ -1,13 +1,5 @@
 [
   {
-    "ticker": "AAPL",
-    "entryDate": "2026-05-04",
-    "entryPrice": 280.14,
-    "stopPrice": 266.6,
-    "breakevenNotified": true,
-    "expiresAfter": "2026-08-02"
-  },
-  {
     "ticker": "OKTA",
     "entryDate": "2026-06-01",
     "entryPrice": 123.27,
