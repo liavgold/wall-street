@@ -7745,3 +7745,5 @@
 [2026-08-10 16:25:08] [ERROR] 49/50 AAPL — FAILED
 [2026-08-10 16:25:11] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-08-10 16:25:11] [ERROR] 50/50 MSFT — FAILED
+[2026-08-10 17:52:48] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-08-10 17:52:48] [ERROR] 1/1 VIX — FAILED
