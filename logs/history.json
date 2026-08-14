@@ -10423,33 +10423,6 @@
     "action": "SELL"
   },
   {
-    "ticker": "META",
-    "date": "2026-08-14",
-    "time": "07:38:19 AM",
-    "session": "Pre-market",
-    "price": 594.969970703125,
-    "score": 50,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "GOOGL",
-    "date": "2026-08-14",
-    "time": "07:38:19 AM",
-    "session": "Pre-market",
-    "price": 346.3599853515625,
-    "score": 50,
-    "action": "WATCH"
-  },
-  {
-    "ticker": "MSTR",
-    "date": "2026-08-14",
-    "time": "07:38:19 AM",
-    "session": "Pre-market",
-    "price": 97.0999984741211,
-    "score": 25,
-    "action": "SELL"
-  },
-  {
     "ticker": "SHOP",
     "date": "2026-08-14",
     "time": "12:22:52 PM",
@@ -10501,6 +10474,33 @@
     "session": "Intraday",
     "price": 106.41000366210938,
     "score": 45,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-08-14",
+    "time": "04:53:55 PM",
+    "session": "Post-market",
+    "price": 589.8499755859375,
+    "score": 40,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-08-14",
+    "time": "04:53:55 PM",
+    "session": "Post-market",
+    "price": 345.8999938964844,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSTR",
+    "date": "2026-08-14",
+    "time": "04:53:55 PM",
+    "session": "Post-market",
+    "price": 93.04000091552734,
+    "score": 30,
     "action": "WATCH"
   }
 ]
