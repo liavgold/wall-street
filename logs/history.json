@@ -10648,15 +10648,6 @@
     "action": "WATCH"
   },
   {
-    "ticker": "META",
-    "date": "2026-08-21",
-    "time": "07:17:47 AM",
-    "session": "Pre-market",
-    "price": 545.8300170898438,
-    "score": 50,
-    "action": "WATCH"
-  },
-  {
     "ticker": "GOOGL",
     "date": "2026-08-21",
     "time": "07:17:47 AM",
@@ -10717,6 +10708,15 @@
     "session": "Intraday",
     "price": 32.439998626708984,
     "score": 40,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-08-21",
+    "time": "04:47:28 PM",
+    "session": "Post-market",
+    "price": 549.9000244140625,
+    "score": 50,
     "action": "WATCH"
   }
 ]
