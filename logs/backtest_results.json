@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-20",
-  "start_date": "2024-08-20",
-  "end_date": "2026-08-20",
+  "generated_at": "2026-08-21",
+  "start_date": "2024-08-21",
+  "end_date": "2026-08-21",
   "data_points": 33,
   "win_rate": 18.18,
   "profit_factor": 0.6,
@@ -12,8 +12,8 @@
   "sharpe_ratio": -0.23,
   "calmar_ratio": -0.33,
   "slippage_bps": 0.1,
-  "vix_at_run": 16.01,
-  "vix_regime": "16.01 — Normal",
+  "vix_at_run": 15.69,
+  "vix_regime": "15.69 — Normal",
   "rows": [
     {
       "ticker": "AMD",
