@@ -5,13 +5,13 @@
   "signals": [
     {
       "ticker": "OKTA",
-      "score": 95,
-      "close": 134.42,
-      "date": "2026-08-26",
+      "score": 80,
+      "close": 172.91,
+      "date": "2026-08-27",
       "aboveSma200": true,
-      "atr14": 6.85,
-      "stopPrice": 124.15,
-      "stopPct": 7.6,
+      "atr14": 9.26,
+      "stopPrice": 159.02,
+      "stopPct": 8,
       "sector": "CYBER"
     }
   ]
