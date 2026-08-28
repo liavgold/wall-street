@@ -10862,5 +10862,14 @@
     "price": 137.39999389648438,
     "score": 40,
     "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-08-28",
+    "time": "12:24:40 AM",
+    "session": "Pre-market",
+    "price": 571.0999755859375,
+    "score": 15,
+    "action": "SELL"
   }
 ]
