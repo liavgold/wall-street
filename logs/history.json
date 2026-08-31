@@ -10979,5 +10979,50 @@
     "price": 338.7099914550781,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-08-31",
+    "time": "04:58:20 PM",
+    "session": "Post-market",
+    "price": 147.3699951171875,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AFRM",
+    "date": "2026-08-31",
+    "time": "04:58:20 PM",
+    "session": "Post-market",
+    "price": 74.44999694824219,
+    "score": 105,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-08-31",
+    "time": "04:58:20 PM",
+    "session": "Post-market",
+    "price": 40.849998474121094,
+    "score": 80,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TOST",
+    "date": "2026-08-31",
+    "time": "04:58:20 PM",
+    "session": "Post-market",
+    "price": 34.09000015258789,
+    "score": 75,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TW",
+    "date": "2026-08-31",
+    "time": "04:58:20 PM",
+    "session": "Post-market",
+    "price": 107.69999694824219,
+    "score": 45,
+    "action": "WATCH"
   }
 ]
