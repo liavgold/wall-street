@@ -1,6 +1,6 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-09-07 | **Time:** 12:13:50 PM | **Session:** Intraday | **Mode:** FAST | **Tickers Scanned:** 3
+> **Scan Date:** 2026-09-07 | **Time:** 03:19:55 PM | **Session:** Intraday | **Mode:** FULL | **Tickers Scanned:** 6
 
 ## Market Context
 
@@ -18,7 +18,7 @@
 
 ## Scan Summary
 
-- **Total scanned:** 3
+- **Total scanned:** 6
 - **Passed filters:** 0
 - **Golden Trades (top 1%):** 0
 - **Explosive signals:** 0

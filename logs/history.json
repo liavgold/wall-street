@@ -11186,5 +11186,59 @@
     "price": 142.8000030517578,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-09-07",
+    "time": "03:19:55 PM",
+    "session": "Intraday",
+    "price": 145.08999633789062,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AFRM",
+    "date": "2026-09-07",
+    "time": "03:19:55 PM",
+    "session": "Intraday",
+    "price": 72.3499984741211,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "HOOD",
+    "date": "2026-09-07",
+    "time": "03:19:55 PM",
+    "session": "Intraday",
+    "price": 122.11000061035156,
+    "score": 65,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TOST",
+    "date": "2026-09-07",
+    "time": "03:19:55 PM",
+    "session": "Intraday",
+    "price": 33.95000076293945,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "APP",
+    "date": "2026-09-07",
+    "time": "03:19:55 PM",
+    "session": "Intraday",
+    "price": 320.55999755859375,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "CELH",
+    "date": "2026-09-07",
+    "time": "03:19:55 PM",
+    "session": "Intraday",
+    "price": 30.65999984741211,
+    "score": 50,
+    "action": "WATCH"
   }
 ]
