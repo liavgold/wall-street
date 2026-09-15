@@ -1,6 +1,18 @@
 {
   "generated_at": "2026-09-15",
   "threshold": 75,
-  "count": 0,
-  "signals": []
+  "count": 1,
+  "signals": [
+    {
+      "ticker": "OKTA",
+      "score": 80,
+      "close": 186.45,
+      "date": "2026-09-14",
+      "aboveSma200": true,
+      "atr14": 11.35,
+      "stopPrice": 169.42,
+      "stopPct": 9.1,
+      "sector": "CYBER"
+    }
+  ]
 }
