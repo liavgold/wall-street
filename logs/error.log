@@ -9933,3 +9933,5 @@
 [2026-09-16 15:14:30] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-09-16 15:14:30] [ERROR] 7/10 AMZN — FAILED (after retry)
 [2026-09-16 15:14:33] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-16 19:52:39] [ERROR] VIX analysis failed: Failed Yahoo Schema validation
+[2026-09-16 19:52:39] [ERROR] 1/1 VIX — FAILED
