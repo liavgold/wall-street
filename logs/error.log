@@ -10313,3 +10313,6 @@
 [2026-09-22 15:19:04] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-09-22 15:19:08] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-09-22 15:19:08] [ERROR] 10/10 MSTR — FAILED (after retry)
+[2026-09-22 20:02:02] [ERROR] VIX analysis failed: No data found, symbol may be delisted
+[2026-09-22 20:02:02] [ERROR] 1/1 VIX — FAILED
+[2026-09-22 20:15:04] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 260

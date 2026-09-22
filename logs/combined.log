@@ -33459,3 +33459,24 @@
 [2026-09-22 15:19:08] [INFO] Telegram alert sent successfully
 [2026-09-22 15:19:11] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-09-22 15:19:12] [INFO] Telegram alert sent successfully
+[2026-09-22 20:02:01] [INFO] WallStreet Scanner — Mode: MONITOR | Session: Post-market (04:02:01 PM ET) | Tickers: 1
+[2026-09-22 20:02:01] [INFO] Monitor mode: updating status for 1 tickers from OPPORTUNITIES.md
+[2026-09-22 20:02:02] [INFO] VIX: 14.23 [LOW] (dropping) | SPY: 252 days | Yield Curve: +0.96% (normal)
+[2026-09-22 20:02:02] [INFO] Fetching 1 sector ETFs...
+[2026-09-22 20:02:02] [INFO] Sector ETFs: SPY: -0.01%
+[2026-09-22 20:02:02] [ERROR] VIX analysis failed: No data found, symbol may be delisted
+[2026-09-22 20:02:02] [ERROR] 1/1 VIX — FAILED
+[2026-09-22 20:02:02] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-09-22 20:02:02] [INFO]   SCAN COMPLETE — MONITOR | Post-market (04:02:01 PM ET)
+[2026-09-22 20:02:02] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-09-22 20:02:02] [INFO]   Tickers scanned:    1
+[2026-09-22 20:02:02] [INFO]   Successful:         0
+[2026-09-22 20:02:02] [INFO]   Failed:             1
+[2026-09-22 20:02:02] [INFO]   Passed all filters: 0
+[2026-09-22 20:02:02] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-09-22 20:02:02] [INFO] Results saved to OPPORTUNITIES.md
+[2026-09-22 20:02:02] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-09-22 20:02:03] [INFO] Telegram alert sent successfully
+[2026-09-22 20:15:04] [INFO] Sending 1 live signal alert(s)...
+[2026-09-22 20:15:04] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-09-22 20:15:04] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 260
