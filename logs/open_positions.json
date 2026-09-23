@@ -12,7 +12,7 @@
     "entryDate": "2026-09-15",
     "entryPrice": 186.45,
     "stopPrice": 169.42,
-    "breakevenNotified": false,
+    "breakevenNotified": true,
     "expiresAfter": "2026-12-14"
   }
 ]
