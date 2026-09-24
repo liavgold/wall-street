@@ -10411,3 +10411,25 @@
 [2026-09-24 15:38:32] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-09-24 20:17:42] [ERROR] VIX analysis failed: No data found, symbol may be delisted
 [2026-09-24 20:17:42] [ERROR] 1/1 VIX — FAILED
+[2026-09-24 23:16:50] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:16:53] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:16:53] [ERROR] 1/10 NVDA — FAILED (after retry)
+[2026-09-24 23:16:56] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:00] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:00] [ERROR] 2/10 TSLA — FAILED (after retry)
+[2026-09-24 23:17:03] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:06] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:06] [ERROR] 3/10 PLTR — FAILED (after retry)
+[2026-09-24 23:17:10] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:13] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:13] [ERROR] 4/10 AMD — FAILED (after retry)
+[2026-09-24 23:17:16] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:20] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:20] [ERROR] 5/10 MSFT — FAILED (after retry)
+[2026-09-24 23:17:23] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:27] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:27] [ERROR] 6/10 AAPL — FAILED (after retry)
+[2026-09-24 23:17:30] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:34] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-09-24 23:17:34] [ERROR] 7/10 AMZN — FAILED (after retry)
+[2026-09-24 23:17:37] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
