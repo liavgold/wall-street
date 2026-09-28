@@ -1,6 +1,18 @@
 {
-  "generated_at": "2026-09-25",
+  "generated_at": "2026-09-28",
   "threshold": 75,
-  "count": 0,
-  "signals": []
+  "count": 1,
+  "signals": [
+    {
+      "ticker": "MSFT",
+      "score": 80,
+      "close": 516.17,
+      "date": "2026-09-25",
+      "aboveSma200": true,
+      "atr14": 10.95,
+      "stopPrice": 494.28,
+      "stopPct": 4.2,
+      "sector": "BIG_TECH"
+    }
+  ]
 }

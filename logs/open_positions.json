@@ -14,5 +14,13 @@
     "stopPrice": 169.42,
     "breakevenNotified": true,
     "expiresAfter": "2026-12-14"
+  },
+  {
+    "ticker": "MSFT",
+    "entryDate": "2026-09-28",
+    "entryPrice": 516.17,
+    "stopPrice": 494.28,
+    "breakevenNotified": false,
+    "expiresAfter": "2026-12-27"
   }
 ]

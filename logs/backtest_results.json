@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-09-25",
-  "start_date": "2024-09-25",
-  "end_date": "2026-09-25",
-  "data_points": 36,
-  "win_rate": 16.67,
-  "profit_factor": 0.59,
-  "alpha_vs_spy": -38.22,
-  "total_return": -3.64,
-  "spy_return": 34.58,
-  "max_drawdown": -5.16,
-  "sharpe_ratio": -0.21,
-  "calmar_ratio": -0.36,
+  "generated_at": "2026-09-28",
+  "start_date": "2024-09-28",
+  "end_date": "2026-09-28",
+  "data_points": 34,
+  "win_rate": 11.76,
+  "profit_factor": 0.34,
+  "alpha_vs_spy": -39.82,
+  "total_return": -5.38,
+  "spy_return": 34.44,
+  "max_drawdown": -5.78,
+  "sharpe_ratio": -0.27,
+  "calmar_ratio": -0.47,
   "slippage_bps": 0.1,
-  "vix_at_run": 14.87,
-  "vix_regime": "14.87 — Normal",
+  "vix_at_run": 15.87,
+  "vix_regime": "15.87 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -118,11 +118,11 @@
       "ticker": "CRWD",
       "date": "2026-09-04",
       "action": "BUY",
-      "pct_change": 21.95,
+      "pct_change": 18.41,
       "win": true,
       "entryPrice": 212.71,
-      "exitPrice": 259.41,
-      "exitDate": "2026-09-24",
+      "exitPrice": 251.88,
+      "exitDate": "2026-09-25",
       "exitReason": "TIME"
     },
     {
@@ -217,11 +217,11 @@
       "ticker": "MDB",
       "date": "2026-09-23",
       "action": "BUY",
-      "pct_change": -2.05,
+      "pct_change": -4.59,
       "win": false,
       "entryPrice": 429.77,
-      "exitPrice": 420.98,
-      "exitDate": "2026-09-24",
+      "exitPrice": 410.03,
+      "exitDate": "2026-09-25",
       "exitReason": "TIME"
     },
     {
@@ -281,35 +281,24 @@
     },
     {
       "ticker": "SHOP",
-      "date": "2025-07-24",
+      "date": "2025-08-15",
       "action": "BUY",
-      "pct_change": 17.08,
-      "win": true,
-      "entryPrice": 122.97,
-      "exitPrice": 143.98,
-      "exitDate": "2025-08-14",
-      "exitReason": "TRAIL_STOP"
-    },
-    {
-      "ticker": "SHOP",
-      "date": "2025-09-24",
-      "action": "BUY",
-      "pct_change": -6.45,
+      "pct_change": -0.1,
       "win": false,
-      "entryPrice": 150.94,
-      "exitPrice": 141.2,
-      "exitDate": "2025-09-26",
+      "entryPrice": 144.41,
+      "exitPrice": 144.27,
+      "exitDate": "2025-08-29",
       "exitReason": "STOP_LOSS"
     },
     {
       "ticker": "SHOP",
-      "date": "2025-10-07",
+      "date": "2025-09-11",
       "action": "BUY",
-      "pct_change": -7.66,
+      "pct_change": -0.1,
       "win": false,
-      "entryPrice": 165.16,
-      "exitPrice": 152.52,
-      "exitDate": "2025-10-10",
+      "entryPrice": 142.19,
+      "exitPrice": 142.05,
+      "exitDate": "2025-09-25",
       "exitReason": "STOP_LOSS"
     },
     {
@@ -399,17 +388,6 @@
       "exitPrice": 595.42,
       "exitDate": "2025-11-07",
       "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "RBLX",
-      "date": "2025-07-24",
-      "action": "BUY",
-      "pct_change": 14.92,
-      "win": true,
-      "entryPrice": 119.48,
-      "exitPrice": 137.31,
-      "exitDate": "2025-07-31",
-      "exitReason": "TRAIL_STOP"
     }
   ]
 }
