@@ -2,18 +2,18 @@
   "generated_at": "2026-10-01",
   "start_date": "2024-10-01",
   "end_date": "2026-10-01",
-  "data_points": 34,
-  "win_rate": 11.76,
-  "profit_factor": 0.36,
-  "alpha_vs_spy": -38.47,
-  "total_return": -5.28,
-  "spy_return": 33.19,
-  "max_drawdown": -5.68,
-  "sharpe_ratio": -0.25,
-  "calmar_ratio": -0.47,
+  "data_points": 35,
+  "win_rate": 17.14,
+  "profit_factor": 0.41,
+  "alpha_vs_spy": -38.78,
+  "total_return": -4.66,
+  "spy_return": 34.12,
+  "max_drawdown": -5.14,
+  "sharpe_ratio": -0.24,
+  "calmar_ratio": -0.46,
   "slippage_bps": 0.1,
-  "vix_at_run": 17.07,
-  "vix_regime": "17.07 — Normal",
+  "vix_at_run": 16.39,
+  "vix_regime": "16.39 — Normal",
   "rows": [
     {
       "ticker": "AMD",
@@ -57,17 +57,6 @@
       "entryPrice": 401.53,
       "exitPrice": 359.6,
       "exitDate": "2026-06-05",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "PANW",
-      "date": "2025-07-23",
-      "action": "BUY",
-      "pct_change": -5.41,
-      "win": false,
-      "entryPrice": 198.02,
-      "exitPrice": 187.31,
-      "exitDate": "2025-07-30",
       "exitReason": "STOP_LOSS"
     },
     {
@@ -118,11 +107,11 @@
       "ticker": "CRWD",
       "date": "2026-09-04",
       "action": "BUY",
-      "pct_change": 23.4,
+      "pct_change": 24.34,
       "win": true,
       "entryPrice": 212.71,
-      "exitPrice": 262.48,
-      "exitDate": "2026-09-29",
+      "exitPrice": 264.49,
+      "exitDate": "2026-09-30",
       "exitReason": "TIME"
     },
     {
@@ -302,6 +291,17 @@
       "exitReason": "STOP_LOSS"
     },
     {
+      "ticker": "SHOP",
+      "date": "2026-09-29",
+      "action": "BUY",
+      "pct_change": 2.84,
+      "win": true,
+      "entryPrice": 144.05,
+      "exitPrice": 148.15,
+      "exitDate": "2026-09-30",
+      "exitReason": "TIME"
+    },
+    {
       "ticker": "MELI",
       "date": "2026-08-20",
       "action": "BUY",
@@ -355,6 +355,17 @@
       "exitPrice": 276.99,
       "exitDate": "2025-11-14",
       "exitReason": "STOP_LOSS"
+    },
+    {
+      "ticker": "MSFT",
+      "date": "2026-09-29",
+      "action": "BUY",
+      "pct_change": 0.7,
+      "win": true,
+      "entryPrice": 508.82,
+      "exitPrice": 512.39,
+      "exitDate": "2026-09-30",
+      "exitReason": "TIME"
     },
     {
       "ticker": "PLTR",
