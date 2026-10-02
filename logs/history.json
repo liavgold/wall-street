@@ -11897,5 +11897,50 @@
     "price": 159.82000732421875,
     "score": 40,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-10-02",
+    "time": "04:04:55 PM",
+    "session": "Post-market",
+    "price": 151.38999938964844,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AFRM",
+    "date": "2026-10-02",
+    "time": "04:04:55 PM",
+    "session": "Post-market",
+    "price": 70.7699966430664,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "HOOD",
+    "date": "2026-10-02",
+    "time": "04:04:55 PM",
+    "session": "Post-market",
+    "price": 112.73999786376953,
+    "score": 75,
+    "action": "BUY"
+  },
+  {
+    "ticker": "TOST",
+    "date": "2026-10-02",
+    "time": "04:04:55 PM",
+    "session": "Post-market",
+    "price": 29.78499984741211,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "APP",
+    "date": "2026-10-02",
+    "time": "04:04:55 PM",
+    "session": "Post-market",
+    "price": 268.2200012207031,
+    "score": 50,
+    "action": "WATCH"
   }
 ]
