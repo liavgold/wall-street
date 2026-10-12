@@ -1,6 +1,18 @@
 {
-  "generated_at": "2026-10-09",
+  "generated_at": "2026-10-12",
   "threshold": 75,
-  "count": 0,
-  "signals": []
+  "count": 1,
+  "signals": [
+    {
+      "ticker": "PLTR",
+      "score": 80,
+      "close": 209.05,
+      "date": "2026-10-09",
+      "aboveSma200": true,
+      "atr14": 6.16,
+      "stopPrice": 196.73,
+      "stopPct": 5.9,
+      "sector": "DATA_GOV"
+    }
+  ]
 }

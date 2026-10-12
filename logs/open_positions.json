@@ -22,5 +22,13 @@
     "stopPrice": 494.28,
     "breakevenNotified": false,
     "expiresAfter": "2026-12-27"
+  },
+  {
+    "ticker": "PLTR",
+    "entryDate": "2026-10-12",
+    "entryPrice": 209.05,
+    "stopPrice": 196.73,
+    "breakevenNotified": false,
+    "expiresAfter": "2027-01-10"
   }
 ]
