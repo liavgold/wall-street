@@ -12284,5 +12284,32 @@
     "price": 142.0800018310547,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-10-16",
+    "time": "02:54:23 PM",
+    "session": "Intraday",
+    "price": 169.63999938964844,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "ESTC",
+    "date": "2026-10-16",
+    "time": "02:54:23 PM",
+    "session": "Intraday",
+    "price": 90.22000122070312,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-10-16",
+    "time": "02:54:23 PM",
+    "session": "Intraday",
+    "price": 39.13999938964844,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
