@@ -30,5 +30,13 @@
     "stopPrice": 196.73,
     "breakevenNotified": false,
     "expiresAfter": "2027-01-10"
+  },
+  {
+    "ticker": "AAPL",
+    "entryDate": "2026-10-19",
+    "entryPrice": 343.46,
+    "stopPrice": 326.74,
+    "breakevenNotified": false,
+    "expiresAfter": "2027-01-17"
   }
 ]
