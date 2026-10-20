@@ -12374,5 +12374,14 @@
     "price": 136.02000427246094,
     "score": 55,
     "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-10-20",
+    "time": "11:29:55 AM",
+    "session": "Intraday",
+    "price": 693.3300170898438,
+    "score": 40,
+    "action": "WATCH"
   }
 ]
