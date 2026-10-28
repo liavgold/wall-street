@@ -12376,3 +12376,5 @@
 [2026-10-28 16:56:24] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-10-28 16:56:28] [ERROR] MSTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-10-28 16:56:28] [ERROR] 10/10 MSTR — FAILED (after retry)
+[2026-10-28 21:32:09] [ERROR] VIX analysis failed: No data found, symbol may be delisted
+[2026-10-28 21:32:09] [ERROR] 1/1 VIX — FAILED
