@@ -12518,3 +12518,5 @@
 [2026-10-30 20:02:06] [ERROR] 48/50 ARM — FAILED
 [2026-10-30 20:02:10] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-10-30 20:02:10] [ERROR] 49/50 AAPL — FAILED
+[2026-10-30 21:23:40] [ERROR] VIX analysis failed: No data found, symbol may be delisted
+[2026-10-30 21:23:40] [ERROR] 1/1 VIX — FAILED

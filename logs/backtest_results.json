@@ -12,8 +12,8 @@
   "sharpe_ratio": -0.24,
   "calmar_ratio": -0.49,
   "slippage_bps": 0.1,
-  "vix_at_run": 21.58,
-  "vix_regime": "21.58 — Normal",
+  "vix_at_run": 19.42,
+  "vix_regime": "19.42 — Normal",
   "rows": [
     {
       "ticker": "ARM",
