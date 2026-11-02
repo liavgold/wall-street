@@ -5,7 +5,7 @@
   "signals": [
     {
       "ticker": "AAPL",
-      "score": 75,
+      "score": 80,
       "close": 344.63,
       "date": "2026-10-30",
       "aboveSma200": true,

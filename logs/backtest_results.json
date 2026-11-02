@@ -2,18 +2,18 @@
   "generated_at": "2026-11-02",
   "start_date": "2024-11-02",
   "end_date": "2026-11-02",
-  "data_points": 34,
-  "win_rate": 14.71,
-  "profit_factor": 0.36,
-  "alpha_vs_spy": -37.66,
-  "total_return": -5.03,
+  "data_points": 31,
+  "win_rate": 12.9,
+  "profit_factor": 0.31,
+  "alpha_vs_spy": -38.09,
+  "total_return": -5.46,
   "spy_return": 32.63,
-  "max_drawdown": -5.03,
-  "sharpe_ratio": -0.26,
+  "max_drawdown": -5.46,
+  "sharpe_ratio": -0.27,
   "calmar_ratio": -0.51,
   "slippage_bps": 0.1,
-  "vix_at_run": 21.56,
-  "vix_regime": "21.56 — Normal",
+  "vix_at_run": 21.15,
+  "vix_regime": "21.15 — Normal",
   "rows": [
     {
       "ticker": "ARM",
@@ -102,28 +102,6 @@
       "exitPrice": 265.01,
       "exitDate": "2026-10-07",
       "exitReason": "TRAIL_STOP"
-    },
-    {
-      "ticker": "NET",
-      "date": "2025-09-24",
-      "action": "BUY",
-      "pct_change": -0.1,
-      "win": false,
-      "entryPrice": 226.23,
-      "exitPrice": 226,
-      "exitDate": "2025-10-08",
-      "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "NET",
-      "date": "2025-10-31",
-      "action": "BUY",
-      "pct_change": -0.1,
-      "win": false,
-      "entryPrice": 236.74,
-      "exitPrice": 236.5,
-      "exitDate": "2025-11-05",
-      "exitReason": "STOP_LOSS"
     },
     {
       "ticker": "BILL",
@@ -223,17 +201,6 @@
       "exitPrice": 252.5,
       "exitDate": "2026-07-17",
       "exitReason": "STOP_LOSS"
-    },
-    {
-      "ticker": "HOOD",
-      "date": "2025-09-26",
-      "action": "BUY",
-      "pct_change": 11.89,
-      "win": true,
-      "entryPrice": 124.3,
-      "exitPrice": 139.08,
-      "exitDate": "2025-10-10",
-      "exitReason": "TRAIL_STOP"
     },
     {
       "ticker": "SHOP",
