@@ -40423,3 +40423,23 @@
 [2026-11-03 18:11:25] [INFO] Sending 1 live signal alert(s)...
 [2026-11-03 18:11:25] [INFO] Sending Telegram alert to chat 1226074960...
 [2026-11-03 18:11:25] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 262
+[2026-11-03 22:13:21] [INFO] WallStreet Scanner — Mode: MONITOR | Session: Post-market (05:13:21 PM ET) | Tickers: 1
+[2026-11-03 22:13:21] [INFO] Monitor mode: updating status for 1 tickers from OPPORTUNITIES.md
+[2026-11-03 22:13:21] [INFO] VIX: 20.83 [ELEVATED] (dropping) | SPY: 252 days | Yield Curve: +0.93% (normal)
+[2026-11-03 22:13:21] [INFO] Fetching 1 sector ETFs...
+[2026-11-03 22:13:21] [INFO] Sector ETFs: SPY: +0.3%
+[2026-11-03 22:13:21] [ERROR] VIX analysis failed: No data found, symbol may be delisted
+[2026-11-03 22:13:21] [ERROR] 1/1 VIX — FAILED
+[2026-11-03 22:13:21] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-11-03 22:13:21] [INFO]   SCAN COMPLETE — MONITOR | Post-market (05:13:21 PM ET)
+[2026-11-03 22:13:21] [INFO] ─────────────────────────────────────────────────────────────────
+[2026-11-03 22:13:21] [INFO]   Tickers scanned:    1
+[2026-11-03 22:13:21] [INFO]   Successful:         0
+[2026-11-03 22:13:21] [INFO]   Failed:             1
+[2026-11-03 22:13:21] [INFO]   Passed all filters: 0
+[2026-11-03 22:13:21] [INFO] ═════════════════════════════════════════════════════════════════
+[2026-11-03 22:13:21] [INFO] Results saved to OPPORTUNITIES.md
+[2026-11-03 22:13:21] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-11-03 22:13:22] [INFO] Telegram alert sent successfully
+[2026-11-03 22:26:22] [INFO] Sending Telegram alert to chat 1226074960...
+[2026-11-03 22:26:22] [INFO] Telegram alert sent successfully
