@@ -1,13 +1,5 @@
 [
   {
-    "ticker": "AMD",
-    "entryDate": "2026-08-05",
-    "entryPrice": 518.58,
-    "stopPrice": 456.63,
-    "breakevenNotified": true,
-    "expiresAfter": "2026-11-03"
-  },
-  {
     "ticker": "OKTA",
     "entryDate": "2026-09-15",
     "entryPrice": 186.45,
