@@ -5,15 +5,15 @@
   "data_points": 31,
   "win_rate": 12.9,
   "profit_factor": 0.3,
-  "alpha_vs_spy": -37.69,
-  "total_return": -5.7,
-  "spy_return": 31.99,
-  "max_drawdown": -5.7,
+  "alpha_vs_spy": -37.96,
+  "total_return": -5.57,
+  "spy_return": 32.39,
+  "max_drawdown": -5.57,
   "sharpe_ratio": -0.27,
   "calmar_ratio": -0.51,
   "slippage_bps": 0.1,
-  "vix_at_run": 16.68,
-  "vix_regime": "16.68 — Normal",
+  "vix_at_run": 16.61,
+  "vix_regime": "16.61 — Normal",
   "rows": [
     {
       "ticker": "ARM",
@@ -41,12 +41,12 @@
       "ticker": "SMCI",
       "date": "2026-10-28",
       "action": "BUY",
-      "pct_change": -14.52,
+      "pct_change": -11.15,
       "win": false,
       "entryPrice": 35.58,
-      "exitPrice": 30.41,
+      "exitPrice": 31.61,
       "exitDate": "2026-11-02",
-      "exitReason": "TIME"
+      "exitReason": "STOP_LOSS"
     },
     {
       "ticker": "PANW",
