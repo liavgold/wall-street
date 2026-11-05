@@ -1,6 +1,29 @@
 {
   "generated_at": "2026-11-05",
   "threshold": 75,
-  "count": 0,
-  "signals": []
+  "count": 2,
+  "signals": [
+    {
+      "ticker": "AAPL",
+      "score": 80,
+      "close": 349.51,
+      "date": "2026-11-04",
+      "aboveSma200": true,
+      "atr14": 8.48,
+      "stopPrice": 332.56,
+      "stopPct": 4.9,
+      "sector": "BIG_TECH"
+    },
+    {
+      "ticker": "MSFT",
+      "score": 80,
+      "close": 555.8,
+      "date": "2026-11-04",
+      "aboveSma200": true,
+      "atr14": 15.03,
+      "stopPrice": 525.75,
+      "stopPct": 5.4,
+      "sector": "BIG_TECH"
+    }
+  ]
 }
