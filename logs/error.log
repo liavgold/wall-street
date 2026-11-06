@@ -12946,3 +12946,7 @@
 [2026-11-06 21:01:53] [ERROR] 49/50 AAPL — FAILED
 [2026-11-06 21:02:00] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 262
 [2026-11-06 21:02:00] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
+[2026-11-06 21:58:09] [ERROR] VIX analysis failed: No data found, symbol may be delisted
+[2026-11-06 21:58:09] [ERROR] 1/1 VIX — FAILED
+[2026-11-06 21:58:14] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 262
+[2026-11-06 21:58:14] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
