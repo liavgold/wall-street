@@ -12869,5 +12869,32 @@
     "price": 126.87999725341797,
     "score": 40,
     "action": "WATCH"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-11-06",
+    "time": "03:58:52 PM",
+    "session": "Intraday",
+    "price": 149.01499938964844,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AFRM",
+    "date": "2026-11-06",
+    "time": "03:58:52 PM",
+    "session": "Intraday",
+    "price": 68.2249984741211,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSFT",
+    "date": "2026-11-06",
+    "time": "03:58:52 PM",
+    "session": "Intraday",
+    "price": 530.6099853515625,
+    "score": 55,
+    "action": "WATCH"
   }
 ]
