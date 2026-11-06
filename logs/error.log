@@ -12826,3 +12826,27 @@
 [2026-11-05 22:35:36] [ERROR] 1/1 VIX — FAILED
 [2026-11-05 22:48:38] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 262
 [2026-11-05 22:48:38] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
+[2026-11-06 17:45:53] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:45:57] [ERROR] NVDA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:45:57] [ERROR] 1/10 NVDA — FAILED (after retry)
+[2026-11-06 17:46:00] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:04] [ERROR] TSLA analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:04] [ERROR] 2/10 TSLA — FAILED (after retry)
+[2026-11-06 17:46:07] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:11] [ERROR] PLTR analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:11] [ERROR] 3/10 PLTR — FAILED (after retry)
+[2026-11-06 17:46:14] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:18] [ERROR] AMD analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:18] [ERROR] 4/10 AMD — FAILED (after retry)
+[2026-11-06 17:46:21] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:24] [ERROR] MSFT analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:24] [ERROR] 5/10 MSFT — FAILED (after retry)
+[2026-11-06 17:46:28] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:31] [ERROR] AAPL analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:31] [ERROR] 6/10 AAPL — FAILED (after retry)
+[2026-11-06 17:46:35] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:38] [ERROR] AMZN analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:38] [ERROR] 7/10 AMZN — FAILED (after retry)
+[2026-11-06 17:46:42] [ERROR] META analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
+[2026-11-06 17:46:55] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 262
+[2026-11-06 17:46:55] [ERROR] Telegram send failed: 400: Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 261
