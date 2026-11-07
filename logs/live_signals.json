@@ -1,29 +1,18 @@
 {
-  "generated_at": "2026-11-06",
+  "generated_at": "2026-11-07",
   "threshold": 75,
-  "count": 2,
+  "count": 1,
   "signals": [
     {
-      "ticker": "AAPL",
+      "ticker": "TOST",
       "score": 80,
-      "close": 349.51,
-      "date": "2026-11-04",
+      "close": 35.16,
+      "date": "2026-11-05",
       "aboveSma200": true,
-      "atr14": 8.48,
-      "stopPrice": 332.56,
-      "stopPct": 4.9,
-      "sector": "BIG_TECH"
-    },
-    {
-      "ticker": "MSFT",
-      "score": 80,
-      "close": 555.8,
-      "date": "2026-11-04",
-      "aboveSma200": true,
-      "atr14": 15.03,
-      "stopPrice": 525.75,
-      "stopPct": 5.4,
-      "sector": "BIG_TECH"
+      "atr14": 1.42,
+      "stopPrice": 32.32,
+      "stopPct": 8.1,
+      "sector": "DATA_INFRA"
     }
   ]
 }
