@@ -1,9 +1,9 @@
 {
-  "cachedAt": 1793661225806,
+  "cachedAt": 1794268393671,
   "data": {
-    "epsGrowthYoY": -22.8,
-    "hasPosEpsSurprise": true,
-    "epsSurprisePct": 43.08,
+    "epsGrowthYoY": -78.41,
+    "hasPosEpsSurprise": false,
+    "epsSurprisePct": -74.59,
     "hasInsiderBuying": false,
     "insiderBuyCount": 0
   }
