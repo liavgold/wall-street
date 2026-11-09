@@ -1,18 +1,6 @@
 {
-  "generated_at": "2026-11-07",
+  "generated_at": "2026-11-09",
   "threshold": 75,
-  "count": 1,
-  "signals": [
-    {
-      "ticker": "TOST",
-      "score": 80,
-      "close": 35.16,
-      "date": "2026-11-05",
-      "aboveSma200": true,
-      "atr14": 1.42,
-      "stopPrice": 32.32,
-      "stopPct": 8.1,
-      "sector": "DATA_INFRA"
-    }
-  ]
+  "count": 0,
+  "signals": []
 }
