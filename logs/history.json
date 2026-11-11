@@ -13015,15 +13015,6 @@
     "action": "WATCH"
   },
   {
-    "ticker": "META",
-    "date": "2026-11-11",
-    "time": "07:44:33 PM",
-    "session": "Post-market",
-    "price": 641.3900146484375,
-    "score": 60,
-    "action": "WATCH"
-  },
-  {
     "ticker": "GOOGL",
     "date": "2026-11-11",
     "time": "07:44:33 PM",
@@ -13039,6 +13030,15 @@
     "session": "Post-market",
     "price": 121.06999969482422,
     "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-11-11",
+    "time": "01:14:55 PM",
+    "session": "Intraday",
+    "price": 640.8150024414062,
+    "score": 60,
     "action": "WATCH"
   }
 ]
