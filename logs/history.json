@@ -13076,5 +13076,32 @@
     "price": 110.79000091552734,
     "score": 50,
     "action": "WATCH"
+  },
+  {
+    "ticker": "MDB",
+    "date": "2026-11-13",
+    "time": "04:29:36 PM",
+    "session": "Post-market",
+    "price": 334.20001220703125,
+    "score": 45,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AAPL",
+    "date": "2026-11-13",
+    "time": "04:29:36 PM",
+    "session": "Post-market",
+    "price": 356.2699890136719,
+    "score": 60,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSFT",
+    "date": "2026-11-13",
+    "time": "04:29:36 PM",
+    "session": "Post-market",
+    "price": 523.8800048828125,
+    "score": 60,
+    "action": "WATCH"
   }
 ]
