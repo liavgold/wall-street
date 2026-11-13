@@ -13341,3 +13341,5 @@
 [2026-11-13 21:32:32] [ERROR] 47/50 FTNT — FAILED
 [2026-11-13 21:32:35] [ERROR] ARM analysis failed: CRITICAL: No Claude Credits. Analysis halted to prevent inaccurate scoring.
 [2026-11-13 21:32:35] [ERROR] 48/50 ARM — FAILED
+[2026-11-13 22:24:47] [ERROR] VIX analysis failed: No data found, symbol may be delisted
+[2026-11-13 22:24:47] [ERROR] 1/1 VIX — FAILED
