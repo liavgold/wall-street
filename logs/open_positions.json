@@ -38,5 +38,13 @@
     "stopPrice": 32.32,
     "breakevenNotified": false,
     "expiresAfter": "2027-02-05"
+  },
+  {
+    "ticker": "BILL",
+    "entryDate": "2026-11-17",
+    "entryPrice": 57.63,
+    "stopPrice": 53.18,
+    "breakevenNotified": false,
+    "expiresAfter": "2027-02-15"
   }
 ]

@@ -1,12 +1,12 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-11-17 | **Time:** 02:29:48 PM | **Session:** Intraday | **Mode:** FAST | **Tickers Scanned:** 0
+> **Scan Date:** 2026-11-17 | **Time:** 06:46:17 PM | **Session:** Post-market | **Mode:** MONITOR | **Tickers Scanned:** 0
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 25.49 (HIGH) — **0.7x macro multiplier** |
+| VIX | 25.46 (HIGH) — **0.7x macro multiplier** |
 | Sector Health | N/A |
 | General Sentiment | N/A |
 
