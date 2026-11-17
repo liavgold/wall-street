@@ -13202,5 +13202,32 @@
     "price": 415.2200012207031,
     "score": 60,
     "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-11-17",
+    "time": "10:00:58 PM",
+    "session": "Post-market",
+    "price": 626.4099731445312,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-11-17",
+    "time": "10:00:58 PM",
+    "session": "Post-market",
+    "price": 283.7200012207031,
+    "score": 50,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "MSTR",
+    "date": "2026-11-17",
+    "time": "10:00:58 PM",
+    "session": "Post-market",
+    "price": 103.02999877929688,
+    "score": 35,
+    "action": "WATCH"
   }
 ]
