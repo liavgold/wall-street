@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-17",
-  "start_date": "2024-11-17",
-  "end_date": "2026-11-17",
+  "generated_at": "2026-11-18",
+  "start_date": "2024-11-18",
+  "end_date": "2026-11-18",
   "data_points": 30,
   "win_rate": 13.33,
   "profit_factor": 0.33,
@@ -12,8 +12,8 @@
   "sharpe_ratio": -0.26,
   "calmar_ratio": -0.51,
   "slippage_bps": 0.1,
-  "vix_at_run": 25.46,
-  "vix_regime": "25.46 — Normal",
+  "vix_at_run": 23.57,
+  "vix_regime": "23.57 — Normal",
   "rows": [
     {
       "ticker": "ARM",
