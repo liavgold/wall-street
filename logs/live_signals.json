@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-11-18",
+  "generated_at": "2026-11-19",
   "threshold": 75,
   "count": 1,
   "signals": [
     {
       "ticker": "BILL",
       "score": 80,
-      "close": 57.63,
-      "date": "2026-11-16",
+      "close": 66.01,
+      "date": "2026-11-18",
       "aboveSma200": true,
-      "atr14": 2.23,
-      "stopPrice": 53.18,
-      "stopPct": 7.7,
+      "atr14": 2.86,
+      "stopPrice": 60.29,
+      "stopPct": 8.7,
       "sector": "SAAS"
     }
   ]
