@@ -13274,5 +13274,23 @@
     "price": 278.1700134277344,
     "score": 35,
     "action": "WATCH"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-11-20",
+    "time": "01:55:24 PM",
+    "session": "Intraday",
+    "price": 572.1599731445312,
+    "score": 25,
+    "action": "SELL"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-11-20",
+    "time": "01:55:24 PM",
+    "session": "Intraday",
+    "price": 273.8771057128906,
+    "score": 25,
+    "action": "SELL"
   }
 ]
