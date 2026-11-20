@@ -1,18 +1,9 @@
 {
   "generated_at": "2026-11-20",
   "threshold": 75,
-  "count": 1,
-  "signals": [
-    {
-      "ticker": "BILL",
-      "score": 80,
-      "close": 66.01,
-      "date": "2026-11-18",
-      "aboveSma200": true,
-      "atr14": 2.86,
-      "stopPrice": 60.29,
-      "stopPct": 8.7,
-      "sector": "SAAS"
-    }
-  ]
+  "count": 0,
+  "signals": [],
+  "vix_suppressed": true,
+  "vix_level": 35.89,
+  "message": "VIX 35.89 > 35: Force-WATCH mode active. No new entries."
 }
