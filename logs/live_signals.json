@@ -1,9 +1,6 @@
 {
-  "generated_at": "2026-11-20",
+  "generated_at": "2026-11-23",
   "threshold": 75,
   "count": 0,
-  "signals": [],
-  "vix_suppressed": true,
-  "vix_level": 35.89,
-  "message": "VIX 35.89 > 35: Force-WATCH mode active. No new entries."
+  "signals": []
 }
