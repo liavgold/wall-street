@@ -13355,5 +13355,41 @@
     "price": 84.4000015258789,
     "score": 18,
     "action": "SELL"
+  },
+  {
+    "ticker": "SHOP",
+    "date": "2026-11-24",
+    "time": "09:28:05 PM",
+    "session": "Post-market",
+    "price": 134.3000030517578,
+    "score": 35,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "AFRM",
+    "date": "2026-11-24",
+    "time": "09:28:05 PM",
+    "session": "Post-market",
+    "price": 58.40999984741211,
+    "score": 35,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "IOT",
+    "date": "2026-11-24",
+    "time": "09:28:05 PM",
+    "session": "Post-market",
+    "price": 38.77000045776367,
+    "score": 35,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "TOST",
+    "date": "2026-11-24",
+    "time": "09:28:05 PM",
+    "session": "Post-market",
+    "price": 32.470001220703125,
+    "score": 35,
+    "action": "WATCH"
   }
 ]

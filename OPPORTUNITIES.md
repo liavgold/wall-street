@@ -1,6 +1,6 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-11-23 | **Time:** 05:20:04 PM | **Session:** Post-market | **Mode:** FAST | **Tickers Scanned:** 3
+> **Scan Date:** 2026-11-24 | **Time:** 09:28:05 PM | **Session:** Post-market | **Mode:** FULL | **Tickers Scanned:** 4
 
 ## Market Context
 
@@ -18,7 +18,7 @@
 
 ## Scan Summary
 
-- **Total scanned:** 3
+- **Total scanned:** 4
 - **Passed filters:** 0
 - **Golden Trades (top 1%):** 0
 - **Explosive signals:** 0
