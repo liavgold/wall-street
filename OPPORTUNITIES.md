@@ -1,13 +1,13 @@
 # WallStreet Opportunities
 
-> **Scan Date:** 2026-11-25 | **Time:** 10:37:25 PM | **Session:** Post-market | **Mode:** FAST | **Tickers Scanned:** 2
+> **Scan Date:** 2026-11-25 | **Time:** 03:18:52 PM | **Session:** Intraday | **Mode:** FAST | **Tickers Scanned:** 2
 
 ## Market Context
 
 | Indicator | Value |
 | --------- | ----- |
-| VIX | 26.36 (HIGH) — **0.7x macro multiplier** |
-| Sector Health | Market Flat (SPY -0.49%) |
+| VIX | 27.83 (HIGH) — **0.7x macro multiplier** |
+| Sector Health | Market Flat (SPY -0.37%) |
 | General Sentiment | Elevated Fear — Recession Shield active (0.7x) |
 
 > **Filters:** (Score > 75 OR Explosive Buy) AND Earnings Surprise > 0% AND Relative Strength > 0
