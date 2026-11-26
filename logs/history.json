@@ -13440,28 +13440,28 @@
   {
     "ticker": "META",
     "date": "2026-11-26",
-    "time": "09:57:45 PM",
-    "session": "Post-market",
+    "time": "02:55:46 PM",
+    "session": "Intraday",
     "price": 609.8900146484375,
-    "score": 25,
-    "action": "SELL"
+    "score": 35,
+    "action": "WATCH"
   },
   {
     "ticker": "GOOGL",
     "date": "2026-11-26",
-    "time": "09:57:45 PM",
-    "session": "Post-market",
+    "time": "02:55:46 PM",
+    "session": "Intraday",
     "price": 273.1000061035156,
-    "score": 25,
-    "action": "SELL"
+    "score": 35,
+    "action": "WATCH"
   },
   {
     "ticker": "MSTR",
     "date": "2026-11-26",
-    "time": "09:57:45 PM",
-    "session": "Post-market",
+    "time": "02:55:46 PM",
+    "session": "Intraday",
     "price": 79.95999908447266,
-    "score": 13,
+    "score": 18,
     "action": "SELL"
   }
 ]
