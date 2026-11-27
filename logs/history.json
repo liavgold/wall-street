@@ -13463,5 +13463,23 @@
     "price": 79.95999908447266,
     "score": 18,
     "action": "SELL"
+  },
+  {
+    "ticker": "META",
+    "date": "2026-11-27",
+    "time": "10:00:13 PM",
+    "session": "Post-market",
+    "price": 609.8900146484375,
+    "score": 35,
+    "action": "WATCH"
+  },
+  {
+    "ticker": "GOOGL",
+    "date": "2026-11-27",
+    "time": "10:00:13 PM",
+    "session": "Post-market",
+    "price": 273.1000061035156,
+    "score": 35,
+    "action": "WATCH"
   }
 ]
