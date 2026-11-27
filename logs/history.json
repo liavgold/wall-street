@@ -13467,19 +13467,19 @@
   {
     "ticker": "META",
     "date": "2026-11-27",
-    "time": "10:00:13 PM",
-    "session": "Post-market",
-    "price": 609.8900146484375,
-    "score": 35,
+    "time": "02:44:48 PM",
+    "session": "Intraday",
+    "price": 628.9600219726562,
+    "score": 50,
     "action": "WATCH"
   },
   {
     "ticker": "GOOGL",
     "date": "2026-11-27",
-    "time": "10:00:13 PM",
-    "session": "Post-market",
-    "price": 273.1000061035156,
-    "score": 35,
+    "time": "02:44:48 PM",
+    "session": "Intraday",
+    "price": 274.9599914550781,
+    "score": 50,
     "action": "WATCH"
   }
 ]
